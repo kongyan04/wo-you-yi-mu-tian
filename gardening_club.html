@@ -731,16 +731,31 @@ function renderDashboard() {
 }
 
 // ── Monthly Announcement ──────────────────────────────────────────────────────
+let announceYear  = new Date().getFullYear();
+let announceMonth = new Date().getMonth(); // 0-indexed
+
+function announceNav(dir) {
+  announceMonth += dir;
+  if (announceMonth < 0)  { announceMonth = 11; announceYear--; }
+  if (announceMonth > 11) { announceMonth = 0;  announceYear++; }
+  renderMonthlyAnnouncement();
+  setTimeout(loadPlantThumbs, 0);
+}
+
 function renderMonthlyAnnouncement() {
-  const now   = new Date();
-  const yr    = now.getFullYear();
-  const mo    = now.getMonth(); // 0-indexed
+  const yr  = announceYear;
+  const mo  = announceMonth;
   const MONTHS = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
   const monthStr = String(mo + 1).padStart(2,'0');
   const prefix   = `${yr}-${monthStr}-`;
+  const isCurrentMonth = (yr === new Date().getFullYear() && mo === new Date().getMonth());
 
   document.getElementById('dashAnnounceTitle').innerHTML =
-    `📢 ${MONTHS[mo]} ${yr} — 本月园艺指南
+    `<span style="display:flex;align-items:center;gap:6px">
+       <button onclick="announceNav(-1)" style="background:#d8f3dc;border:none;border-radius:6px;padding:3px 10px;cursor:pointer;font-size:1rem;font-weight:700;color:#1b4332">‹</button>
+       📢 ${MONTHS[mo]} ${yr} — 园艺指南${isCurrentMonth ? ' <span style="font-size:0.7rem;background:#2d6a4f;color:#fff;border-radius:4px;padding:1px 6px;vertical-align:middle">本月</span>' : ''}
+       <button onclick="announceNav(1)" style="background:#d8f3dc;border:none;border-radius:6px;padding:3px 10px;cursor:pointer;font-size:1rem;font-weight:700;color:#1b4332">›</button>
+     </span>
      <button class="btn btn-soft btn-sm" onclick="showTab('calendar')">完整日历</button>`;
 
   // Bucket plantings by activity type within this month
@@ -762,7 +777,7 @@ function renderMonthlyAnnouncement() {
   const totalItems = Object.values(buckets).reduce((s,b)=>s+b.items.length,0);
   if (!totalItems) {
     document.getElementById('dashAnnounce').innerHTML =
-      `<div class="empty"><div class="empty-icon">🌿</div><p>${MONTHS[mo]}暂无种植活动。<br>加载5区默认日程或自行添加种植记录！</p></div>`;
+      `<div class="empty"><div class="empty-icon">🌿</div><p>${MONTHS[mo]} ${yr}年暂无种植活动。</p></div>`;
     return;
   }
 
