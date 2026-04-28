@@ -178,6 +178,27 @@ nav{background:#fff;border-bottom:2px solid #e2e8f0;display:flex;overflow-x:auto
 .ft-cat-btn{background:#f0fff4;color:#276749;border:1px solid #c6f6d5;border-radius:8px;padding:5px 12px;font-size:0.78rem;font-weight:700;cursor:pointer}
 .ft-cat-btn.active,.ft-cat-btn:hover{background:#2d6a4f;color:#fff;border-color:#2d6a4f}
 
+/* ── Nursery cards ── */
+.nur-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.nur-card{background:#fff;border:1px solid #e8f5e9;border-radius:14px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;flex-direction:column;gap:10px;transition:box-shadow .15s,transform .1s}
+.nur-card:hover{box-shadow:0 6px 18px rgba(45,106,79,.13);transform:translateY(-2px)}
+.nur-head{display:flex;align-items:flex-start;gap:12px}
+.nur-icon{font-size:1.8rem;flex-shrink:0;width:44px;text-align:center;margin-top:2px}
+.nur-title{flex:1}
+.nur-name{font-weight:800;font-size:1rem;color:#1a202c;line-height:1.3}
+.nur-dist{display:inline-block;background:#ebf8ff;color:#2b6cb0;border-radius:6px;padding:2px 8px;font-size:0.7rem;font-weight:700;margin-top:3px}
+.nur-info{display:flex;flex-direction:column;gap:5px;font-size:0.8rem;color:#4a5568}
+.nur-info a{color:#2d6a4f;text-decoration:none;font-weight:600}
+.nur-info a:hover{text-decoration:underline}
+.nur-row{display:flex;align-items:flex-start;gap:6px}
+.nur-row-icon{flex-shrink:0;width:16px;text-align:center;margin-top:1px;font-size:0.85rem}
+.nur-tags{display:flex;gap:5px;flex-wrap:wrap}
+.nur-tag{background:#f0fff4;color:#276749;border:1px solid #c6f6d5;border-radius:6px;padding:2px 8px;font-size:0.69rem;font-weight:700}
+.nur-note{font-size:0.77rem;color:#718096;line-height:1.5;border-top:1px solid #f0fff4;padding-top:8px}
+.nur-filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.nur-filter-btn{background:#f0fff4;color:#276749;border:1px solid #c6f6d5;border-radius:8px;padding:5px 12px;font-size:0.78rem;font-weight:700;cursor:pointer}
+.nur-filter-btn.active,.nur-filter-btn:hover{background:#2d6a4f;color:#fff;border-color:#2d6a4f}
+
 /* ── Responsive ── */
 @media(max-width:640px){.grid2{grid-template-columns:1fr}.fg-row{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.ft-grid{grid-template-columns:1fr}}
 </style>
@@ -204,6 +225,7 @@ nav{background:#fff;border-bottom:2px solid #e2e8f0;display:flex;overflow-x:auto
   <button class="nav-btn" onclick="showTab('calendar')">📅 日历</button>
   <button class="nav-btn" onclick="showTab('members')">👥 成员</button>
   <button class="nav-btn" onclick="showTab('fruittrees')">🍎 果树指南</button>
+  <button class="nav-btn" onclick="showTab('nurseries')">🏪 附近苗圃</button>
 </nav>
 
 <!-- ═══════════════════ DASHBOARD ═══════════════════ -->
@@ -316,6 +338,23 @@ nav{background:#fff;border-bottom:2px solid #e2e8f0;display:flex;overflow-x:auto
       <button class="btn btn-green" onclick="openModal('memberModal')">+ 添加成员</button>
     </div>
     <div class="member-grid" id="memberGrid"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════ NURSERIES ═══════════════════ -->
+<div class="tab-pane" id="tab-nurseries">
+  <div class="page">
+    <div class="panel" style="margin-bottom:16px">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <span style="font-size:1.5rem">🏪</span>
+        <div>
+          <div style="font-weight:800;font-size:1.1rem;color:#1a202c">Millburn附近苗圃 — Nurseries Near Millburn, NJ</div>
+          <div style="font-size:0.8rem;color:#718096;margin-top:2px">20英里范围内 · 出售蔬菜苗、果树、花卉的园艺中心 · 建议出发前致电确认营业时间</div>
+        </div>
+      </div>
+      <div class="nur-filter-bar" style="margin-top:14px" id="nurFilterBtns"></div>
+    </div>
+    <div class="nur-grid" id="nurGrid"></div>
   </div>
 </div>
 
@@ -530,7 +569,7 @@ function showTab(name) {
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
   const btns = document.querySelectorAll('.nav-btn');
-  const labels = ['dashboard','seeds','plantings','calendar','members','fruittrees'];
+  const labels = ['dashboard','seeds','plantings','calendar','members','fruittrees','nurseries'];
   btns[labels.indexOf(name)]?.classList.add('active');
   renderTab(name);
 }
@@ -542,6 +581,7 @@ function renderTab(name) {
   if (name === 'calendar')   renderCalendar();
   if (name === 'members')    renderMembers();
   if (name === 'fruittrees') renderFruitTrees();
+  if (name === 'nurseries')  renderNurseries();
 }
 
 // ── Member selector ───────────────────────────────────────────────────────────
@@ -1653,6 +1693,213 @@ if (_needsReload) {
 }
 
 renderDashboard();
+
+// ══════════════════════════════════════════════════════
+// 🏪 NURSERY DATA — Within ~20 miles of Millburn, NJ
+// ══════════════════════════════════════════════════════
+const NURSERIES = [
+  {
+    name: 'DuBrow\'s Nurseries',
+    icon: '🌳',
+    dist: '约4英里',
+    addr: '251 W Northfield Rd, Livingston, NJ 07039',
+    phone: '(973) 992-0598',
+    web: '',
+    hours: '季节性营业，建议致电',
+    tags: ['乔灌木','蔬菜苗','果树','园艺用品'],
+    note: '利文斯顿本地老牌苗圃，提供树木、灌木、园艺植物及景观材料。距Millburn最近之一。',
+  },
+  {
+    name: 'Pleasantdale Nurseries',
+    icon: '🌿',
+    dist: '约3英里',
+    addr: '240 Pleasant Valley Way, West Orange, NJ 07052',
+    phone: '(973) 731-0830',
+    web: '',
+    hours: '周一至四 8am–6pm · 周五 8am–5pm',
+    tags: ['蔬菜苗','球茎','种子','园艺用品'],
+    note: 'West Orange零售苗圃，提供植物、种子、球茎及各类园艺用品，服务本地多年。',
+  },
+  {
+    name: 'Orange Garden Center',
+    icon: '🌸',
+    dist: '约5英里',
+    addr: '360 Alden St, Orange, NJ 07050',
+    phone: '(973) 672-2212',
+    web: 'orangegardennj.com',
+    hours: '请致电或查询网站',
+    tags: ['有机蔬菜苗','一年生花卉','香草','盆栽'],
+    note: '区域内有机蔬菜苗种类最丰富的苗圃之一。同时提供吊篮、玫瑰、热带植物及园艺土料。',
+  },
+  {
+    name: 'Cardinal Lawn & Garden Center',
+    icon: '🌻',
+    dist: '约6英里',
+    addr: '272 Milltown Rd, Springfield, NJ 07081',
+    phone: '(973) 376-0440',
+    web: 'cardinalgardencenter.net',
+    hours: '请查询网站获取季节性营业时间',
+    tags: ['乔灌木','多年生','一年生','景观服务'],
+    note: '家族经营自1938年，Mellusi家族自1971年运营。Springfield本地信赖园艺中心。',
+  },
+  {
+    name: 'Dreyer Farms',
+    icon: '🍎',
+    dist: '约9英里',
+    addr: '831 Springfield Ave, Cranford, NJ 07016',
+    phone: '(908) 276-1290',
+    web: 'dreyerfarms.com',
+    hours: '周一至六 8am–6pm',
+    tags: ['乔灌木','多年生','蔬菜苗','本地农产品','时令南瓜'],
+    note: '1904年创办的家族农场兼园艺中心，提供时令农产品、植物及南瓜节活动，是Union County地标。',
+  },
+  {
+    name: 'Brookside Garden Center & Florist',
+    icon: '💐',
+    dist: '约9英里',
+    addr: '551 Broad St, Bloomfield, NJ 07003',
+    phone: '(973) 748-0655',
+    web: 'brooksidegcandflorist.com',
+    hours: '请查询网站',
+    tags: ['蔬菜苗','香草','一年生','多年生','鲜花'],
+    note: '家族经营超25年，花卉与园艺兼营，提供景观设计服务。Bloomfield社区深受好评。',
+  },
+  {
+    name: 'Cedar Grove Garden Center',
+    icon: '🌲',
+    dist: '约10英里',
+    addr: '1201 Pompton Ave, Cedar Grove, NJ 07009',
+    phone: '(973) 256-1950',
+    web: 'cedargrovegarden.com',
+    hours: '请致电确认（近期营业状态有变）',
+    tags: ['蔬菜苗','香草','一年生','多年生'],
+    note: '占地6英亩，配备2座温室，蔬菜苗和香草种类丰富。出发前建议致电确认营业。',
+  },
+  {
+    name: 'Alpine Nursery & Garden Center',
+    icon: '🌱',
+    dist: '约11英里',
+    addr: '291 Main St, Belleville, NJ 07109',
+    phone: '(973) 450-9140',
+    web: 'alpinenurserygardencenter.com',
+    hours: '周一至日 8:30am–7pm',
+    tags: ['蔬菜苗','香草','一年生','多年生'],
+    note: '家族经营30年以上。Belleville本地深受信赖的园艺中心，营业时间长，方便下班购买。',
+  },
+  {
+    name: 'Centre Ridge Garden Center',
+    icon: '🥦',
+    dist: '约12英里',
+    addr: '652 Centre St, Nutley, NJ 07110',
+    phone: '(973) 667-0991',
+    web: '',
+    hours: '周一至六 8am–7pm',
+    tags: ['蔬菜苗','一年生','菊花','天竺葵'],
+    note: 'Nutley地区蔬菜苗选择丰富，是喜欢自己培育菜园居民的热门去处。',
+  },
+  {
+    name: 'Great Swamp Greenhouses',
+    icon: '🏡',
+    dist: '约13英里',
+    addr: '553 New Vernon Rd, Gillette, NJ 07933',
+    phone: '(908) 647-3725',
+    web: '',
+    hours: '每日 7am–6pm',
+    tags: ['一年生','多年生','蔬菜苗'],
+    note: '家族温室苗圃，位于大沼泽国家野生动物保护区附近。每日早开门，适合周末早起园丁。',
+  },
+  {
+    name: 'The Farm at Green Village',
+    icon: '🚜',
+    dist: '约13英里',
+    addr: '403 Green Village Rd, Green Village, NJ 07935',
+    phone: '(973) 377-8703',
+    web: 'thefarmatgreenvillage.com',
+    hours: '周一至六 8am–6pm · 周日 9am–5pm',
+    tags: ['乔灌木','多年生','蔬菜苗','果树','景观设计'],
+    note: 'Morris County综合性园艺目的地，植物种类齐全，果树选择优秀，提供景观设计咨询。',
+  },
+  {
+    name: 'Mendham Garden Center — Mendham店',
+    icon: '🍑',
+    dist: '约18英里',
+    addr: '11 W Main St, Mendham, NJ 07926',
+    phone: '(973) 543-4178',
+    web: 'mendhamgardencenter.com',
+    hours: '请查询网站',
+    tags: ['果树','苹果树','梨树','桃树','樱桃树','杏树','灌木'],
+    note: '果树种类最全的本地苗圃！苹果、梨、桃、杏、樱桃应有尽有。另有Chester和Annandale两处分店。',
+  },
+  {
+    name: 'Mendham Garden Center — Chester店',
+    icon: '🍐',
+    dist: '约20英里',
+    addr: '162 US Highway 206 S, Chester, NJ 07930',
+    phone: '(908) 879-5020',
+    web: 'mendhamgardencenter.com',
+    hours: '请查询网站',
+    tags: ['果树','乔灌木','多年生','蔬菜苗'],
+    note: 'Mendham Garden Center Chester分店，同样提供丰富果树。Highway 206沿线，方便驾车前往。',
+  },
+  {
+    name: 'Morris County Farms',
+    icon: '🌾',
+    dist: '约20英里',
+    addr: '33 Smith Rd, Denville, NJ 07834',
+    phone: '(973) 366-4448',
+    web: 'morriscountyfarms.com',
+    hours: '周一至六 8am–5pm · 周日 8am–4pm',
+    tags: ['果树','乔灌木','多年生','常绿树','观花树'],
+    note: 'North Jersey高端苗圃，果树、观花树、常绿树一站购齐。专业景观植物种类齐全。',
+  },
+];
+
+const NUR_TAGS = ['全部','蔬菜苗','果树','乔灌木','多年生','香草','一年生'];
+let nurActiveTag = '全部';
+
+function renderNurseries() {
+  const filterDiv = document.getElementById('nurFilterBtns');
+  filterDiv.innerHTML = NUR_TAGS.map(t =>
+    `<button class="nur-filter-btn${t===nurActiveTag?' active':''}" onclick="nurFilter('${t}')">${t}</button>`
+  ).join('');
+
+  const list = nurActiveTag === '全部'
+    ? NURSERIES
+    : NURSERIES.filter(n => n.tags.some(t => t.includes(nurActiveTag)));
+
+  document.getElementById('nurGrid').innerHTML = list.map(n => `
+    <div class="nur-card">
+      <div class="nur-head">
+        <div class="nur-icon">${n.icon}</div>
+        <div class="nur-title">
+          <div class="nur-name">${n.name}</div>
+          <span class="nur-dist">📍 ${n.dist}</span>
+        </div>
+      </div>
+      <div class="nur-tags">${n.tags.map(t=>`<span class="nur-tag">${t}</span>`).join('')}</div>
+      <div class="nur-info">
+        <div class="nur-row">
+          <span class="nur-row-icon">📌</span>
+          <a href="https://maps.google.com/?q=${encodeURIComponent(n.addr)}" target="_blank">${n.addr}</a>
+        </div>
+        <div class="nur-row">
+          <span class="nur-row-icon">📞</span>
+          <a href="tel:${n.phone.replace(/\D/g,'')}">${n.phone}</a>
+        </div>
+        ${n.web ? `<div class="nur-row"><span class="nur-row-icon">🌐</span><a href="https://${n.web}" target="_blank">${n.web}</a></div>` : ''}
+        <div class="nur-row">
+          <span class="nur-row-icon">🕐</span>
+          <span>${n.hours}</span>
+        </div>
+      </div>
+      <div class="nur-note">${n.note}</div>
+    </div>`).join('');
+}
+
+function nurFilter(tag) {
+  nurActiveTag = tag;
+  renderNurseries();
+}
 
 // ══════════════════════════════════════════════════════
 // 🍎 FRUIT TREE DATA — Zone 5 Guide
