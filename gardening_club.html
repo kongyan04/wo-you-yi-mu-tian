@@ -1448,5 +1448,47 @@ if (_needsReload) {
 renderDashboard();
 
 </script>
+
+<!-- Plant Photo Lightbox -->
+<div id="plantLightbox" onclick="closeLightbox()" style="
+  display:none;position:fixed;inset:0;z-index:9999;
+  background:rgba(0,0,0,0.72);
+  align-items:center;justify-content:center;flex-direction:column;gap:14px;
+  cursor:zoom-out">
+  <img id="lightboxImg" src="" alt="" style="
+    max-width:88vw;max-height:72vh;
+    border-radius:14px;box-shadow:0 8px 40px rgba(0,0,0,0.5);
+    object-fit:contain;background:#fff">
+  <div id="lightboxCaption" style="
+    color:#fff;font-size:1.15rem;font-weight:600;
+    text-shadow:0 2px 6px rgba(0,0,0,0.6);letter-spacing:0.03em"></div>
+  <div style="color:rgba(255,255,255,0.55);font-size:0.78rem">点击任意处关闭</div>
+</div>
+
+<script>
+function openLightbox(src, name) {
+  if (!src) return;
+  const lb = document.getElementById('plantLightbox');
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightboxCaption').textContent = name || '';
+  lb.style.display = 'flex';
+}
+function closeLightbox() {
+  document.getElementById('plantLightbox').style.display = 'none';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+// Wire up clicks on all plant thumbnails (current and future)
+document.addEventListener('click', e => {
+  const img = e.target.closest('img[data-plant]');
+  if (!img || !img.src || img.style.display === 'none') return;
+  e.stopPropagation();
+  openLightbox(img.src, img.dataset.plant);
+});
+// Make thumbnails look clickable
+const styleEl = document.createElement('style');
+styleEl.textContent = 'img[data-plant] { cursor: zoom-in !important; }';
+document.head.appendChild(styleEl);
+</script>
 </body>
 </html>
