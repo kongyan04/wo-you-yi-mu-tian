@@ -155,8 +155,31 @@ nav{background:#fff;border-bottom:2px solid #e2e8f0;display:flex;overflow-x:auto
 .toast{position:fixed;bottom:24px;right:24px;background:#1b4332;color:#fff;border-radius:10px;padding:12px 20px;font-size:0.85rem;font-weight:600;z-index:200;opacity:0;transform:translateY(10px);transition:all .25s;pointer-events:none}
 .toast.show{opacity:1;transform:translateY(0)}
 
+/* ── Fruit tree cards ── */
+.ft-section-title{font-size:0.95rem;font-weight:800;color:#744210;background:#fffaf0;border-left:4px solid #f6ad55;padding:8px 14px;border-radius:0 8px 8px 0;margin:20px 0 12px}
+.ft-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:8px}
+.ft-card{background:#fff;border:1px solid #e8f5e9;border-radius:14px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;flex-direction:column;gap:8px;transition:box-shadow .15s,transform .1s}
+.ft-card:hover{box-shadow:0 6px 18px rgba(45,106,79,.13);transform:translateY(-2px)}
+.ft-card-top{display:flex;align-items:center;gap:10px}
+.ft-emoji{font-size:2rem;flex-shrink:0;width:44px;text-align:center}
+.ft-names{flex:1}
+.ft-name{font-weight:800;font-size:1rem;color:#1a202c}
+.ft-eng{font-size:0.75rem;color:#718096;margin-top:1px}
+.ft-photo{width:44px;height:44px;border-radius:50%;object-fit:cover;display:none;flex-shrink:0}
+.ft-badges{display:flex;gap:6px;flex-wrap:wrap}
+.ft-badge{border-radius:6px;padding:3px 8px;font-size:0.7rem;font-weight:700}
+.ft-badge.zone{background:#e6fffa;color:#234e52}
+.ft-badge.years{background:#fefcbf;color:#744210}
+.ft-badge.height{background:#ebf8ff;color:#2c5282}
+.ft-badge.chill{background:#f0e6ff;color:#44337a}
+.ft-badge.self{background:#fff5f5;color:#742a2a}
+.ft-note{font-size:0.78rem;color:#4a5568;line-height:1.5}
+.ft-tip{font-size:0.74rem;color:#2d6a4f;background:#f0fff4;border-radius:6px;padding:5px 8px;margin-top:2px}
+.ft-cat-btn{background:#f0fff4;color:#276749;border:1px solid #c6f6d5;border-radius:8px;padding:5px 12px;font-size:0.78rem;font-weight:700;cursor:pointer}
+.ft-cat-btn.active,.ft-cat-btn:hover{background:#2d6a4f;color:#fff;border-color:#2d6a4f}
+
 /* ── Responsive ── */
-@media(max-width:640px){.grid2{grid-template-columns:1fr}.fg-row{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.grid2{grid-template-columns:1fr}.fg-row{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.ft-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -180,6 +203,7 @@ nav{background:#fff;border-bottom:2px solid #e2e8f0;display:flex;overflow-x:auto
   <button class="nav-btn" onclick="showTab('plantings')">🌿 我的花园</button>
   <button class="nav-btn" onclick="showTab('calendar')">📅 日历</button>
   <button class="nav-btn" onclick="showTab('members')">👥 成员</button>
+  <button class="nav-btn" onclick="showTab('fruittrees')">🍎 果树指南</button>
 </nav>
 
 <!-- ═══════════════════ DASHBOARD ═══════════════════ -->
@@ -292,6 +316,23 @@ nav{background:#fff;border-bottom:2px solid #e2e8f0;display:flex;overflow-x:auto
       <button class="btn btn-green" onclick="openModal('memberModal')">+ 添加成员</button>
     </div>
     <div class="member-grid" id="memberGrid"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════ FRUIT TREES ═══════════════════ -->
+<div class="tab-pane" id="tab-fruittrees">
+  <div class="page">
+    <div class="panel" style="margin-bottom:16px">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <span style="font-size:1.5rem">🍎</span>
+        <div>
+          <div style="font-weight:800;font-size:1.1rem;color:#1a202c">5区果树指南 — Zone 5 Fruit Tree Guide</div>
+          <div style="font-size:0.8rem;color:#718096;margin-top:2px">新泽西 · 蒙特克莱尔地区适种果树 · 最低耐寒 -28°C / -20°F</div>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap" id="ftCatBtns"></div>
+      </div>
+    </div>
+    <div id="ftGrid"></div>
   </div>
 </div>
 
@@ -489,17 +530,18 @@ function showTab(name) {
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
   const btns = document.querySelectorAll('.nav-btn');
-  const labels = ['dashboard','seeds','plantings','calendar','members'];
+  const labels = ['dashboard','seeds','plantings','calendar','members','fruittrees'];
   btns[labels.indexOf(name)]?.classList.add('active');
   renderTab(name);
 }
 
 function renderTab(name) {
-  if (name === 'dashboard') renderDashboard();
-  if (name === 'seeds')     renderSeeds();
-  if (name === 'plantings') renderPlantings();
-  if (name === 'calendar')  renderCalendar();
-  if (name === 'members')   renderMembers();
+  if (name === 'dashboard')  renderDashboard();
+  if (name === 'seeds')      renderSeeds();
+  if (name === 'plantings')  renderPlantings();
+  if (name === 'calendar')   renderCalendar();
+  if (name === 'members')    renderMembers();
+  if (name === 'fruittrees') renderFruitTrees();
 }
 
 // ── Member selector ───────────────────────────────────────────────────────────
@@ -1611,6 +1653,109 @@ if (_needsReload) {
 }
 
 renderDashboard();
+
+// ══════════════════════════════════════════════════════
+// 🍎 FRUIT TREE DATA — Zone 5 Guide
+// fields: name, engName, emoji, zone, yearsToHarvest, height, chillHours, selfFertile, notes, tip, wikiTitle, category
+// ══════════════════════════════════════════════════════
+const FRUIT_TREES = [
+  // ── 亚洲水果 Asian Fruits ──────────────────────────────────────────────────
+  { name:'中国枣/冬枣', eng:'Chinese Jujube', emoji:'🟤', zone:'5–9', yrs:'3–5年', ht:'3–6m', chill:'低需求', self:'自花授粉', notes:'极耐寒耐旱，Zone 5最容易种的亚洲果树！果实甜脆，鲜食、晒干两用。喜全日照和排水良好的土壤。', tip:'推荐品种：Li（大果甜）、Lang（高产）。两棵搭配产量更高。', wiki:'Ziziphus jujuba', cat:'亚洲水果' },
+  { name:'柿子', eng:'Asian Persimmon', emoji:'🟠', zone:'5–9', yrs:'3–5年', ht:'4–9m', chill:'低需求', self:'自花授粉', notes:'极其耐寒美丽的果树！秋天橙红果实挂满枝头，叶落后采收。日本柿（Kaki）和美国柿均可种。', tip:'美国柿（Diospyros virginiana）更耐寒达Zone 4，小果多汁。', wiki:'Persimmon', cat:'亚洲水果' },
+  { name:'桑葚', eng:'Mulberry', emoji:'🫐', zone:'4–9', yrs:'2–3年', ht:'6–15m', chill:'低需求', self:'自花授粉', notes:'生长速度极快，产量惊人。黑桑甜酸多汁，白桑甜淡。鲜食、果酱、酿酒皆宜。需空间较大。', tip:'修剪成灌木形可控高度，也方便采摘。', wiki:'Morus', cat:'亚洲水果' },
+  { name:'猕猴桃', eng:'Hardy Kiwi', emoji:'🥝', zone:'3–8', yrs:'3–5年', ht:'藤本9m+', chill:'中等', self:'需要雄株', notes:'耐寒猕猴桃（Actinidia arguta/kolomikta）果小无毛，直接吃！比普通猕猴桃甜，适合家庭院子。', tip:'1棵雄株配3–5棵雌株。需坚固支架或篱笆。5区每棵可年产数公斤。', wiki:'Actinidia arguta', cat:'亚洲水果' },
+  { name:'无花果', eng:'Fig', emoji:'🟣', zone:'5–9', yrs:'2–3年', ht:'2–4m', chill:'极低', self:'自花授粉', notes:'5区需盆栽或冬季保护（包草/移入车库）。地中海品种在保护下5区可露地存活。果熟时甜蜜柔软。', tip:'推荐品种：Chicago Hardy（5区最耐寒）。秋天割短枝条包裹越冬。', wiki:'Ficus carica', cat:'亚洲水果' },
+  { name:'山楂', eng:'Chinese Hawthorn', emoji:'🔴', zone:'4–7', yrs:'3–4年', ht:'3–6m', chill:'中等', self:'自花授粉', notes:'糖葫芦原料！春季白花美丽，秋天红果累累。果实酸甜，做山楂糕、果丹皮、山楂酱。极耐寒。', tip:'中国山楂（Crataegus pinnatifida）果实更大更甜，专用食用品种。', wiki:'Crataegus pinnatifida', cat:'亚洲水果' },
+  { name:'梅子/乌梅', eng:'Japanese Ume Plum', emoji:'🟡', zone:'6–9', yrs:'3–4年', ht:'4–6m', chill:'中等', self:'部分自花', notes:'5区略偏暖，选最耐寒品种并种在避风处。果实酸香用于腌梅子、乌梅汤、梅酒。早春花美。', tip:'选"Contender"等耐寒品种。盆栽可移入车库越冬。', wiki:'Prunus mume', cat:'亚洲水果' },
+  { name:'枇杷', eng:'Loquat', emoji:'🟡', zone:'6–10', yrs:'3–4年', ht:'4–6m', chill:'低需求', self:'自花授粉', notes:'5区需盆栽，冬天移入室内。暖冬可尝试地栽并搭冬季保护棚。果实甜酸，南方水果代表。', tip:'大盆（60L+）盆栽，夏天户外，11月前移入有阳光的室内窗台。', wiki:'Loquat', cat:'亚洲水果' },
+  { name:'杨梅', eng:'Chinese Bayberry', emoji:'🔴', zone:'6–10', yrs:'4–5年', ht:'6–9m', chill:'低需求', self:'需要雄株', notes:'5区盆栽或强保护尝试。深红色汁多果，吃一颗染红嘴唇。极难在美国买到鲜果，自种别无他法！', tip:'需1棵雄株搭配。盆栽越冬保护，夏天放到最晒的地方。', wiki:'Myrica rubra', cat:'亚洲水果' },
+  { name:'银杏', eng:'Ginkgo (Female)', emoji:'🟡', zone:'3–8', yrs:'20+年', ht:'15–30m', chill:'低需求', self:'需要雄株', notes:'雌树结银杏果，去臭肉后取白果炒食、煲汤。生长缓慢但极其长寿耐寒。嫁接苗结果更早。', tip:'购买嫁接雌株可缩短至7–10年结果。白果有毒勿生吃，少量熟食。', wiki:'Ginkgo biloba', cat:'亚洲水果' },
+  { name:'板栗', eng:'Chinese Chestnut', emoji:'🟤', zone:'4–8', yrs:'3–5年', ht:'9–15m', chill:'中等', self:'需要授粉树', notes:'比美国板栗更抗栗疫病，5区主流选择。秋天栗壳裂开自然落地，直接煮食或炒栗子。', tip:'需2棵不同品种互相授粉。Abundant、AU Homestead为推荐品种。', wiki:'Castanea mollissima', cat:'亚洲水果' },
+  // ── 温带水果 Temperate Fruits ──────────────────────────────────────────────
+  { name:'苹果', eng:'Apple', emoji:'🍎', zone:'3–8', yrs:'2–5年', ht:'1.5–6m（矮砧）', chill:'高需求', self:'需要授粉树', notes:'5区最主流果树！需2个不同品种互授粉。矮化砧木（M9/M26）方便管理采摘。', tip:'推荐品种：Honeycrisp、Fuji、Gala、SweeTango。矮砧苹果3年可结果。', wiki:'Apple', cat:'温带水果' },
+  { name:'梨', eng:'Pear', emoji:'🍐', zone:'4–8', yrs:'3–5年', ht:'4–8m', chill:'高需求', self:'需要授粉树', notes:'亚洲梨（砂梨系）脆甜多汁，西洋梨（巴特利特）软熟香甜。5区两种都可种。', tip:'推荐亚洲梨：Hosui、Shinko、Korean Giant（超大果）。需2棵授粉。', wiki:'Pear', cat:'温带水果' },
+  { name:'桃子', eng:'Peach', emoji:'🍑', zone:'5–8', yrs:'2–4年', ht:'3–5m', chill:'高需求', self:'自花授粉', notes:'5区可种！选低需冷量或耐寒品种。需全日照、排水良好土壤。晚霜是最大风险。', tip:'推荐品种：Reliance（极耐寒）、Contender、Redhaven。自花结果无需配对。', wiki:'Peach', cat:'温带水果' },
+  { name:'樱桃', eng:'Cherry', emoji:'🍒', zone:'4–7', yrs:'4–7年', ht:'5–10m', chill:'高需求', self:'甜樱需授粉', notes:'甜樱桃（大樱桃）需2棵授粉，酸樱桃自花授粉更易种。酸樱桃做果酱、派更合适。', tip:'酸樱桃推荐：Montmorency（最经典）。甜樱桃推荐：Stella（罕见的甜樱自花品种）。', wiki:'Cherry', cat:'温带水果' },
+  { name:'李子', eng:'Plum', emoji:'🟣', zone:'4–9', yrs:'3–5年', ht:'3–6m', chill:'中等', self:'品种不同', notes:'欧洲李（Stanley等）自花授粉，亚洲李需配对。亚洲李更大更甜，欧洲李做西梅干。', tip:'亚洲李推荐：Shiro（黄李，超产）、Methley（自花红李）。', wiki:'Plum', cat:'温带水果' },
+  { name:'杏', eng:'Apricot', emoji:'🟠', zone:'4–8', yrs:'3–5年', ht:'4–8m', chill:'高需求', self:'多数自花', notes:'花期早是5区最大挑战——晚霜常冻花。选晚花品种或种在避风处。果实香甜无比。', tip:'推荐品种：Goldcot、Harcot（晚花耐霜）、Moorpark。早春覆布保护花蕾。', wiki:'Apricot', cat:'温带水果' },
+  { name:'欧洲甜樱桃', eng:'Sweet Cherry', emoji:'🍒', zone:'5–7', yrs:'4–6年', ht:'5–9m（矮砧）', chill:'高需求', self:'大多需授粉', notes:'大个甜樱桃，新鲜鲜食最佳。矮砧品种适合家庭院子。成熟季需防鸟，快速采摘。', tip:'矮砧推荐：Lapins + Sweetheart搭配互授粉。鸟网不可少！', wiki:'Cherry', cat:'温带水果' },
+  // ── 浆果灌木 Berries & Shrubs ──────────────────────────────────────────────
+  { name:'蓝莓', eng:'Blueberry', emoji:'🫐', zone:'4–7', yrs:'2–3年', ht:'1–2m', chill:'高需求', self:'需要2品种', notes:'5区最佳浆果！需酸性土壤（pH 4.5–5.5）。添加硫磺降pH。2–3棵搭配产量大增。', tip:'高丛蓝莓推荐：Bluecrop + Blueray搭配。覆松针保湿保酸。', wiki:'Blueberry', cat:'浆果灌木' },
+  { name:'树莓', eng:'Raspberry', emoji:'🔴', zone:'3–9', yrs:'1–2年', ht:'1–2m', chill:'中等', self:'自花授粉', notes:'极易种植，一次种终身享用！蔓根蔓延需用边界控制。夏果型+秋果型搭配可从6月采到霜冻。', tip:'推荐：Heritage（秋果）+ Caroline（高产夏果）。剪去老枝留新枝。', wiki:'Raspberry', cat:'浆果灌木' },
+  { name:'黑莓', eng:'Blackberry', emoji:'⚫', zone:'5–9', yrs:'2年', ht:'1–3m', chill:'低需求', self:'自花授粉', notes:'产量惊人，几乎不需要打理。无刺品种方便采摘。果实比树莓更大，酸甜浓郁。', tip:'推荐无刺品种：Triple Crown、Chester、Arapaho。立支架引导生长。', wiki:'Blackberry', cat:'浆果灌木' },
+  { name:'醋栗/茶藨子', eng:'Currant', emoji:'🔴', zone:'3–7', yrs:'2–3年', ht:'1–1.5m', chill:'高需求', self:'自花授粉', notes:'5区极耐寒灌木！红醋栗酸甜，黑醋栗香气浓郁（卡西斯汁原料），白醋栗最甜。', tip:'黑醋栗推荐：Ben Sarek（矮生高产）。红醋栗推荐：Red Lake。', wiki:'Currant', cat:'浆果灌木' },
+  { name:'鹅莓/醋栗', eng:'Gooseberry', emoji:'🟢', zone:'3–8', yrs:'2–3年', ht:'1–1.5m', chill:'高需求', self:'自花授粉', notes:'绿色或红色浆果，欧美常见自制馅饼原料，中国不常见但极易种植。耐半阴，适合树下。', tip:'推荐品种：Invicta（绿色高产）、Hinnonmaki Red（红色甜）。', wiki:'Gooseberry', cat:'浆果灌木' },
+  { name:'接骨木', eng:'Elderberry', emoji:'🫐', zone:'3–9', yrs:'2–3年', ht:'2–4m', chill:'中等', self:'需要2棵', notes:'超级食物！紫黑色小浆果富含花青素。花朵做接骨木花茶、饮料，果实做糖浆防感冒。极耐粗放。', tip:'推荐品种：Bob Gordon + Nova搭配。美洲接骨木（Sambucus canadensis）本地原生。', wiki:'Sambucus', cat:'浆果灌木' },
+  { name:'榛子', eng:'Hazelnut', emoji:'🟤', zone:'4–9', yrs:'3–5年', ht:'3–5m', chill:'中等', self:'需要2棵', notes:'坚果类，秋天采收外壳变棕的榛子。花榛子酱原料！生长强健，可修剪成篱笆状。', tip:'推荐：Winkler + Theta搭配授粉。多棵丛植更美观也更高产。', wiki:'Hazel', cat:'浆果灌木' },
+  { name:'核桃', eng:'Black Walnut', emoji:'🟤', zone:'4–9', yrs:'4–7年', ht:'15–30m', chill:'中等', self:'自花授粉', notes:'美国黑核桃风味浓郁。⚠️ 根系分泌毒素（胡桃醌），附近3–5米内很多植物无法生长。需大空间。', tip:'英国核桃（Juglans regia）更易剥壳，推荐Carpathian品种适合5区。', wiki:'Walnut', cat:'浆果灌木' },
+  { name:'草莓（多年生）', eng:'Perennial Strawberry', emoji:'🍓', zone:'3–10', yrs:'第一年', ht:'0.2m', chill:'中等', self:'自花授粉', notes:'最快结果的"果树"！高床种植或挂篮效果最佳。走茎繁殖自动扩张。覆草越冬保护根系。', tip:'推荐品种：Honeoye（早熟）、Jewel（高产）、Seascape（四季莓持续结果）。', wiki:'Strawberry', cat:'浆果灌木' },
+  // ── 藤本水果 Vines ──────────────────────────────────────────────────────────
+  { name:'葡萄', eng:'Grape', emoji:'🍇', zone:'4–9', yrs:'3年', ht:'藤本6m+', chill:'中等', self:'自花授粉', notes:'5区有专属品种。需强健支架或拱架。每年冬剪是关键。鲜食、果汁、酿酒均可。', tip:'推荐美国品种：Concord（经典紫色果汁葡萄）、Niagara（白）、Marquette（酿酒）。', wiki:'Grape', cat:'藤本水果' },
+  { name:'五味子', eng:'Magnolia Vine', emoji:'🔴', zone:'3–8', yrs:'3–5年', ht:'藤本9m', chill:'中等', self:'自花授粉', notes:'中药五味子原植物！红色浆果串串，酸甜苦辣咸五味俱全。药食两用，泡酒泡茶均可。耐半阴。', tip:'需坚固支架。果实秋天熟后用于泡酒或制干品。花也有淡雅香气。', wiki:'Schisandra chinensis', cat:'藤本水果' },
+  { name:'软枣猕猴桃', eng:'Baby Kiwi', emoji:'🥝', zone:'3–8', yrs:'3–4年', ht:'藤本12m', chill:'中等', self:'需要雄株', notes:'葡萄大小的无毛猕猴桃，甜度极高！比猕猴桃更耐寒，1棵雄株配5–6棵雌株。', tip:'推荐品种：Ananasaja（高产）、Meader（极耐寒）。需非常坚固的支架。', wiki:'Actinidia arguta', cat:'藤本水果' },
+];
+
+const FT_CATS = ['全部', '亚洲水果', '温带水果', '浆果灌木', '藤本水果'];
+let ftActiveCat = '全部';
+
+function renderFruitTrees() {
+  // Category filter buttons
+  const btnDiv = document.getElementById('ftCatBtns');
+  btnDiv.innerHTML = FT_CATS.map(c =>
+    `<button class="ft-cat-btn${c===ftActiveCat?' active':''}" onclick="ftFilter('${c}')">${c}</button>`
+  ).join('');
+
+  const grid = document.getElementById('ftGrid');
+  const cats = ftActiveCat==='全部' ? [...new Set(FRUIT_TREES.map(t=>t.cat))] : [ftActiveCat];
+
+  grid.innerHTML = cats.map(cat => {
+    const trees = FRUIT_TREES.filter(t => t.cat===cat);
+    return `
+      <div class="ft-section-title">${catEmoji(cat)} ${cat}</div>
+      <div class="ft-grid">
+        ${trees.map(t => `
+          <div class="ft-card">
+            <div class="ft-card-top">
+              <div class="ft-emoji">${t.emoji}</div>
+              <div class="ft-names">
+                <div class="ft-name">${t.name}</div>
+                <div class="ft-eng">${t.eng}</div>
+              </div>
+              <img class="ft-photo" data-wiki="${t.wiki}" alt="${t.name}"
+                   onerror="this.style.display='none'"
+                   onload="this.style.display='block';this.previousElementSibling.previousElementSibling.style.display='none'">
+            </div>
+            <div class="ft-badges">
+              <span class="ft-badge zone">🌍 ${t.zone}区</span>
+              <span class="ft-badge years">⏳ ${t.yrs}结果</span>
+              <span class="ft-badge height">📏 ${t.ht}</span>
+              <span class="ft-badge chill">❄️ ${t.chill}</span>
+              <span class="ft-badge self">${t.self==='自花授粉'?'✅ 自花':'🔁 '+t.self}</span>
+            </div>
+            <div class="ft-note">${t.notes}</div>
+            <div class="ft-tip">💡 ${t.tip}</div>
+          </div>`).join('')}
+      </div>`;
+  }).join('');
+
+  // Load Wikipedia photos for fruit trees
+  grid.querySelectorAll('img[data-wiki]').forEach(img => {
+    const title = encodeURIComponent(img.dataset.wiki.replace(/[()]/g,'').trim());
+    fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + title)
+      .then(r=>r.json())
+      .then(d=>{ if(d.thumbnail?.source){ img.src=d.thumbnail.source; } })
+      .catch(()=>{});
+  });
+}
+
+function ftFilter(cat) {
+  ftActiveCat = cat;
+  renderFruitTrees();
+}
+
+function catEmoji(cat) {
+  return {亚洲水果:'🌏', 温带水果:'🍎', 浆果灌木:'🫐', 藤本水果:'🍇'}[cat] || '🌱';
+}
 
 </script>
 
