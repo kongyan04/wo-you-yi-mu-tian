@@ -349,8 +349,14 @@ nav{background:#fff;border-bottom:2px solid #e2e8f0;display:flex;overflow-x:auto
       <div><label>植物名称 *</label><input id="pName" placeholder="例如：罗勒、玫瑰、黄瓜"></div>
       <div class="fg-row">
         <div><label>品种</label><input id="pVariety" placeholder="例如：热那亚、林肯先生"></div>
-        <div><label>位置</label><input id="pLocation" placeholder="例如：A号高床、3号花盆"></div>
+        <div><label>种植批次</label>
+          <input id="pSeasonLabel" placeholder="例如：春播、秋播、第二批" list="seasonList">
+          <datalist id="seasonList">
+            <option value="春播"><option value="秋播"><option value="第一批"><option value="第二批"><option value="第三批">
+          </datalist>
+        </div>
       </div>
+      <div><label>位置</label><input id="pLocation" placeholder="例如：A号高床、3号花盆"></div>
       <div class="fg-row">
         <div><label>播种/种植日期</label><input id="pSeedDate" type="date"></div>
         <div><label>预计发芽日期</label><input id="pGermDate" type="date"></div>
@@ -555,7 +561,7 @@ function saveSeed() {
 function openAddPlanting() {
   editingPlantingId = null;
   document.getElementById('plantingModalTitle').textContent = '🌿 添加种植记录';
-  ['pName','pVariety','pLocation','pNotes'].forEach(id => document.getElementById(id).value = '');
+  ['pName','pVariety','pSeasonLabel','pLocation','pNotes'].forEach(id => document.getElementById(id).value = '');
   ['pSeedDate','pGermDate','pTransDate','pHarvestDate'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('pStatus').value = 'seeded';
   openModal('addPlantingModal');
@@ -570,6 +576,7 @@ function savePlanting() {
     memberId: state.currentMember,
     name,
     variety:     document.getElementById('pVariety').value.trim(),
+    seasonLabel: document.getElementById('pSeasonLabel').value.trim(),
     location:    document.getElementById('pLocation').value.trim(),
     seedDate:    document.getElementById('pSeedDate').value,
     germDate:    document.getElementById('pGermDate').value,
@@ -594,6 +601,7 @@ function editPlanting(id) {
   document.getElementById('plantingModalTitle').textContent = '✏️ 编辑种植记录';
   document.getElementById('pName').value        = p.name;
   document.getElementById('pVariety').value     = p.variety || '';
+  document.getElementById('pSeasonLabel').value = p.seasonLabel || '';
   document.getElementById('pLocation').value    = p.location || '';
   document.getElementById('pSeedDate').value    = p.seedDate || '';
   document.getElementById('pGermDate').value    = p.germDate || '';
@@ -798,46 +806,57 @@ function renderMonthlyAnnouncement() {
       <span><span style="display:inline-block;width:20px;height:6px;border-radius:3px;background:#9ae6b4;margin-right:3px;vertical-align:middle"></span>生长期</span>
     </div>`;
 
-    const rows = relevant.map(p => {
-      // Determine growing span: first date → last date (within this year)
+    // Group by name+variety so multiple seasons appear together
+    const groups = [];
+    const groupMap = {};
+    relevant.forEach(p => {
+      const key = p.name + '||' + (p.variety || '');
+      if (!groupMap[key]) { groupMap[key] = []; groups.push(groupMap[key]); }
+      groupMap[key].push(p);
+    });
+
+    function makeSeasonCells(p) {
       const allDates = [p.seedDate, p.germDate, p.transDate, p.harvestDate]
         .filter(d => d && d.startsWith(yr)).sort();
       const firstMo = allDates.length ? parseInt(allDates[0].slice(5,7)) - 1 : -1;
       const lastMo  = allDates.length ? parseInt(allDates[allDates.length-1].slice(5,7)) - 1 : -1;
-
-      const cells = MONTHS_S.map((_, mi) => {
+      return MONTHS_S.map((_, mi) => {
         const pfx = `${yr}-${String(mi+1).padStart(2,'0')}-`;
         const acts = [];
         if (p.seedDate    && p.seedDate.startsWith(pfx))    acts.push({c:'#fbd38d', label:'播种'});
         if (p.germDate    && p.germDate.startsWith(pfx))    acts.push({c:'#68d391', label:'发芽'});
         if (p.transDate   && p.transDate.startsWith(pfx))   acts.push({c:'#63b3ed', label:'移植'});
         if (p.harvestDate && p.harvestDate.startsWith(pfx)) acts.push({c:'#fc8181', label:'收获'});
-
-        const isNow    = mi === nowMo && yr === nowYr;
-        const inSpan   = mi > firstMo && mi < lastMo; // between events, no specific dot
-        const cellBg   = isNow ? 'background:#f0fff4;' : '';
-
+        const isNow  = mi === nowMo && yr === nowYr;
+        const inSpan = mi > firstMo && mi < lastMo;
+        const cellBg = isNow ? 'background:#f0fff4;' : '';
         let inner = '';
         if (acts.length) {
-          // specific event dot(s)
           inner = acts.map(a =>
             `<span title="${a.label}" style="display:block;width:10px;height:10px;border-radius:3px;background:${a.c};margin:1px auto"></span>`
           ).join('');
         } else if (inSpan) {
-          // growing period bar
           inner = `<span style="display:block;height:5px;background:#9ae6b4;border-radius:3px;margin:6px 2px"></span>`;
         }
         return `<td style="text-align:center;padding:3px 1px;${cellBg}border-radius:4px">${inner}</td>`;
       }).join('');
+    }
 
-      const img = `<img data-plant="${p.name}" alt="${p.name}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;display:none;vertical-align:middle;margin-right:4px" onload="this.style.display='inline-block'">`;
-      return `<tr style="border-bottom:1px solid #f0fff4">
-        <td style="padding:4px 8px;white-space:nowrap;font-size:0.8rem">
-          ${img}<strong>${p.name}</strong>
-          ${p.variety?`<br><span style="font-size:0.7rem;color:#a0aec0;margin-left:28px">${p.variety}</span>`:''}
-        </td>
-        ${cells}
-      </tr>`;
+    const rows = groups.map(seasons => {
+      const p0  = seasons[0];
+      const img = `<img data-plant="${p0.name}" alt="${p0.name}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;display:none;vertical-align:middle;margin-right:4px" onload="this.style.display='inline-block'">`;
+      const nameCell = `${img}<strong>${p0.name}</strong>${p0.variety?`<span style="font-weight:400;color:#718096;margin-left:4px;font-size:0.75rem">${p0.variety}</span>`:''}`;
+
+      return seasons.map((p, si) => {
+        const seasonBadge = p.seasonLabel
+          ? `<span style="font-size:0.68rem;background:#fefcbf;color:#744210;border-radius:4px;padding:1px 6px;margin-left:4px">${p.seasonLabel}</span>` : '';
+        const firstCol = si === 0
+          ? `<td style="padding:4px 8px;white-space:nowrap;font-size:0.8rem" rowspan="${seasons.length}">${nameCell}</td>`
+          : '';
+        const seasonCol = `<td style="padding:4px 6px;white-space:nowrap;font-size:0.75rem;color:#718096">${seasonBadge || (si===0&&seasons.length===1?'':'&nbsp;')}</td>`;
+        const rowBg = si > 0 ? 'background:#fafffe;' : '';
+        return `<tr style="border-bottom:1px solid #f0fff4;${rowBg}">${firstCol}${seasonCol}${makeSeasonCells(p)}</tr>`;
+      }).join('');
     }).join('');
 
     const headerCells = MONTHS_S.map((m, mi) => {
@@ -850,6 +869,7 @@ function renderMonthlyAnnouncement() {
         <table style="width:100%;border-collapse:collapse;min-width:600px">
           <thead><tr>
             <th style="text-align:left;padding:5px 8px;font-size:0.72rem;font-weight:700;color:#718096;background:#f9fdf9;min-width:100px">植物</th>
+            <th style="padding:5px 4px;font-size:0.72rem;font-weight:700;color:#718096;background:#f9fdf9;min-width:40px">批次</th>
             ${headerCells}
           </tr></thead>
           <tbody>${rows}</tbody>
@@ -1062,6 +1082,7 @@ function renderPlantings() {
         <div class="pl-icon">${sm.icon}</div>
         <div class="pl-info">
           <div class="pl-name">${p.name}${p.variety?` <span style="font-weight:400;color:#718096">${p.variety}</span>`:''}
+            ${p.seasonLabel?`<span style="font-size:0.68rem;background:#fefcbf;color:#744210;border-radius:5px;padding:1px 6px;margin-left:4px">${p.seasonLabel}</span>`:''}
             ${zoneBadge}${ownerLabel}
           </div>
           <div class="pl-sub">${p.location ? '📍 '+p.location+' · ' : ''}${sm.label}</div>
@@ -1331,6 +1352,15 @@ const ZONE5_DEFAULTS = [
   ['欧芹','意大利平叶欧芹','🌿',    '2026-03-01','2026-03-25','2026-05-15','2026-07-15', '发芽缓慢（3-4周）。二年生植物，可能自播繁殖。'],
   ['向日葵','巨人向日葵','🌻',      '2026-05-15','2026-05-22','',           '2026-08-15', '最后霜冻后直播。简单易种，对传粉昆虫有益。'],
   ['万寿菊','法国矮生万寿菊','🌼',  '2026-04-12','2026-04-22','2026-05-15','2026-06-15', '种在蔬菜旁可驱虫。摘除残花促进持续开花。'],
+  // ── 秋播 / 第二批 ────────────────────────────────────────────────────────────
+  ['菠菜','布卢姆斯戴尔','🌿',      '2026-08-15','2026-08-25','',           '2026-10-05', '秋播菠菜耐寒，霜冻前抓紧收获。', '秋播'],
+  ['生菜','黄油生菜','🥗',          '2026-08-01','2026-08-12','',           '2026-09-20', '夏末播种，秋季收获，避开夏季高温抽薹。', '秋播'],
+  ['羽衣甘蓝','恐龙甘蓝','🥬',      '2026-07-15','2026-07-25','',           '2026-10-25', '秋播甘蓝经霜后更甜。可持续采收至深秋。', '秋播'],
+  ['萝卜','樱桃萝卜','🔴',          '2026-08-20','2026-08-25','',           '2026-09-18', '秋播萝卜生长迅速，凉爽天气口感更佳。', '秋播'],
+  ['胡萝卜','南特胡萝卜','🥕',      '2026-07-01','2026-07-15','',           '2026-09-25', '秋播胡萝卜经轻霜后更甜。直播深松土壤。', '秋播'],
+  ['甜菜根','底特律深红','❤️',      '2026-07-01','2026-07-12','',           '2026-09-15', '秋播甜菜根，凉爽天气品质更佳。', '秋播'],
+  ['豌豆','甜脆豌豆','🫛',          '2026-08-01','2026-08-14','',           '2026-10-01', '秋播豌豆需在首次霜冻前约60天播种。', '秋播'],
+  ['四季豆','蓝湖矮生豆','🫘',      '2026-06-15','2026-06-23','',           '2026-08-10', '第二批接续播种，延长收获期至夏末。', '第二批'],
 ];
 
 function loadZone5Defaults() {
@@ -1343,10 +1373,11 @@ function loadZone5Defaults() {
   // Remove stale defaults and reload fresh (ensures dates are always correct)
   state.plantings = state.plantings.filter(p => !p.isDefault);
 
-  ZONE5_DEFAULTS.forEach(([name, variety, , seedDate, germDate, transDate, harvestDate, notes]) => {
+  ZONE5_DEFAULTS.forEach(([name, variety, , seedDate, germDate, transDate, harvestDate, notes, seasonLabel]) => {
     state.plantings.push({
       id: uid(), memberId: CLUB_ID,
       name, variety,
+      seasonLabel: seasonLabel || '',
       seedDate,
       germDate:    germDate    || '',
       transDate:   transDate   || '',
