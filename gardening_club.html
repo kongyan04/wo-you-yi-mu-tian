@@ -730,60 +730,139 @@ function renderDashboard() {
   setTimeout(loadPlantThumbs, 0);
 }
 
-// ── Monthly Announcement ──────────────────────────────────────────────────────
+// ── Monthly / Yearly Announcement ────────────────────────────────────────────
 let announceYear  = new Date().getFullYear();
 let announceMonth = new Date().getMonth(); // 0-indexed
+let announceView  = 'year'; // 'month' | 'year'
 
 function announceNav(dir) {
-  announceMonth += dir;
-  if (announceMonth < 0)  { announceMonth = 11; announceYear--; }
-  if (announceMonth > 11) { announceMonth = 0;  announceYear++; }
+  if (announceView === 'year') {
+    announceYear += dir;
+  } else {
+    announceMonth += dir;
+    if (announceMonth < 0)  { announceMonth = 11; announceYear--; }
+    if (announceMonth > 11) { announceMonth = 0;  announceYear++; }
+  }
+  renderMonthlyAnnouncement();
+  setTimeout(loadPlantThumbs, 0);
+}
+
+function setAnnounceView(v) {
+  announceView = v;
+  // Reset month to current when switching back to month view
+  if (v === 'month') { announceMonth = new Date().getMonth(); announceYear = new Date().getFullYear(); }
   renderMonthlyAnnouncement();
   setTimeout(loadPlantThumbs, 0);
 }
 
 function renderMonthlyAnnouncement() {
-  const yr  = announceYear;
-  const mo  = announceMonth;
-  const MONTHS = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
-  const monthStr = String(mo + 1).padStart(2,'0');
-  const prefix   = `${yr}-${monthStr}-`;
-  const isCurrentMonth = (yr === new Date().getFullYear() && mo === new Date().getMonth());
+  const MONTHS     = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
+  const MONTHS_S   = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+  const nowYr = new Date().getFullYear(), nowMo = new Date().getMonth();
+  const yr = announceYear, mo = announceMonth;
+
+  // ── title bar ──
+  const navLabel = announceView === 'year'
+    ? `🗓️ ${yr} 年 — 全年种植指南`
+    : `📢 ${MONTHS[mo]} ${yr} — 园艺指南${yr===nowYr&&mo===nowMo?' <span style="font-size:0.7rem;background:#2d6a4f;color:#fff;border-radius:4px;padding:1px 6px;vertical-align:middle">本月</span>':''}`;
 
   document.getElementById('dashAnnounceTitle').innerHTML =
-    `<span style="display:flex;align-items:center;gap:6px">
+    `<span style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
        <button onclick="announceNav(-1)" style="background:#d8f3dc;border:none;border-radius:6px;padding:3px 10px;cursor:pointer;font-size:1rem;font-weight:700;color:#1b4332">‹</button>
-       📢 ${MONTHS[mo]} ${yr} — 园艺指南${isCurrentMonth ? ' <span style="font-size:0.7rem;background:#2d6a4f;color:#fff;border-radius:4px;padding:1px 6px;vertical-align:middle">本月</span>' : ''}
+       ${navLabel}
        <button onclick="announceNav(1)" style="background:#d8f3dc;border:none;border-radius:6px;padding:3px 10px;cursor:pointer;font-size:1rem;font-weight:700;color:#1b4332">›</button>
      </span>
-     <button class="btn btn-soft btn-sm" onclick="showTab('calendar')">完整日历</button>`;
+     <span style="display:flex;gap:6px;align-items:center">
+       <button onclick="setAnnounceView('month')" style="border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:0.76rem;font-weight:700;${announceView==='month'?'background:#2d6a4f;color:#fff':'background:#d8f3dc;color:#1b4332'}">月视图</button>
+       <button onclick="setAnnounceView('year')"  style="border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:0.76rem;font-weight:700;${announceView==='year' ?'background:#2d6a4f;color:#fff':'background:#d8f3dc;color:#1b4332'}">全年视图</button>
+       <button class="btn btn-soft btn-sm" onclick="showTab('calendar')">日历</button>
+     </span>`;
 
-  // Bucket plantings by activity type within this month
+  // ── YEAR VIEW ──────────────────────────────────────────────────────────────
+  if (announceView === 'year') {
+    const relevant = state.plantings.filter(p =>
+      [p.seedDate, p.germDate, p.transDate, p.harvestDate].some(d => d && d.startsWith(yr))
+    );
+    if (!relevant.length) {
+      document.getElementById('dashAnnounce').innerHTML =
+        `<div class="empty"><div class="empty-icon">🌿</div><p>${yr}年暂无种植记录。</p></div>`;
+      return;
+    }
+
+    // Legend row
+    const legend = `<div style="display:flex;gap:12px;flex-wrap:wrap;font-size:0.75rem;color:#718096;margin-bottom:10px">
+      <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#fbd38d;margin-right:3px;vertical-align:middle"></span>播种</span>
+      <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#68d391;margin-right:3px;vertical-align:middle"></span>发芽</span>
+      <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#63b3ed;margin-right:3px;vertical-align:middle"></span>移植</span>
+      <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#fc8181;margin-right:3px;vertical-align:middle"></span>收获</span>
+    </div>`;
+
+    const rows = relevant.map(p => {
+      const cells = MONTHS_S.map((_, mi) => {
+        const pfx = `${yr}-${String(mi+1).padStart(2,'0')}-`;
+        const acts = [];
+        if (p.seedDate    && p.seedDate.startsWith(pfx))    acts.push('#fbd38d');
+        if (p.germDate    && p.germDate.startsWith(pfx))    acts.push('#68d391');
+        if (p.transDate   && p.transDate.startsWith(pfx))   acts.push('#63b3ed');
+        if (p.harvestDate && p.harvestDate.startsWith(pfx)) acts.push('#fc8181');
+        const isNow = mi === nowMo && yr === nowYr;
+        const bg = isNow ? 'background:#f0fff4;' : '';
+        const dots = acts.map(c =>
+          `<span style="display:block;width:10px;height:10px;border-radius:3px;background:${c};margin:1px auto"></span>`
+        ).join('');
+        return `<td style="text-align:center;padding:3px 1px;${bg}border-radius:4px">${dots}</td>`;
+      }).join('');
+
+      const img = `<img data-plant="${p.name}" alt="${p.name}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;display:none;vertical-align:middle;margin-right:4px" onload="this.style.display='inline-block'">`;
+      return `<tr style="border-bottom:1px solid #f0fff4">
+        <td style="padding:4px 8px;white-space:nowrap;font-size:0.8rem">
+          ${img}<strong>${p.name}</strong>
+          ${p.variety?`<br><span style="font-size:0.7rem;color:#a0aec0;margin-left:28px">${p.variety}</span>`:''}
+        </td>
+        ${cells}
+      </tr>`;
+    }).join('');
+
+    const headerCells = MONTHS_S.map((m, mi) => {
+      const isNow = mi === nowMo && yr === nowYr;
+      return `<th style="text-align:center;padding:5px 2px;font-size:0.72rem;font-weight:700;color:${isNow?'#2d6a4f':'#718096'};background:${isNow?'#f0fff4':'#f9fdf9'};white-space:nowrap">${m}</th>`;
+    }).join('');
+
+    document.getElementById('dashAnnounce').innerHTML = legend +
+      `<div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;min-width:600px">
+          <thead><tr>
+            <th style="text-align:left;padding:5px 8px;font-size:0.72rem;font-weight:700;color:#718096;background:#f9fdf9;min-width:100px">植物</th>
+            ${headerCells}
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>`;
+    return;
+  }
+
+  // ── MONTH VIEW ─────────────────────────────────────────────────────────────
+  const monthStr = String(mo + 1).padStart(2,'0');
+  const prefix   = `${yr}-${monthStr}-`;
   const buckets = {
-    seed:      { icon:'🌰', label:'室内播种 / 直播',  color:'#fbd38d', items:[] },
-    transplant:{ icon:'🪴', label:'移植至室外',       color:'#63b3ed', items:[] },
-    harvest:   { icon:'🥬', label:'收获 / 采集',      color:'#fc8181', items:[] },
-    germ:      { icon:'🌱', label:'预计发芽',          color:'#68d391', items:[] },
+    seed:      { icon:'🌰', label:'室内播种 / 直播', color:'#fbd38d', items:[] },
+    transplant:{ icon:'🪴', label:'移植至室外',      color:'#63b3ed', items:[] },
+    harvest:   { icon:'🥬', label:'收获 / 采集',     color:'#fc8181', items:[] },
+    germ:      { icon:'🌱', label:'预计发芽',         color:'#68d391', items:[] },
   };
-
   state.plantings.forEach(p => {
-    const tag = p.isDefault ? '(5区)' : `(${memberName(p.memberId)})`;
-    if (p.seedDate    && p.seedDate.startsWith(prefix))    buckets.seed.items.push({name:p.name, variety:p.variety, date:p.seedDate,    tag, isDefault:p.isDefault});
-    if (p.transDate   && p.transDate.startsWith(prefix))   buckets.transplant.items.push({name:p.name, variety:p.variety, date:p.transDate,   tag, isDefault:p.isDefault});
-    if (p.harvestDate && p.harvestDate.startsWith(prefix)) buckets.harvest.items.push({name:p.name, variety:p.variety, date:p.harvestDate, tag, isDefault:p.isDefault});
-    if (p.germDate    && p.germDate.startsWith(prefix))    buckets.germ.items.push({name:p.name, variety:p.variety, date:p.germDate,    tag, isDefault:p.isDefault});
+    if (p.seedDate    && p.seedDate.startsWith(prefix))    buckets.seed.items.push({name:p.name, variety:p.variety, date:p.seedDate,    isDefault:p.isDefault});
+    if (p.transDate   && p.transDate.startsWith(prefix))   buckets.transplant.items.push({name:p.name, variety:p.variety, date:p.transDate,   isDefault:p.isDefault});
+    if (p.harvestDate && p.harvestDate.startsWith(prefix)) buckets.harvest.items.push({name:p.name, variety:p.variety, date:p.harvestDate, isDefault:p.isDefault});
+    if (p.germDate    && p.germDate.startsWith(prefix))    buckets.germ.items.push({name:p.name, variety:p.variety, date:p.germDate,    isDefault:p.isDefault});
   });
-
   const totalItems = Object.values(buckets).reduce((s,b)=>s+b.items.length,0);
   if (!totalItems) {
     document.getElementById('dashAnnounce').innerHTML =
       `<div class="empty"><div class="empty-icon">🌿</div><p>${MONTHS[mo]} ${yr}年暂无种植活动。</p></div>`;
     return;
   }
-
-  // Sort each bucket by date
   Object.values(buckets).forEach(b => b.items.sort((a,c)=>a.date.localeCompare(c.date)));
-
   const cols = Object.entries(buckets).filter(([,b])=>b.items.length).map(([,b]) => `
     <div class="announce-col">
       <h4 style="color:${darken(b.color)}">${b.icon} ${b.label}</h4>
@@ -794,7 +873,6 @@ function renderMonthlyAnnouncement() {
           <span class="av">${fmtDate(it.date)}</span>
         </div>`).join('')}
     </div>`).join('');
-
   document.getElementById('dashAnnounce').innerHTML = `<div class="announce-grid">${cols}</div>`;
 }
 
