@@ -795,22 +795,39 @@ function renderMonthlyAnnouncement() {
       <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#68d391;margin-right:3px;vertical-align:middle"></span>发芽</span>
       <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#63b3ed;margin-right:3px;vertical-align:middle"></span>移植</span>
       <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:#fc8181;margin-right:3px;vertical-align:middle"></span>收获</span>
+      <span><span style="display:inline-block;width:20px;height:6px;border-radius:3px;background:#9ae6b4;margin-right:3px;vertical-align:middle"></span>生长期</span>
     </div>`;
 
     const rows = relevant.map(p => {
+      // Determine growing span: first date → last date (within this year)
+      const allDates = [p.seedDate, p.germDate, p.transDate, p.harvestDate]
+        .filter(d => d && d.startsWith(yr)).sort();
+      const firstMo = allDates.length ? parseInt(allDates[0].slice(5,7)) - 1 : -1;
+      const lastMo  = allDates.length ? parseInt(allDates[allDates.length-1].slice(5,7)) - 1 : -1;
+
       const cells = MONTHS_S.map((_, mi) => {
         const pfx = `${yr}-${String(mi+1).padStart(2,'0')}-`;
         const acts = [];
-        if (p.seedDate    && p.seedDate.startsWith(pfx))    acts.push('#fbd38d');
-        if (p.germDate    && p.germDate.startsWith(pfx))    acts.push('#68d391');
-        if (p.transDate   && p.transDate.startsWith(pfx))   acts.push('#63b3ed');
-        if (p.harvestDate && p.harvestDate.startsWith(pfx)) acts.push('#fc8181');
-        const isNow = mi === nowMo && yr === nowYr;
-        const bg = isNow ? 'background:#f0fff4;' : '';
-        const dots = acts.map(c =>
-          `<span style="display:block;width:10px;height:10px;border-radius:3px;background:${c};margin:1px auto"></span>`
-        ).join('');
-        return `<td style="text-align:center;padding:3px 1px;${bg}border-radius:4px">${dots}</td>`;
+        if (p.seedDate    && p.seedDate.startsWith(pfx))    acts.push({c:'#fbd38d', label:'播种'});
+        if (p.germDate    && p.germDate.startsWith(pfx))    acts.push({c:'#68d391', label:'发芽'});
+        if (p.transDate   && p.transDate.startsWith(pfx))   acts.push({c:'#63b3ed', label:'移植'});
+        if (p.harvestDate && p.harvestDate.startsWith(pfx)) acts.push({c:'#fc8181', label:'收获'});
+
+        const isNow    = mi === nowMo && yr === nowYr;
+        const inSpan   = mi > firstMo && mi < lastMo; // between events, no specific dot
+        const cellBg   = isNow ? 'background:#f0fff4;' : '';
+
+        let inner = '';
+        if (acts.length) {
+          // specific event dot(s)
+          inner = acts.map(a =>
+            `<span title="${a.label}" style="display:block;width:10px;height:10px;border-radius:3px;background:${a.c};margin:1px auto"></span>`
+          ).join('');
+        } else if (inSpan) {
+          // growing period bar
+          inner = `<span style="display:block;height:5px;background:#9ae6b4;border-radius:3px;margin:6px 2px"></span>`;
+        }
+        return `<td style="text-align:center;padding:3px 1px;${cellBg}border-radius:4px">${inner}</td>`;
       }).join('');
 
       const img = `<img data-plant="${p.name}" alt="${p.name}" style="width:24px;height:24px;border-radius:50%;object-fit:cover;display:none;vertical-align:middle;margin-right:4px" onload="this.style.display='inline-block'">`;
