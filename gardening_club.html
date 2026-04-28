@@ -1425,11 +1425,12 @@ rebuildMemberSel();
 // Reload Zone 5 defaults if: none exist, dates are from a different year,
 // or stored defaults are still in English (e.g. after switching to Chinese UI)
 const _z5year = ZONE5_DEFAULTS[0][3].slice(0, 4);
-const _existingDefault = state.plantings.find(p => p.isDefault && p.seedDate);
+const _existingDefaults = state.plantings.filter(p => p.isDefault);
 const _isChinese = name => name && /[\u4e00-\u9fff]/.test(name);
-const _needsReload = !_existingDefault
-  || !_existingDefault.seedDate.startsWith(_z5year)
-  || !_isChinese(_existingDefault.name);
+const _needsReload = _existingDefaults.length === 0
+  || !_existingDefaults[0].seedDate.startsWith(_z5year)
+  || !_isChinese(_existingDefaults[0].name)
+  || _existingDefaults.length !== ZONE5_DEFAULTS.length;  // reload if count changed
 if (_needsReload) {
   loadZone5Defaults();
 }
