@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我有一亩田</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI",Arial,sans-serif;background:#f5f7f0;color:#2d3748;min-height:100vh}
+
+/* ── Header ── */
+header{background:linear-gradient(135deg,#2d6a4f,#52b788);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+header h1{color:#fff;font-size:1.4rem;font-weight:800;display:flex;align-items:center;gap:8px}
+header p{color:#d8f3dc;font-size:0.8rem;margin-top:2px}
+.hdr-right{display:flex;align-items:center;gap:10px}
+.member-sel{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.4);color:#fff;border-radius:8px;padding:6px 12px;font-size:0.85rem;cursor:pointer;outline:none}
+.member-sel option{color:#2d3748;background:#fff}
+.hdr-btn{background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.4);border-radius:8px;padding:7px 14px;font-size:0.8rem;font-weight:600;cursor:pointer}
+.hdr-btn:hover{background:rgba(255,255,255,0.25)}
+
+/* ── Nav ── */
+nav{background:#fff;border-bottom:2px solid #e2e8f0;display:flex;overflow-x:auto;padding:0 20px}
+.nav-btn{background:none;border:none;padding:12px 18px;font-size:0.87rem;font-weight:600;color:#718096;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:all .15s}
+.nav-btn.active{color:#2d6a4f;border-bottom-color:#2d6a4f}
+.nav-btn:hover:not(.active){color:#2d3748;background:#f7faf7}
+
+/* ── Page ── */
+.page{max-width:1140px;margin:0 auto;padding:24px 16px}
+
+/* ── Cards / panels ── */
+.panel{background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,0.07);padding:20px;margin-bottom:20px}
+.panel-title{font-size:0.78rem;font-weight:800;color:#2d6a4f;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #d8f3dc;display:flex;align-items:center;justify-content:space-between}
+
+/* ── Stats ── */
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;margin-bottom:20px}
+.stat{background:#fff;border-radius:12px;padding:14px 16px;box-shadow:0 1px 5px rgba(0,0,0,0.06);text-align:center}
+.stat-n{font-size:1.8rem;font-weight:800;color:#2d6a4f;line-height:1}
+.stat-l{font-size:0.72rem;color:#a0aec0;margin-top:3px}
+
+/* ── Buttons ── */
+.btn{border:none;border-radius:8px;padding:7px 14px;font-size:0.82rem;font-weight:700;cursor:pointer;transition:all .15s}
+.btn-green{background:#2d6a4f;color:#fff}.btn-green:hover{background:#1b4332}
+.btn-soft{background:#d8f3dc;color:#1b4332}.btn-soft:hover{background:#b7e4c7}
+.btn-orange{background:#f6ad55;color:#7b341e}.btn-orange:hover{background:#ed8936}
+.btn-red{background:#fed7d7;color:#c53030}.btn-red:hover{background:#feb2b2}
+.btn-sm{padding:4px 10px;font-size:0.75rem}
+.btn-xs{padding:3px 8px;font-size:0.72rem;border-radius:6px}
+
+/* ── Grid layouts ── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+
+/* ── Seed card ── */
+.seed-card{background:#fff;border:1px solid #e8f5e9;border-radius:12px;padding:16px;box-shadow:0 1px 5px rgba(0,0,0,0.05);display:flex;flex-direction:column;gap:6px;transition:box-shadow .15s,transform .1s}
+.seed-card:hover{box-shadow:0 4px 14px rgba(45,106,79,.12);transform:translateY(-2px)}
+.seed-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.seed-name{font-weight:800;font-size:0.95rem;color:#1a202c}
+.seed-variety{font-size:0.78rem;color:#718096;margin-top:1px}
+.seed-type-badge{border-radius:6px;padding:3px 8px;font-size:0.7rem;font-weight:700;white-space:nowrap;flex-shrink:0}
+.seed-meta{display:flex;gap:10px;flex-wrap:wrap;font-size:0.78rem;color:#718096}
+.seed-meta span{display:flex;align-items:center;gap:3px}
+.seed-actions{display:flex;gap:6px;margin-top:4px}
+.qty-badge{background:#ebf8ff;color:#2b6cb0;border-radius:6px;padding:2px 8px;font-size:0.72rem;font-weight:700}
+.mine-badge{background:#fefcbf;color:#744210;border-radius:6px;padding:2px 8px;font-size:0.72rem;font-weight:700}
+
+/* ── Planting row ── */
+.planting-list{display:flex;flex-direction:column;gap:10px}
+.planting-row{background:#fff;border:1px solid #e8f5e9;border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.planting-row:hover{box-shadow:0 2px 8px rgba(45,106,79,.1)}
+.pl-icon{font-size:1.6rem;flex-shrink:0}
+.pl-info{flex:1;min-width:150px}
+.pl-name{font-weight:700;font-size:0.92rem;color:#1a202c}
+.pl-sub{font-size:0.76rem;color:#718096;margin-top:2px}
+.pl-dates{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.date-chip{background:#f0fff4;border:1px solid #c6f6d5;color:#276749;border-radius:6px;padding:2px 8px;font-size:0.72rem;font-weight:600;display:flex;align-items:center;gap:3px}
+.date-chip.warn{background:#fffaf0;border-color:#fbd38d;color:#c05621}
+.date-chip.done{background:#f0f4f8;border-color:#cbd5e0;color:#718096;text-decoration:line-through}
+.status-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+
+/* ── Status colors ── */
+.s-seeded{background:#fbd38d} .s-germinated{background:#68d391} .s-transplanted{background:#63b3ed}
+.s-growing{background:#9f7aea} .s-harvested{background:#fc8181} .s-done{background:#a0aec0}
+
+/* ── Members ── */
+.member-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.member-card{background:#fff;border:1px solid #e8f5e9;border-radius:12px;padding:16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,0.05);transition:box-shadow .15s}
+.member-card:hover{box-shadow:0 4px 12px rgba(45,106,79,.12)}
+.member-avatar{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:800;color:#fff;margin:0 auto 10px}
+.member-name{font-weight:700;font-size:0.92rem;color:#1a202c}
+.member-role{font-size:0.72rem;color:#a0aec0;margin-top:2px}
+.member-stats{display:flex;justify-content:center;gap:14px;margin-top:10px;font-size:0.75rem;color:#718096}
+.member-stat{text-align:center}
+.member-stat strong{display:block;font-size:1rem;color:#2d6a4f;font-weight:800}
+
+/* ── Calendar ── */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:12px}
+.cal-head{text-align:center;font-size:0.72rem;font-weight:700;color:#718096;padding:5px 2px}
+.cal-day{min-height:80px;background:#f9fdf9;border-radius:8px;padding:5px;border:1px solid #e8f5e9;position:relative;cursor:pointer;overflow:hidden}
+.cal-day:hover{background:#f0fff4;border-color:#9ae6b4}
+.cal-day.today{border-color:#2d6a4f;background:#f0fff4;box-shadow:inset 0 0 0 2px #2d6a4f}
+.cal-day.other-month{opacity:.3}
+.cal-dn{font-size:0.72rem;font-weight:800;color:#718096;margin-bottom:3px;line-height:1}
+.cal-day.today .cal-dn{color:#2d6a4f}
+.cal-event{font-size:0.62rem;border-radius:4px;padding:2px 4px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600;line-height:1.3}
+.cal-more{font-size:0.62rem;color:#2d6a4f;font-weight:700;background:#d8f3dc;border-radius:4px;padding:1px 5px;margin-top:1px;display:inline-block}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+.cal-nav-btn{background:#d8f3dc;color:#1b4332;border:none;border-radius:8px;padding:6px 14px;cursor:pointer;font-weight:700;font-size:1rem}
+.cal-nav-btn:hover{background:#b7e4c7}
+.cal-selects{display:flex;align-items:center;gap:8px}
+.cal-sel{background:#fff;border:1px solid #cbd5e0;border-radius:8px;padding:6px 10px;font-size:0.9rem;font-weight:700;color:#1a202c;cursor:pointer;outline:none}
+.cal-sel:focus{border-color:#2d6a4f;box-shadow:0 0 0 3px rgba(45,106,79,.12)}
+.cal-today-btn{background:#2d6a4f;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:0.78rem;font-weight:700;cursor:pointer}
+.cal-today-btn:hover{background:#1b4332}
+.cal-legend{display:flex;gap:10px;flex-wrap:wrap;font-size:0.75rem;color:#718096;margin-bottom:14px}
+.cal-legend span{display:flex;align-items:center;gap:4px}
+.cal-legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+/* ── Monthly announcement ── */
+.announce-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.announce-col{background:#f9fdf9;border-radius:10px;border:1px solid #e8f5e9;padding:14px}
+.announce-col h4{font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;display:flex;align-items:center;gap:5px}
+.announce-item{font-size:0.82rem;padding:4px 0;border-bottom:1px solid #f0fff4;display:flex;align-items:center;gap:8px;color:#2d3748}
+.announce-item:last-child{border-bottom:none}
+.plant-thumb{width:32px;height:32px;border-radius:50%;object-fit:cover;flex-shrink:0;background:#e8f5e9;display:none}
+.announce-item .av{font-size:0.72rem;color:#718096;margin-left:auto;white-space:nowrap}
+
+/* ── Section filter ── */
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.filter-btn{background:#fff;border:1px solid #cbd5e0;color:#4a5568;border-radius:20px;padding:5px 14px;font-size:0.78rem;cursor:pointer;transition:all .1s}
+.filter-btn.active{background:#2d6a4f;color:#fff;border-color:#2d6a4f}
+
+/* ── Modal ── */
+.backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:100;display:none;align-items:center;justify-content:center;padding:16px}
+.backdrop.open{display:flex}
+.modal{background:#fff;border-radius:16px;padding:28px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.2)}
+.modal h2{font-size:1.1rem;font-weight:800;color:#1a202c;margin-bottom:20px}
+.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;font-size:1.2rem;cursor:pointer;color:#a0aec0}
+.modal-close:hover{color:#2d3748}
+.fg{display:flex;flex-direction:column;gap:14px;margin-bottom:20px}
+.fg label{font-size:0.78rem;font-weight:700;color:#4a5568;margin-bottom:4px;display:block}
+.fg input,.fg select,.fg textarea{width:100%;border:1px solid #cbd5e0;border-radius:8px;padding:9px 12px;font-size:0.88rem;outline:none;font-family:inherit;color:#2d3748;transition:border .15s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:#2d6a4f;box-shadow:0 0 0 3px rgba(45,106,79,.12)}
+.fg textarea{resize:vertical;min-height:70px}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end}
+
+/* ── Empty state ── */
+.empty{text-align:center;padding:48px 20px;color:#a0aec0}
+.empty-icon{font-size:3rem;margin-bottom:10px}
+.empty p{font-size:0.88rem}
+
+/* ── Tab hidden ── */
+.tab-pane{display:none}.tab-pane.active{display:block}
+
+/* ── Toast ── */
+.toast{position:fixed;bottom:24px;right:24px;background:#1b4332;color:#fff;border-radius:10px;padding:12px 20px;font-size:0.85rem;font-weight:600;z-index:200;opacity:0;transform:translateY(10px);transition:all .25s;pointer-events:none}
+.toast.show{opacity:1;transform:translateY(0)}
+
+/* ── Responsive ── */
+@media(max-width:640px){.grid2{grid-template-columns:1fr}.fg-row{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>我有一亩田 🧑‍🌾</h1>
+    <p>种子 · 植物 · 交换 · 日程</p>
+  </div>
+  <div class="hdr-right">
+    <select class="member-sel" id="currentMemberSel" onchange="setCurrentMember(this.value)">
+      <option value="">— 选择您的姓名 —</option>
+    </select>
+    <button class="hdr-btn" onclick="openModal('memberModal')">+ 加入 / 成员</button>
+  </div>
+</header>
+
+<nav>
+  <button class="nav-btn active" onclick="showTab('dashboard')">🏡 主页</button>
+  <button class="nav-btn" onclick="showTab('seeds')">🌰 种子交换</button>
+  <button class="nav-btn" onclick="showTab('plantings')">🌿 我的花园</button>
+  <button class="nav-btn" onclick="showTab('calendar')">📅 日历</button>
+  <button class="nav-btn" onclick="showTab('members')">👥 成员</button>
+</nav>
+
+<!-- ═══════════════════ DASHBOARD ═══════════════════ -->
+<div class="tab-pane active" id="tab-dashboard">
+  <div class="page">
+    <div class="stats" id="dashStats"></div>
+
+    <!-- Monthly Announcement -->
+    <div class="panel" id="dashAnnouncePanel">
+      <div class="panel-title" id="dashAnnounceTitle">📢 本月园艺活动
+        <button class="btn btn-soft btn-sm" onclick="showTab('calendar')">完整日历</button>
+      </div>
+      <div id="dashAnnounce"></div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel">
+        <div class="panel-title">⚠️ 近期待办（14天内）
+          <button class="btn btn-soft btn-sm" onclick="showTab('plantings')">查看全部</button>
+        </div>
+        <div id="dashSeedNow"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">🔄 最新种子交换
+          <button class="btn btn-soft btn-sm" onclick="showTab('seeds')">浏览</button>
+        </div>
+        <div id="dashExchange"></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">📅 近期活动（30天内）</div>
+      <div id="dashUpcoming"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ SEED EXCHANGE ═══════════════════ -->
+<div class="tab-pane" id="tab-seeds">
+  <div class="page">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div class="filter-row" id="seedTypeFilter" style="margin:0"></div>
+      <button class="btn btn-green" onclick="openModal('addSeedModal')">+ 提供种子 / 植物</button>
+    </div>
+    <div class="grid3" id="seedGrid"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════ MY GARDEN ═══════════════════ -->
+<div class="tab-pane" id="tab-plantings">
+  <div class="page">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div class="filter-row" id="plantingFilter" style="margin:0"></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-soft" onclick="loadZone5Defaults()" title="加载5区推荐种植日期">🗓️ 加载5区默认</button>
+        <button class="btn btn-green" onclick="openAddPlanting()">+ 添加种植</button>
+      </div>
+    </div>
+    <div class="planting-list" id="plantingList"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════ CALENDAR ═══════════════════ -->
+<div class="tab-pane" id="tab-calendar">
+  <div class="page">
+    <div class="panel">
+      <div class="cal-nav">
+        <button class="cal-nav-btn" onclick="calPrev()">&#8592;</button>
+        <div class="cal-selects">
+          <select class="cal-sel" id="calMonthSel" onchange="calJump()">
+            <option value="0">一月</option><option value="1">二月</option>
+            <option value="2">三月</option><option value="3">四月</option>
+            <option value="4">五月</option><option value="5">六月</option>
+            <option value="6">七月</option><option value="7">八月</option>
+            <option value="8">九月</option><option value="9">十月</option>
+            <option value="10">十一月</option><option value="11">十二月</option>
+          </select>
+          <select class="cal-sel" id="calYearSel" onchange="calJump()"></select>
+          <button class="cal-today-btn" onclick="calGoToday()">今天</button>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button class="btn btn-soft btn-sm" onclick="loadZone5Defaults()">🗓️ 5区</button>
+          <button class="cal-nav-btn" onclick="calNext()">&#8594;</button>
+        </div>
+      </div>
+      <div class="cal-legend">
+        <span><i style="background:#fbd38d"></i> 室内播种</span>
+        <span><i style="background:#68d391"></i> 发芽</span>
+        <span><i style="background:#63b3ed"></i> 移植</span>
+        <span><i style="background:#9f7aea"></i> 生长</span>
+        <span><i style="background:#fc8181"></i> 收获</span>
+        <span><i style="background:#b794f4"></i> 交换取货</span>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div id="calNoEvents" style="display:none;text-align:center;padding:20px;color:#a0aec0;font-size:0.88rem">
+        本月暂无种植活动。
+        <button class="btn btn-soft btn-sm" style="margin-left:10px" onclick="loadZone5Defaults()">加载5区默认</button>
+      </div>
+    </div>
+    <div class="panel" id="calDayPanel" style="display:none">
+      <div class="panel-title" id="calDayTitle"></div>
+      <div id="calDayItems"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ MEMBERS ═══════════════════ -->
+<div class="tab-pane" id="tab-members">
+  <div class="page">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+      <button class="btn btn-green" onclick="openModal('memberModal')">+ 添加成员</button>
+    </div>
+    <div class="member-grid" id="memberGrid"></div>
+  </div>
+</div>
+
+<!-- ══════════════ MODALS ══════════════ -->
+
+<!-- Add Seed -->
+<div class="backdrop" id="addSeedModal" onclick="closeOnBackdrop(event,'addSeedModal')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('addSeedModal')">✕</button>
+    <h2>🌰 提供种子或植物</h2>
+    <div class="fg">
+      <div><label>植物名称 *</label><input id="sName" placeholder="例如：番茄、罗勒、万寿菊"></div>
+      <div><label>品种</label><input id="sVariety" placeholder="例如：圣女果、甜罗勒、柠檬男孩"></div>
+      <div class="fg-row">
+        <div><label>类型 *</label>
+          <select id="sType">
+            <option value="Vegetable">🥕 蔬菜</option>
+            <option value="Herb">🌿 草本</option>
+            <option value="Flower">🌸 花卉</option>
+            <option value="Fruit">🍓 水果</option>
+            <option value="Tree/Shrub">🌳 树木/灌木</option>
+            <option value="Succulent">🪴 多肉</option>
+            <option value="Other">🌱 其他</option>
+          </select>
+        </div>
+        <div><label>形式</label>
+          <select id="sFormat">
+            <option value="Seeds">种子（包装）</option>
+            <option value="Seedling">幼苗</option>
+            <option value="Cutting">扦插</option>
+            <option value="Bulb">球茎/块茎</option>
+            <option value="Plant">盆栽植物</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg-row">
+        <div><label>可提供数量</label><input id="sQty" type="number" min="1" value="1" placeholder="1"></div>
+        <div><label>收获/包装年份</label><input id="sYear" type="number" placeholder="2025"></div>
+      </div>
+      <div><label>备注（种植建议、交换意向…）</label><textarea id="sNotes" placeholder="最后霜冻后直播。愿意用辣椒种子交换！"></textarea></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-soft" onclick="closeModal('addSeedModal')">取消</button>
+      <button class="btn btn-green" onclick="saveSeed()">提供种子 ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Planting -->
+<div class="backdrop" id="addPlantingModal" onclick="closeOnBackdrop(event,'addPlantingModal')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('addPlantingModal')">✕</button>
+    <h2 id="plantingModalTitle">🌿 添加种植记录</h2>
+    <div class="fg">
+      <div><label>植物名称 *</label><input id="pName" placeholder="例如：罗勒、玫瑰、黄瓜"></div>
+      <div class="fg-row">
+        <div><label>品种</label><input id="pVariety" placeholder="例如：热那亚、林肯先生"></div>
+        <div><label>位置</label><input id="pLocation" placeholder="例如：A号高床、3号花盆"></div>
+      </div>
+      <div class="fg-row">
+        <div><label>播种/种植日期</label><input id="pSeedDate" type="date"></div>
+        <div><label>预计发芽日期</label><input id="pGermDate" type="date"></div>
+      </div>
+      <div class="fg-row">
+        <div><label>移植日期</label><input id="pTransDate" type="date"></div>
+        <div><label>预计收获日期</label><input id="pHarvestDate" type="date"></div>
+      </div>
+      <div><label>状态</label>
+        <select id="pStatus">
+          <option value="seeded">🌰 已播种 / 室内育苗</option>
+          <option value="germinated">🌱 已发芽</option>
+          <option value="transplanted">🪴 已移植至室外</option>
+          <option value="growing">🌿 生长中</option>
+          <option value="harvested">🥬 已收获</option>
+          <option value="done">✅ 完成</option>
+        </select>
+      </div>
+      <div><label>备注</label><textarea id="pNotes" placeholder="来自俱乐部种子交换，喜欢全日照…"></textarea></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-soft" onclick="closeModal('addPlantingModal')">取消</button>
+      <button class="btn btn-green" onclick="savePlanting()">保存记录 ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Member -->
+<div class="backdrop" id="memberModal" onclick="closeOnBackdrop(event,'memberModal')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('memberModal')">✕</button>
+    <h2>👤 添加俱乐部成员</h2>
+    <div class="fg">
+      <div><label>姓名 *</label><input id="mName" placeholder="您的姓名"></div>
+      <div class="fg-row">
+        <div><label>角色 / 兴趣</label><input id="mRole" placeholder="例如：蔬菜种植者、玫瑰爱好者"></div>
+        <div><label>颜色</label><input id="mColor" type="color" value="#2d6a4f" style="height:42px;padding:4px 8px"></div>
+      </div>
+      <div><label>备注 / 简介</label><textarea id="mNotes" placeholder="您种什么，擅长什么，有什么问题…"></textarea></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-soft" onclick="closeModal('memberModal')">取消</button>
+      <button class="btn btn-green" onclick="saveMember()">添加成员 ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- Request Seed -->
+<div class="backdrop" id="requestModal" onclick="closeOnBackdrop(event,'requestModal')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('requestModal')">✕</button>
+    <h2>🤝 请求种子 / 植物</h2>
+    <div id="requestDetails" style="background:#f0fff4;border-radius:10px;padding:14px;margin-bottom:18px;font-size:0.88rem;line-height:1.6"></div>
+    <div class="fg">
+      <div><label>给提供者的留言（可选）</label>
+        <textarea id="reqMsg" placeholder="您好！我很想尝试种植这个，可以用罗勒种子来交换！"></textarea>
+      </div>
+      <div><label>请求数量</label><input id="reqQty" type="number" min="1" value="1"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-soft" onclick="closeModal('requestModal')">取消</button>
+      <button class="btn btn-green" onclick="saveRequest()">发送请求 ✓</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Storage ───────────────────────────────────────────────────────────────────
+const S = {
+  get: k => JSON.parse(localStorage.getItem('gc_' + k) || 'null'),
+  set: (k,v) => localStorage.setItem('gc_' + k, JSON.stringify(v)),
+};
+
+let state = {
+  members:   S.get('members')   || [],
+  seeds:     S.get('seeds')     || [],
+  plantings: S.get('plantings') || [],
+  requests:  S.get('requests')  || [],
+  currentMember: S.get('currentMember') || null,
+};
+
+function save() {
+  S.set('members',   state.members);
+  S.set('seeds',     state.seeds);
+  S.set('plantings', state.plantings);
+  S.set('requests',  state.requests);
+  S.set('currentMember', state.currentMember);
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+let editingPlantingId = null;
+let requestingSeedId  = null;
+
+const uid = () => Math.random().toString(36).slice(2) + Date.now().toString(36);
+const today = () => new Date().toISOString().slice(0,10);
+const fmtDate = d => d ? new Date(d + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '—';
+
+const TYPE_COLORS = {
+  Vegetable:'#68d391,#1b4332', Herb:'#4fd1c5,#1a4745', Flower:'#fc8181,#742a2a',
+  Fruit:'#f6ad55,#7b341e', 'Tree/Shrub':'#a0aec0,#2d3748', Succulent:'#b794f4,#44337a', Other:'#cbd5e0,#4a5568'
+};
+const TYPE_EMOJI = {Vegetable:'🥕',Herb:'🌿',Flower:'🌸',Fruit:'🍓','Tree/Shrub':'🌳',Succulent:'🪴',Other:'🌱'};
+const STATUS_META = {
+  seeded:      {dot:'s-seeded',     label:'已播种',   icon:'🌰', color:'#fbd38d'},
+  germinated:  {dot:'s-germinated', label:'已发芽',   icon:'🌱', color:'#68d391'},
+  transplanted:{dot:'s-transplanted',label:'已移植',  icon:'🪴', color:'#63b3ed'},
+  growing:     {dot:'s-growing',    label:'生长中',   icon:'🌿', color:'#9f7aea'},
+  harvested:   {dot:'s-harvested',  label:'已收获',   icon:'🥬', color:'#fc8181'},
+  done:        {dot:'s-done',       label:'完成',     icon:'✅', color:'#a0aec0'},
+};
+// Chinese display names for seed types
+const TYPE_ZH = {Vegetable:'蔬菜',Herb:'草本',Flower:'花卉',Fruit:'水果','Tree/Shrub':'树木/灌木',Succulent:'多肉',Other:'其他'};
+const FORMAT_ZH = {Seeds:'种子（包装）',Seedling:'幼苗',Cutting:'扦插',Bulb:'球茎/块茎',Plant:'盆栽植物'};
+
+function getMember(id) { return state.members.find(m => m.id === id); }
+function memberName(id) { return getMember(id)?.name || '未知'; }
+function currentMember() { return getMember(state.currentMember); }
+
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+// ── Tab navigation ────────────────────────────────────────────────────────────
+function showTab(name) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  const btns = document.querySelectorAll('.nav-btn');
+  const labels = ['dashboard','seeds','plantings','calendar','members'];
+  btns[labels.indexOf(name)]?.classList.add('active');
+  renderTab(name);
+}
+
+function renderTab(name) {
+  if (name === 'dashboard') renderDashboard();
+  if (name === 'seeds')     renderSeeds();
+  if (name === 'plantings') renderPlantings();
+  if (name === 'calendar')  renderCalendar();
+  if (name === 'members')   renderMembers();
+}
+
+// ── Member selector ───────────────────────────────────────────────────────────
+function rebuildMemberSel() {
+  const sel = document.getElementById('currentMemberSel');
+  const cur = state.currentMember;
+  sel.innerHTML = '<option value="">— Select your name —</option>' +
+    state.members.map(m => `<option value="${m.id}" ${m.id===cur?'selected':''}>${m.name}</option>`).join('');
+}
+
+function setCurrentMember(id) {
+  state.currentMember = id || null;
+  save();
+  renderTab('dashboard');
+}
+
+// ── SAVE actions ──────────────────────────────────────────────────────────────
+
+function saveMember() {
+  const name = document.getElementById('mName').value.trim();
+  if (!name) { alert('姓名为必填项'); return; }
+  const m = {
+    id: uid(), name,
+    role:  document.getElementById('mRole').value.trim(),
+    color: document.getElementById('mColor').value,
+    notes: document.getElementById('mNotes').value.trim(),
+    joined: today(),
+  };
+  state.members.push(m);
+  save(); rebuildMemberSel();
+  closeModal('memberModal');
+  toast('欢迎加入俱乐部，' + name + '！🌱');
+  renderMembers();
+}
+
+function saveSeed() {
+  if (!state.currentMember) { alert('请先在顶部选择您的姓名。'); return; }
+  const name = document.getElementById('sName').value.trim();
+  if (!name) { alert('植物名称为必填项'); return; }
+  const s = {
+    id: uid(),
+    memberId: state.currentMember,
+    name,
+    variety:  document.getElementById('sVariety').value.trim(),
+    type:     document.getElementById('sType').value,
+    format:   document.getElementById('sFormat').value,
+    qty:      parseInt(document.getElementById('sQty').value) || 1,
+    year:     document.getElementById('sYear').value || '',
+    notes:    document.getElementById('sNotes').value.trim(),
+    dateAdded: today(),
+    active: true,
+  };
+  state.seeds.push(s);
+  save(); closeModal('addSeedModal');
+  toast(name + ' 已加入交换！🌰');
+  renderSeeds();
+}
+
+function openAddPlanting() {
+  editingPlantingId = null;
+  document.getElementById('plantingModalTitle').textContent = '🌿 添加种植记录';
+  ['pName','pVariety','pLocation','pNotes'].forEach(id => document.getElementById(id).value = '');
+  ['pSeedDate','pGermDate','pTransDate','pHarvestDate'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('pStatus').value = 'seeded';
+  openModal('addPlantingModal');
+}
+
+function savePlanting() {
+  if (!state.currentMember) { alert('请先在顶部选择您的姓名。'); return; }
+  const name = document.getElementById('pName').value.trim();
+  if (!name) { alert('植物名称为必填项'); return; }
+  const obj = {
+    id: editingPlantingId || uid(),
+    memberId: state.currentMember,
+    name,
+    variety:     document.getElementById('pVariety').value.trim(),
+    location:    document.getElementById('pLocation').value.trim(),
+    seedDate:    document.getElementById('pSeedDate').value,
+    germDate:    document.getElementById('pGermDate').value,
+    transDate:   document.getElementById('pTransDate').value,
+    harvestDate: document.getElementById('pHarvestDate').value,
+    status:      document.getElementById('pStatus').value,
+    notes:       document.getElementById('pNotes').value.trim(),
+  };
+  if (editingPlantingId) {
+    state.plantings = state.plantings.map(p => p.id === editingPlantingId ? obj : p);
+    toast('种植记录已更新 ✓');
+  } else {
+    state.plantings.push(obj);
+    toast(name + ' 已加入花园！🌿');
+  }
+  save(); closeModal('addPlantingModal'); renderPlantings(); renderDashboard();
+}
+
+function editPlanting(id) {
+  const p = state.plantings.find(x => x.id === id); if (!p) return;
+  editingPlantingId = id;
+  document.getElementById('plantingModalTitle').textContent = '✏️ 编辑种植记录';
+  document.getElementById('pName').value        = p.name;
+  document.getElementById('pVariety').value     = p.variety || '';
+  document.getElementById('pLocation').value    = p.location || '';
+  document.getElementById('pSeedDate').value    = p.seedDate || '';
+  document.getElementById('pGermDate').value    = p.germDate || '';
+  document.getElementById('pTransDate').value   = p.transDate || '';
+  document.getElementById('pHarvestDate').value = p.harvestDate || '';
+  document.getElementById('pStatus').value      = p.status || 'seeded';
+  document.getElementById('pNotes').value       = p.notes || '';
+  openModal('addPlantingModal');
+}
+
+function deletePlanting(id) {
+  if (!confirm('确定要删除此种植记录吗？')) return;
+  state.plantings = state.plantings.filter(p => p.id !== id);
+  save(); renderPlantings(); renderDashboard(); toast('种植记录已删除。');
+}
+
+function deleteSeed(id) {
+  if (!confirm('确定要删除此种子信息吗？')) return;
+  state.seeds = state.seeds.filter(s => s.id !== id);
+  save(); renderSeeds(); toast('种子信息已删除。');
+}
+
+function openRequest(seedId) {
+  if (!state.currentMember) { alert('请先在顶部选择您的姓名。'); return; }
+  const s = state.seeds.find(x => x.id === seedId); if (!s) return;
+  requestingSeedId = seedId;
+  const owner = memberName(s.memberId);
+  document.getElementById('requestDetails').innerHTML =
+    `<strong>${TYPE_EMOJI[s.type]||'🌱'} ${s.name}${s.variety?' — '+s.variety:''}</strong><br>
+     提供者：<strong>${owner}</strong> &nbsp;|&nbsp; 可用数量：<strong>${s.qty}</strong><br>
+     ${s.notes ? '<em>'+s.notes+'</em>' : ''}`;
+  document.getElementById('reqMsg').value = '';
+  document.getElementById('reqQty').value = '1';
+  openModal('requestModal');
+}
+
+function saveRequest() {
+  if (!requestingSeedId) return;
+  const s = state.seeds.find(x => x.id === requestingSeedId); if (!s) return;
+  const qty = parseInt(document.getElementById('reqQty').value) || 1;
+  const req = {
+    id: uid(),
+    seedId:      requestingSeedId,
+    requesterId: state.currentMember,
+    message:     document.getElementById('reqMsg').value.trim(),
+    qty,
+    date: today(),
+    status: 'pending',
+  };
+  state.requests.push(req);
+  // Reduce available qty
+  s.qty = Math.max(0, s.qty - qty);
+  if (s.qty === 0) s.active = false;
+  save(); closeModal('requestModal');
+  toast('请求已发送给 ' + memberName(s.memberId) + '！🤝');
+  renderSeeds(); renderDashboard();
+}
+
+// ── RENDER: Dashboard ─────────────────────────────────────────────────────────
+function renderDashboard() {
+  const me = state.currentMember;
+  const myPlantings = state.plantings.filter(p => !me || p.memberId === me || p.isDefault);
+  const activeSeeds = state.seeds.filter(s => s.active && s.qty > 0);
+  const realMemberCount = state.members.filter(m => m.id !== CLUB_ID).length;
+
+  // Stats
+  document.getElementById('dashStats').innerHTML = [
+    [realMemberCount,                        '俱乐部成员',   '👥'],
+    [activeSeeds.length,                     '可用种子',     '🌰'],
+    [state.plantings.filter(p => me ? p.memberId===me : !p.isDefault).length, me?'我的种植':'成员种植','🌿'],
+    [state.plantings.filter(p=>p.isDefault).length, '5区默认', '🗓️'],
+  ].map(([n,l,e]) => `<div class="stat"><div class="stat-n">${e}</div><div class="stat-n" style="font-size:1.4rem">${n}</div><div class="stat-l">${l}</div></div>`).join('');
+
+  // ── Monthly announcement ──
+  renderMonthlyAnnouncement();
+
+  // Action needed: upcoming dates within 14 days
+  const todayStr = today();
+  const soon = myPlantings.filter(p => {
+    const dates = [p.seedDate, p.germDate, p.transDate, p.harvestDate].filter(Boolean);
+    return dates.some(d => d >= todayStr && d <= addDays(todayStr, 14));
+  }).sort((a,b)=>{
+    const nextA = [a.seedDate,a.germDate,a.transDate,a.harvestDate].filter(d=>d&&d>=todayStr).sort()[0]||'';
+    const nextB = [b.seedDate,b.germDate,b.transDate,b.harvestDate].filter(d=>d&&d>=todayStr).sort()[0]||'';
+    return nextA.localeCompare(nextB);
+  }).slice(0,6);
+
+  const seedNowEl = document.getElementById('dashSeedNow');
+  if (!soon.length) {
+    seedNowEl.innerHTML = `<div class="empty"><div class="empty-icon">✅</div><p>未来14天内没有紧急任务。</p></div>`;
+  } else {
+    seedNowEl.innerHTML = soon.map(p => {
+      const sm = STATUS_META[p.status] || STATUS_META.seeded;
+      const zone = p.isDefault ? `<span style="font-size:0.68rem;background:#ebf8ff;color:#2b6cb0;border-radius:4px;padding:0 5px;margin-left:4px">5区</span>` : '';
+      return `<div class="planting-row" style="cursor:pointer;padding:8px 10px" onclick="showTab('plantings')">
+        <div style="width:40px;height:40px;flex-shrink:0;border-radius:50%;overflow:hidden;background:#e8f5e9;position:relative;display:flex;align-items:center;justify-content:center;font-size:1.3rem">
+          <span class="picon-${p.id}">${sm.icon}</span>
+          <img data-plant="${p.name}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;display:none;position:absolute;inset:0" onload="this.style.display='block';this.previousElementSibling.style.display='none'">
+        </div>
+        <div class="pl-info">
+          <div class="pl-name" style="font-size:0.85rem">${p.name}${p.variety?` <span style="font-weight:400;color:#718096">${p.variety}</span>`:''}${zone}</div>
+          <div class="pl-dates" style="margin-top:3px">
+            ${p.seedDate    && p.seedDate    >= todayStr && p.seedDate    <= addDays(todayStr,14) ? `<span class="date-chip warn">🌰 Start ${fmtDate(p.seedDate)}</span>` : ''}
+            ${p.germDate    && p.germDate    >= todayStr && p.germDate    <= addDays(todayStr,14) ? `<span class="date-chip warn">🌱 Germ ${fmtDate(p.germDate)}</span>` : ''}
+            ${p.transDate   && p.transDate   >= todayStr && p.transDate   <= addDays(todayStr,14) ? `<span class="date-chip">🪴 Transplant ${fmtDate(p.transDate)}</span>` : ''}
+            ${p.harvestDate && p.harvestDate >= todayStr && p.harvestDate <= addDays(todayStr,14) ? `<span class="date-chip">🥬 Harvest ${fmtDate(p.harvestDate)}</span>` : ''}
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // Recent exchange
+  const recentSeeds = [...activeSeeds].sort((a,b)=>b.dateAdded.localeCompare(a.dateAdded)).slice(0,4);
+  const exchEl = document.getElementById('dashExchange');
+  if (!recentSeeds.length) {
+    exchEl.innerHTML = `<div class="empty"><div class="empty-icon">🌰</div><p>暂无种子交换信息。<br>成为第一个提供种子的人吧！</p></div>`;
+  } else {
+    exchEl.innerHTML = recentSeeds.map(s => {
+      const [bg,fg] = (TYPE_COLORS[s.type]||'').split(',');
+      return `<div class="planting-row" style="cursor:pointer;padding:8px 10px" onclick="showTab('seeds')">
+        <div class="pl-icon" style="font-size:1.2rem">${TYPE_EMOJI[s.type]||'🌱'}</div>
+        <div class="pl-info">
+          <div class="pl-name" style="font-size:0.85rem">${s.name}${s.variety?' — '+s.variety:''}</div>
+          <div class="pl-sub">By ${memberName(s.memberId)} · ${s.qty} available</div>
+        </div>
+        <span class="seed-type-badge" style="background:${bg};color:${fg}">${s.type}</span>
+      </div>`;
+    }).join('');
+  }
+
+  renderUpcoming();
+  // Kick off async photo loads after all DOM is built
+  setTimeout(loadPlantThumbs, 0);
+}
+
+// ── Monthly Announcement ──────────────────────────────────────────────────────
+function renderMonthlyAnnouncement() {
+  const now   = new Date();
+  const yr    = now.getFullYear();
+  const mo    = now.getMonth(); // 0-indexed
+  const MONTHS = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
+  const monthStr = String(mo + 1).padStart(2,'0');
+  const prefix   = `${yr}-${monthStr}-`;
+
+  document.getElementById('dashAnnounceTitle').innerHTML =
+    `📢 ${MONTHS[mo]} ${yr} — 本月园艺指南
+     <button class="btn btn-soft btn-sm" onclick="showTab('calendar')">完整日历</button>`;
+
+  // Bucket plantings by activity type within this month
+  const buckets = {
+    seed:      { icon:'🌰', label:'室内播种 / 直播',  color:'#fbd38d', items:[] },
+    transplant:{ icon:'🪴', label:'移植至室外',       color:'#63b3ed', items:[] },
+    harvest:   { icon:'🥬', label:'收获 / 采集',      color:'#fc8181', items:[] },
+    germ:      { icon:'🌱', label:'预计发芽',          color:'#68d391', items:[] },
+  };
+
+  state.plantings.forEach(p => {
+    const tag = p.isDefault ? '(5区)' : `(${memberName(p.memberId)})`;
+    if (p.seedDate    && p.seedDate.startsWith(prefix))    buckets.seed.items.push({name:p.name, variety:p.variety, date:p.seedDate,    tag, isDefault:p.isDefault});
+    if (p.transDate   && p.transDate.startsWith(prefix))   buckets.transplant.items.push({name:p.name, variety:p.variety, date:p.transDate,   tag, isDefault:p.isDefault});
+    if (p.harvestDate && p.harvestDate.startsWith(prefix)) buckets.harvest.items.push({name:p.name, variety:p.variety, date:p.harvestDate, tag, isDefault:p.isDefault});
+    if (p.germDate    && p.germDate.startsWith(prefix))    buckets.germ.items.push({name:p.name, variety:p.variety, date:p.germDate,    tag, isDefault:p.isDefault});
+  });
+
+  const totalItems = Object.values(buckets).reduce((s,b)=>s+b.items.length,0);
+  if (!totalItems) {
+    document.getElementById('dashAnnounce').innerHTML =
+      `<div class="empty"><div class="empty-icon">🌿</div><p>${MONTHS[mo]}暂无种植活动。<br>加载5区默认日程或自行添加种植记录！</p></div>`;
+    return;
+  }
+
+  // Sort each bucket by date
+  Object.values(buckets).forEach(b => b.items.sort((a,c)=>a.date.localeCompare(c.date)));
+
+  const cols = Object.entries(buckets).filter(([,b])=>b.items.length).map(([,b]) => `
+    <div class="announce-col">
+      <h4 style="color:${darken(b.color)}">${b.icon} ${b.label}</h4>
+      ${b.items.map(it => `
+        <div class="announce-item">
+          <img class="plant-thumb" data-plant="${it.name}" alt="${it.name}">
+          <span style="flex:1"><strong>${it.name}</strong>${it.variety?' <span style="color:#718096;font-weight:400">'+it.variety+'</span>':''}</span>
+          <span class="av">${fmtDate(it.date)}</span>
+        </div>`).join('')}
+    </div>`).join('');
+
+  document.getElementById('dashAnnounce').innerHTML = `<div class="announce-grid">${cols}</div>`;
+}
+
+function darken(hex) {
+  // rough darken for text on light bg
+  const map = {'#fbd38d':'#7b4e00','#63b3ed':'#1a4a7a','#fc8181':'#7a1a1a','#68d391':'#1a5c2e'};
+  return map[hex] || '#2d3748';
+}
+
+// ── Plant thumbnails via Wikipedia REST API ────────────────────────────────────
+const wikiCache = {};
+// Common name → Wikipedia article title overrides
+const WIKI_TITLES = {
+  // Chinese name → English Wikipedia title
+  '番茄':'Tomato','辣椒':'Capsicum','茄子':'Eggplant',
+  '西兰花':'Broccoli','花椰菜':'Cauliflower','卷心菜':'Cabbage',
+  '豌豆':'Pea','菠菜':'Spinach','生菜':'Lettuce',
+  '羽衣甘蓝':'Kale','萝卜':'Radish','甜菜根':'Beetroot',
+  '洋葱':'Onion','胡萝卜':'Carrot','四季豆':'Green bean',
+  '黄瓜':'Cucumber','西葫芦':'Zucchini','南瓜':'Pumpkin',
+  '甜玉米':'Maize','西瓜':'Watermelon','罗勒':'Basil',
+  '欧芹':'Parsley','向日葵':'Sunflower','万寿菊':'Marigold',
+};
+function fetchWikiPhoto(plantName, imgEl) {
+  const key = plantName.toLowerCase();
+  if (wikiCache[key] !== undefined) {
+    if (wikiCache[key]) { imgEl.src = wikiCache[key]; imgEl.style.display = 'block'; }
+    return;
+  }
+  const title = encodeURIComponent((WIKI_TITLES[key] || plantName).replace(/[()]/g,'').trim());
+  fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + title)
+    .then(r => r.json())
+    .then(d => {
+      const url = d.thumbnail && d.thumbnail.source;
+      wikiCache[key] = url || '';
+      if (url) { imgEl.src = url; imgEl.style.display = 'block'; }
+    })
+    .catch(() => { wikiCache[key] = ''; });
+}
+function loadPlantThumbs() {
+  document.querySelectorAll('img[data-plant]').forEach(img => fetchWikiPhoto(img.dataset.plant, img));
+}
+
+function renderUpcoming() {
+  const todayStr = today();
+  const end = addDays(todayStr, 30);
+  const events = [];
+  state.plantings.forEach(p => {
+    const lbl = p.isDefault ? '📋 5区日程' : memberName(p.memberId);
+    if (p.seedDate    && p.seedDate >= todayStr    && p.seedDate <= end)    events.push({date:p.seedDate,    text:`🌰 播种：${p.name}${p.variety?' ('+p.variety+')':''}`,  sub:lbl, color:'#fbd38d', plant:p.name});
+    if (p.germDate    && p.germDate >= todayStr    && p.germDate <= end)    events.push({date:p.germDate,    text:`🌱 发芽：${p.name}${p.variety?' ('+p.variety+')':''}`,sub:lbl, color:'#68d391', plant:p.name});
+    if (p.transDate   && p.transDate >= todayStr   && p.transDate <= end)   events.push({date:p.transDate,   text:`🪴 移植：${p.name}${p.variety?' ('+p.variety+')':''}`,sub:lbl, color:'#63b3ed', plant:p.name});
+    if (p.harvestDate && p.harvestDate >= todayStr && p.harvestDate <= end) events.push({date:p.harvestDate, text:`🥬 收获：${p.name}${p.variety?' ('+p.variety+')':''}`,   sub:lbl, color:'#fc8181', plant:p.name});
+  });
+  events.sort((a,b)=>a.date.localeCompare(b.date));
+  const el = document.getElementById('dashUpcoming');
+  if (!events.length) {
+    el.innerHTML = `<div class="empty"><div class="empty-icon">📅</div><p>未来30天内暂无活动。</p></div>`;
+  } else {
+    el.innerHTML = events.map(e => `
+      <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #f0fff4">
+        <div style="min-width:65px;font-size:0.76rem;font-weight:700;color:#718096;flex-shrink:0">${fmtDate(e.date)}</div>
+        <div style="width:30px;height:30px;border-radius:50%;background:${e.color};flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center">
+          <img data-plant="${e.plant}" alt="${e.plant}" style="width:100%;height:100%;object-fit:cover;display:none" onload="this.style.display='block'">
+        </div>
+        <div style="font-size:0.84rem;flex:1">${e.text}</div>
+        <div style="font-size:0.72rem;color:#a0aec0;flex-shrink:0">${e.sub}</div>
+      </div>`).join('');
+  }
+}
+
+// ── RENDER: Seeds ─────────────────────────────────────────────────────────────
+let seedTypeFilter = 'All';
+
+function renderSeeds() {
+  const allTypes = ['All', ...new Set(state.seeds.map(s => s.type))];
+  document.getElementById('seedTypeFilter').innerHTML = allTypes.map(t =>
+    `<button class="filter-btn ${t===seedTypeFilter?'active':''}" onclick="setSeedFilter('${t}')">${t==='All'?'🌱 全部':TYPE_EMOJI[t]+' '+(TYPE_ZH[t]||t)}</button>`
+  ).join('');
+
+  const visible = state.seeds.filter(s =>
+    (seedTypeFilter === 'All' || s.type === seedTypeFilter)
+  );
+
+  const me = state.currentMember;
+  const grid = document.getElementById('seedGrid');
+  if (!visible.length) {
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🌰</div><p>暂无种子交换信息。<br>第一个来提供种子吧！</p></div>`;
+    return;
+  }
+
+  grid.innerHTML = visible.map(s => {
+    const [bg,fg] = (TYPE_COLORS[s.type] || '#e2e8f0,#4a5568').split(',');
+    const isMine = s.memberId === me;
+    const owner = memberName(s.memberId);
+    const isGone = s.qty <= 0 || !s.active;
+    return `
+      <div class="seed-card" style="${isGone?'opacity:.55':''}">
+        <div class="seed-card-top">
+          <div>
+            <div class="seed-name">${TYPE_EMOJI[s.type]||'🌱'} ${s.name}</div>
+            <div class="seed-variety">${s.variety || s.format}</div>
+          </div>
+          <span class="seed-type-badge" style="background:${bg};color:${fg}">${TYPE_ZH[s.type]||s.type}</span>
+        </div>
+        <div class="seed-meta">
+          <span>👤 ${owner}</span>
+          <span>📦 ${FORMAT_ZH[s.format]||s.format}</span>
+          ${s.year ? `<span>📅 ${s.year}</span>` : ''}
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <span class="qty-badge">${s.qty} 份可用</span>
+          ${isMine ? '<span class="mine-badge">我的提供</span>' : ''}
+          ${isGone ? '<span style="color:#a0aec0;font-size:0.75rem">• 已结束</span>' : ''}
+        </div>
+        ${s.notes ? `<div style="font-size:0.78rem;color:#718096;font-style:italic">${s.notes}</div>` : ''}
+        <div class="seed-actions">
+          ${!isMine && !isGone ? `<button class="btn btn-soft btn-sm" onclick="openRequest('${s.id}')">🤝 请求</button>` : ''}
+          ${isMine ? `<button class="btn btn-red btn-sm" onclick="deleteSeed('${s.id}')">删除</button>` : ''}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function setSeedFilter(t) { seedTypeFilter = t; renderSeeds(); }
+
+// ── RENDER: Plantings ─────────────────────────────────────────────────────────
+let plantingFilter = 'mine';
+
+function renderPlantings() {
+  const me = state.currentMember;
+  const filters = me
+    ? [{k:'mine',l:'我的花园'},{k:'all',l:'所有成员'},{k:'zone5',l:'🗓️ 5区日程'},{k:'seeded',l:'🌰 已播种'},{k:'germinated',l:'🌱 已发芽'},{k:'transplanted',l:'🪴 已移植'},{k:'growing',l:'🌿 生长中'},{k:'harvested',l:'🥬 已收获'}]
+    : [{k:'all',l:'所有成员'},{k:'zone5',l:'🗓️ 5区日程'},{k:'seeded',l:'🌰 已播种'},{k:'germinated',l:'🌱 已发芽'},{k:'growing',l:'🌿 生长中'},{k:'harvested',l:'🥬 已收获'}];
+
+  document.getElementById('plantingFilter').innerHTML = filters.map(f =>
+    `<button class="filter-btn ${f.k===plantingFilter?'active':''}" onclick="setPlantingFilter('${f.k}')">${f.l}</button>`
+  ).join('');
+
+  let list = state.plantings;
+  if      (plantingFilter === 'mine'  && me) list = list.filter(p => p.memberId === me);
+  else if (plantingFilter === 'zone5')       list = list.filter(p => p.isDefault);
+  else if (plantingFilter !== 'all' && plantingFilter !== 'mine') list = list.filter(p => p.status === plantingFilter);
+  list = [...list].sort((a,b) => (a.seedDate||'').localeCompare(b.seedDate||''));
+
+  const el = document.getElementById('plantingList');
+  if (!list.length) {
+    el.innerHTML = `<div class="empty"><div class="empty-icon">🌿</div><p>暂无种植记录。<br>${me ? '点击"+ 添加种植"开始记录您的花园！' : '请先选择姓名再添加种植记录。'}</p></div>`;
+    return;
+  }
+
+  el.innerHTML = list.map(p => {
+    const sm = STATUS_META[p.status] || STATUS_META.seeded;
+    const canEdit = !!me;  // any logged-in member can edit
+    const isOwn   = p.memberId === me;
+    const todayStr = today();
+    const dateChip = (label, d, icon) => {
+      if (!d) return '';
+      const past = d < todayStr;
+      const soon = !past && d <= addDays(todayStr, 7);
+      return `<span class="date-chip ${past?'done':''}" style="${soon?'border-color:#f6ad55;background:#fffaf0;color:#c05621':''}">${icon} ${label} ${fmtDate(d)}${soon?' ⚠️':''}</span>`;
+    };
+    const zoneBadge = p.isDefault
+      ? `<span style="font-size:0.68rem;background:#ebf8ff;color:#2b6cb0;border:1px solid #bee3f8;border-radius:5px;padding:1px 6px;margin-left:5px">5区</span>` : '';
+    const ownerLabel = !isOwn
+      ? `<span style="font-size:0.72rem;color:#a0aec0;margin-left:6px">来自 ${memberName(p.memberId)}</span>` : '';
+    return `
+      <div class="planting-row">
+        <div class="status-dot ${sm.dot}"></div>
+        <div class="pl-icon">${sm.icon}</div>
+        <div class="pl-info">
+          <div class="pl-name">${p.name}${p.variety?` <span style="font-weight:400;color:#718096">${p.variety}</span>`:''}
+            ${zoneBadge}${ownerLabel}
+          </div>
+          <div class="pl-sub">${p.location ? '📍 '+p.location+' · ' : ''}${sm.label}</div>
+          <div class="pl-dates">
+            ${dateChip('播种',   p.seedDate,    '🌰')}
+            ${dateChip('发芽',   p.germDate,    '🌱')}
+            ${dateChip('移植',   p.transDate,   '🪴')}
+            ${dateChip('收获',   p.harvestDate, '🥬')}
+          </div>
+          ${p.notes ? `<div style="font-size:0.76rem;color:#718096;margin-top:4px;font-style:italic">${p.notes}</div>` : ''}
+        </div>
+        ${canEdit ? `
+          <div style="display:flex;gap:6px;flex-shrink:0">
+            <button class="btn btn-soft btn-xs" onclick="editPlanting('${p.id}')">编辑</button>
+            <button class="btn btn-red btn-xs" onclick="deletePlanting('${p.id}')">✕</button>
+          </div>` : ''}
+      </div>`;
+  }).join('');
+}
+
+function setPlantingFilter(f) { plantingFilter = f; renderPlantings(); }
+
+// ── RENDER: Members ───────────────────────────────────────────────────────────
+function renderMembers() {
+  const grid = document.getElementById('memberGrid');
+  if (!state.members.length) {
+    grid.innerHTML = `<div class="empty" style="grid-column:1/-1"><div class="empty-icon">👥</div><p>暂无成员。点击"+ 添加成员"开始吧！</p></div>`;
+    return;
+  }
+  grid.innerHTML = state.members.map(m => {
+    const initials = m.name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+    const seeds    = state.seeds.filter(s => s.memberId === m.id && s.active).length;
+    const plants   = state.plantings.filter(p => p.memberId === m.id).length;
+    return `
+      <div class="member-card">
+        <div class="member-avatar" style="background:${m.color||'#2d6a4f'}">${initials}</div>
+        <div class="member-name">${m.name}</div>
+        <div class="member-role">${m.role || '俱乐部成员'}</div>
+        <div class="member-stats">
+          <div class="member-stat"><strong>${seeds}</strong>种子</div>
+          <div class="member-stat"><strong>${plants}</strong>种植</div>
+        </div>
+        ${m.notes ? `<div style="font-size:0.74rem;color:#a0aec0;margin-top:8px;font-style:italic">${m.notes}</div>` : ''}
+      </div>`;
+  }).join('');
+}
+
+// ── RENDER: Calendar ──────────────────────────────────────────────────────────
+let calYear, calMonth;
+
+function initCal() {
+  const now = new Date();
+  calYear = now.getFullYear();
+  calMonth = now.getMonth();
+}
+
+function buildYearOptions() {
+  const sel = document.getElementById('calYearSel');
+  if (!sel) return;
+  sel.innerHTML = '';
+  // Show years from 2020 to 2035
+  for (let y = 2020; y <= 2035; y++) {
+    const opt = document.createElement('option');
+    opt.value = y; opt.textContent = y;
+    if (y === calYear) opt.selected = true;
+    sel.appendChild(opt);
+  }
+}
+
+function syncSelectors() {
+  const mSel = document.getElementById('calMonthSel');
+  const ySel = document.getElementById('calYearSel');
+  if (mSel) mSel.value = calMonth;
+  if (ySel) ySel.value = calYear;
+}
+
+function calJump() {
+  const mSel = document.getElementById('calMonthSel');
+  const ySel = document.getElementById('calYearSel');
+  if (mSel) calMonth = parseInt(mSel.value);
+  if (ySel) calYear  = parseInt(ySel.value);
+  renderCalendar();
+}
+
+function calGoToday() {
+  const now = new Date();
+  calYear  = now.getFullYear();
+  calMonth = now.getMonth();
+  syncSelectors();
+  renderCalendar();
+}
+
+function calPrev() {
+  calMonth--;
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  syncSelectors();
+  renderCalendar();
+}
+
+function calNext() {
+  calMonth++;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  syncSelectors();
+  renderCalendar();
+}
+
+// Convert a JS Date to YYYY-MM-DD string (reliable, no math tricks)
+function dateToKey(jsDate) {
+  const y = jsDate.getFullYear();
+  const m = String(jsDate.getMonth() + 1).padStart(2, '0');
+  const d = String(jsDate.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+function renderCalendar() {
+  // Safety guard: calYear/calMonth must be initialised before rendering
+  if (calYear === undefined || calMonth === undefined) initCal();
+  buildYearOptions();
+  syncSelectors();
+
+  // ── 1. Build event map keyed by YYYY-MM-DD ──
+  const evMap = {};
+  function addEv(dateStr, text, color, isDef) {
+    if (!dateStr) return;
+    if (!evMap[dateStr]) evMap[dateStr] = [];
+    evMap[dateStr].push({ text, color, isDef });
+  }
+
+  state.plantings.forEach(function(p) {
+    const label = p.variety ? p.name + ' (' + p.variety + ')' : p.name;
+    const def   = !!p.isDefault;
+    addEv(p.seedDate,    '🌰 ' + label, '#fbd38d', def);
+    addEv(p.germDate,    '🌱 ' + label, '#68d391', def);
+    addEv(p.transDate,   '🪴 ' + label, '#63b3ed', def);
+    addEv(p.harvestDate, '🥬 ' + label, '#fc8181', def);
+  });
+
+  // ── 2. Build calendar grid ──
+  const todayKey   = today();
+  const firstOfMonth = new Date(calYear, calMonth, 1);
+  const startPad   = firstOfMonth.getDay();          // 0=Sun … 6=Sat
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+
+  // Start from the Sunday before the 1st
+  const gridStart = new Date(calYear, calMonth, 1 - startPad);
+
+  const DAYS = ['日','一','二','三','四','五','六'];
+  let html = DAYS.map(function(d) {
+    return '<div class="cal-head">' + d + '</div>';
+  }).join('');
+
+  for (let cell = 0; cell < 42; cell++) {
+    const cellDate = new Date(gridStart);
+    cellDate.setDate(gridStart.getDate() + cell);
+
+    const key      = dateToKey(cellDate);
+    const dayNum   = cellDate.getDate();
+    const inMonth  = cellDate.getMonth() === calMonth && cellDate.getFullYear() === calYear;
+    const isToday  = key === todayKey;
+
+    let cls = 'cal-day';
+    if (!inMonth) cls += ' other-month';
+    if (isToday)  cls += ' today';
+
+    const allEv = evMap[key] || [];
+    const show  = allEv.slice(0, 3);
+    const extra = allEv.length - show.length;
+
+    const evHtml = show.map(function(e) {
+      return '<div class="cal-event" style="background:' + e.color + ';color:#1a202c" title="' + e.text + '">' + e.text + '</div>';
+    }).join('') + (extra > 0 ? '<div class="cal-more">+' + extra + ' more</div>' : '');
+
+    html += '<div class="' + cls + '" onclick="showCalDay(\'' + key + '\')">'
+          + '<div class="cal-dn">' + dayNum + '</div>'
+          + evHtml
+          + '</div>';
+  }
+
+  // ── 3. Inject into DOM ──
+  const grid = document.getElementById('calGrid');
+  if (grid) grid.innerHTML = html;
+
+  const dayPanel = document.getElementById('calDayPanel');
+  if (dayPanel) dayPanel.style.display = 'none';
+
+  // Show/hide the "no events" notice
+  const monthPrefix = calYear + '-' + String(calMonth + 1).padStart(2, '0') + '-';
+  const hasEvents   = Object.keys(evMap).some(function(k) { return k.startsWith(monthPrefix); });
+  const notice = document.getElementById('calNoEvents');
+  if (notice) notice.style.display = hasEvents ? 'none' : 'block';
+}
+
+function showCalDay(dateStr) {
+  const events = [];
+  state.plantings.forEach(p => {
+    const n = p.variety ? `${p.name} — ${p.variety}` : p.name;
+    const lbl = p.isDefault ? '📋 5区日程' : memberName(p.memberId);
+    const note = p.notes ? `<div style="font-size:0.74rem;color:#718096;margin-top:2px;font-style:italic">${p.notes}</div>` : '';
+    if (p.seedDate    === dateStr) events.push({text:`🌰 室内播种/直播：<strong>${n}</strong>`,   member:lbl, note, color:'#fbd38d'});
+    if (p.germDate    === dateStr) events.push({text:`🌱 预计发芽：<strong>${n}</strong>`,         member:lbl, note, color:'#68d391'});
+    if (p.transDate   === dateStr) events.push({text:`🪴 移植至室外：<strong>${n}</strong>`,       member:lbl, note, color:'#63b3ed'});
+    if (p.harvestDate === dateStr) events.push({text:`🥬 可以收获：<strong>${n}</strong>`,         member:lbl, note, color:'#fc8181'});
+  });
+  const panel = document.getElementById('calDayPanel');
+  const d = new Date(dateStr + 'T12:00:00');
+  document.getElementById('calDayTitle').textContent = d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  if (!events.length) {
+    document.getElementById('calDayItems').innerHTML = '<div style="color:#a0aec0;font-size:0.88rem;padding:8px 0">本日暂无活动。</div>';
+  } else {
+    document.getElementById('calDayItems').innerHTML = events.map(e =>
+      `<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #f0fff4">
+         <div style="width:12px;height:12px;border-radius:50%;background:${e.color};flex-shrink:0;margin-top:4px"></div>
+         <div style="flex:1">
+           <div style="font-size:0.88rem">${e.text}</div>
+           ${e.note}
+         </div>
+         <span style="font-size:0.74rem;color:#a0aec0;flex-shrink:0;padding-top:2px">${e.member}</span>
+       </div>`).join('');
+  }
+  panel.style.display = 'block';
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// ── Modal helpers ─────────────────────────────────────────────────────────────
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+function closeOnBackdrop(e,id){ if(e.target.id===id) closeModal(id); }
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.querySelectorAll('.backdrop.open').forEach(b => b.classList.remove('open'));
+});
+
+// ── Date util ─────────────────────────────────────────────────────────────────
+function addDays(dateStr, n) {
+  const d = new Date(dateStr + 'T12:00:00'); d.setDate(d.getDate() + n);
+  return d.toISOString().slice(0,10);
+}
+
+// ── Zone 5 Default Planting Schedule ─────────────────────────────────────────
+// Last spring frost ~May 10, first fall frost ~Oct 5 (Zone 5, 2026)
+const CLUB_ID = '__zone5_club__';
+
+const ZONE5_DEFAULTS = [
+  // 名称, 品种, 图标, 播种日, 发芽日, 移植日, 收获日, 备注
+  ['番茄','布兰迪酒番茄','🍅',      '2026-03-22','2026-04-05','2026-05-15','2026-08-15', '最后霜冻前6-8周室内育苗。全日照，长到30cm时需立支架。'],
+  ['番茄','金太阳樱桃番茄','🍅',   '2026-03-22','2026-04-05','2026-05-15','2026-08-01', '产量极高。需套笼或立支架。'],
+  ['辣椒','加州甜椒','🫑',          '2026-03-08','2026-03-25','2026-05-20','2026-08-15', '最后霜冻前8-10周育苗。发芽需保持温暖（约24°C）。'],
+  ['辣椒','墨西哥辣椒','🌶️',        '2026-03-08','2026-03-25','2026-05-20','2026-08-15', '与甜椒种植时间相同。'],
+  ['茄子','黑美人','🍆',            '2026-03-08','2026-03-25','2026-05-20','2026-08-15', '室内育苗，需要温暖。果皮有光泽时即可收获。'],
+  ['西兰花','卡拉布雷斯','🥦',      '2026-03-22','2026-04-05','2026-04-19','2026-06-20', '耐轻霜。花蕾出现黄花前及时收获。'],
+  ['花椰菜','雪球','🤍',            '2026-03-22','2026-04-05','2026-04-19','2026-07-01', '花球直径5cm时用叶片覆盖遮光。'],
+  ['卷心菜','黄金英亩','🥬',        '2026-03-22','2026-04-05','2026-04-19','2026-07-15', '球形紧实，适合小菜园。'],
+  ['豌豆','甜脆豌豆','🫛',          '2026-04-01','2026-04-14','',           '2026-06-20', '最后霜冻前6周直播——豌豆喜欢冷凉土壤！'],
+  ['菠菜','布卢姆斯戴尔','🌿',      '2026-04-05','2026-04-18','',           '2026-05-20', '早春直播。高温抽薹，8月可再播一次收秋菜。'],
+  ['生菜','黄油生菜','🥗',          '2026-04-12','2026-04-22','',           '2026-05-25', '直播或移植皆可。割取外叶，中心留存，可持续采收。'],
+  ['羽衣甘蓝','恐龙甘蓝','🥬',      '2026-04-12','2026-04-22','',           '2026-06-05', '直播。极耐寒，秋霜后仍可采收。'],
+  ['萝卜','樱桃萝卜','🔴',          '2026-04-19','2026-04-24','',           '2026-05-08', '生长最快！25-30天即可收获，适合标记慢生蔬菜行间。'],
+  ['甜菜根','底特律深红','❤️',      '2026-04-26','2026-05-06','',           '2026-07-05', '间苗至株距7cm。嫩叶也可食用！'],
+  ['洋葱','黄甜洋葱','🧅',          '2026-03-01','2026-03-20','2026-04-19','2026-08-10', '最早室内育苗。叶子倒伏时即熟，需晾晒2周。'],
+  ['胡萝卜','南特胡萝卜','🥕',      '2026-05-03','2026-05-17','',           '2026-07-20', '疏松深土直播，间苗至株距5cm，发芽前保持湿润。'],
+  ['四季豆','蓝湖矮生豆','🫘',      '2026-05-20','2026-05-28','',           '2026-07-10', '最后霜冻后直播。无需支架，每2周分批播种。'],
+  ['黄瓜','市场高产黄瓜','🥒',      '2026-04-19','2026-04-29','2026-05-17','2026-07-15', '室内育苗或最后霜冻后直播。引导上架生长。'],
+  ['西葫芦','黑美人西葫芦','🫛',    '2026-05-17','2026-05-24','',           '2026-07-05', '最后霜冻后直播。15-20cm时口感最佳。'],
+  ['南瓜','灯笼南瓜','🎃',          '2026-05-17','2026-05-24','',           '2026-09-20', '需要大量空间。最后霜冻后直播。'],
+  ['甜玉米','银后玉米','🌽',        '2026-05-17','2026-05-24','',           '2026-08-01', '种4行以上方块形，有利于授粉，切勿种单行。'],
+  ['西瓜','小糖宝西瓜','🍉',        '2026-04-26','2026-05-06','2026-05-25','2026-08-20', '最后霜冻前3-4周室内育苗。需要高温和较长生长季。'],
+  ['罗勒','热那亚罗勒','🌿',        '2026-04-19','2026-04-29','2026-05-25','2026-07-15', '极不耐霜。及时摘除花蕾以持续产叶。与番茄搭配绝佳！'],
+  ['欧芹','意大利平叶欧芹','🌿',    '2026-03-01','2026-03-25','2026-05-15','2026-07-15', '发芽缓慢（3-4周）。二年生植物，可能自播繁殖。'],
+  ['向日葵','巨人向日葵','🌻',      '2026-05-15','2026-05-22','',           '2026-08-15', '最后霜冻后直播。简单易种，对传粉昆虫有益。'],
+  ['万寿菊','法国矮生万寿菊','🌼',  '2026-04-12','2026-04-22','2026-05-15','2026-06-15', '种在蔬菜旁可驱虫。摘除残花促进持续开花。'],
+];
+
+function loadZone5Defaults() {
+  // Create or reuse the Club member
+  if (!state.members.find(m => m.id === CLUB_ID)) {
+    state.members.push({ id: CLUB_ID, name: '俱乐部（5区）', role: '5区种植日程', color: '#2d6a4f', notes: '5区默认种植日程', joined: '2026-01-01' });
+    rebuildMemberSel();
+  }
+
+  // Remove stale defaults and reload fresh (ensures dates are always correct)
+  state.plantings = state.plantings.filter(p => !p.isDefault);
+
+  ZONE5_DEFAULTS.forEach(([name, variety, , seedDate, germDate, transDate, harvestDate, notes]) => {
+    state.plantings.push({
+      id: uid(), memberId: CLUB_ID,
+      name, variety,
+      seedDate,
+      germDate:    germDate    || '',
+      transDate:   transDate   || '',
+      harvestDate: harvestDate || '',
+      status: deriveStatus(seedDate, germDate, transDate, harvestDate),
+      location: '', notes,
+      isDefault: true,
+    });
+  });
+  save();
+  toast(`5区日程已加载 — 共 ${ZONE5_DEFAULTS.length} 种蔬菜！🌱`);
+  renderPlantings(); renderDashboard(); renderCalendar();
+}
+
+function deriveStatus(seed, germ, trans, harvest) {
+  const t = today();
+  if (harvest && t >= harvest) return 'harvested';
+  if (trans   && t >= trans)   return 'transplanted';
+  if (germ    && t >= germ)    return 'germinated';
+  if (seed    && t >= seed)    return 'seeded';
+  return 'seeded';
+}
+
+function clearZone5Defaults() {
+  if (!confirm('确定要删除所有5区默认种植记录吗？')) return;
+  state.plantings = state.plantings.filter(p => !p.isDefault);
+  save(); renderPlantings(); renderCalendar(); renderDashboard();
+  toast('5区默认记录已删除。');
+}
+
+// ── Seed demo data (only if empty) ────────────────────────────────────────────
+function seedDemoData() {
+  if (state.members.length || state.seeds.length) return;
+  // No demo data — start fresh for a real club
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+seedDemoData();
+
+// Init calendar variables FIRST so renderCalendar() always has valid year/month
+initCal();
+buildYearOptions();
+rebuildMemberSel();
+
+// Reload Zone 5 defaults if: none exist, dates are from a different year,
+// or stored defaults are still in English (e.g. after switching to Chinese UI)
+const _z5year = ZONE5_DEFAULTS[0][3].slice(0, 4);
+const _existingDefault = state.plantings.find(p => p.isDefault && p.seedDate);
+const _isChinese = name => name && /[\u4e00-\u9fff]/.test(name);
+const _needsReload = !_existingDefault
+  || !_existingDefault.seedDate.startsWith(_z5year)
+  || !_isChinese(_existingDefault.name);
+if (_needsReload) {
+  loadZone5Defaults();
+}
+
+renderDashboard();
+
+</script>
+</body>
+</html>
