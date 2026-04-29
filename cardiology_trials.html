@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Cardiology Clinical Trials — Completed with Results</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI",Arial,sans-serif;background:#f7f0f0;color:#1a202c;min-height:100vh}
+
+header{background:linear-gradient(135deg,#9b2335,#c0392b);padding:22px 28px;color:#fff}
+header h1{font-size:1.5rem;font-weight:800;display:flex;align-items:center;gap:10px}
+header p{color:#fcd5d5;font-size:0.85rem;margin-top:5px}
+
+.controls{background:#fff;border-bottom:2px solid #fde8e8;padding:14px 28px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.search-input{border:1px solid #e2e8f0;border-radius:8px;padding:7px 14px;font-size:0.85rem;width:280px;outline:none}
+.search-input:focus{border-color:#c0392b}
+.btn{border:none;border-radius:8px;padding:8px 16px;font-size:0.83rem;font-weight:700;cursor:pointer;transition:all .15s}
+.btn-red{background:#c0392b;color:#fff}.btn-red:hover{background:#922b21}
+.btn-outline{background:#fff;color:#c0392b;border:1.5px solid #c0392b}.btn-outline:hover{background:#fde8e8}
+.btn-sm{padding:5px 12px;font-size:0.75rem}
+.count-badge{background:#fde8e8;color:#922b21;border-radius:20px;padding:4px 12px;font-size:0.78rem;font-weight:700;margin-left:auto}
+
+.page{max-width:1100px;margin:0 auto;padding:24px 16px}
+
+.loading{text-align:center;padding:60px;color:#718096;font-size:1rem}
+.spinner{width:40px;height:40px;border:4px solid #fde8e8;border-top-color:#c0392b;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.error-box{background:#fff5f5;border:1px solid #fed7d7;border-radius:12px;padding:20px;color:#c53030;text-align:center;margin:20px 0}
+
+/* ── Trial card ── */
+.trial-grid{display:flex;flex-direction:column;gap:22px}
+.trial-card{background:#fff;border:1px solid #fde8e8;border-radius:16px;padding:24px;box-shadow:0 2px 10px rgba(155,35,53,.07);transition:box-shadow .15s}
+.trial-card:hover{box-shadow:0 6px 22px rgba(155,35,53,.12)}
+
+.trial-header{display:flex;align-items:flex-start;gap:14px;margin-bottom:12px}
+.trial-num{background:#9b2335;color:#fff;border-radius:8px;padding:6px 10px;font-size:0.75rem;font-weight:800;white-space:nowrap;flex-shrink:0;line-height:1.3;text-align:center;min-width:80px}
+.trial-num small{display:block;font-size:0.65rem;opacity:.8;font-weight:400}
+.trial-title{font-weight:800;font-size:1rem;color:#1a202c;line-height:1.4}
+
+.badges{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}
+.badge{border-radius:6px;padding:3px 9px;font-size:0.7rem;font-weight:700}
+.b-green{background:#f0fff4;color:#276749;border:1px solid #c6f6d5}
+.b-blue{background:#ebf8ff;color:#2c5282;border:1px solid #bee3f8}
+.b-purple{background:#faf5ff;color:#553c9a;border:1px solid #e9d8fd}
+.b-orange{background:#fffaf0;color:#744210;border:1px solid #fbd38d}
+.b-gray{background:#f7fafc;color:#4a5568;border:1px solid #e2e8f0}
+
+.trial-meta{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;padding:12px;background:#fdf9f9;border-radius:10px;margin-bottom:14px}
+.meta-item .meta-label{color:#a0aec0;font-weight:700;text-transform:uppercase;font-size:0.63rem;letter-spacing:.05em;margin-bottom:2px}
+.meta-item .meta-value{color:#2d3748;font-weight:600;font-size:0.8rem}
+
+.trial-summary{font-size:0.82rem;color:#4a5568;line-height:1.7;margin-bottom:14px}
+.trial-summary.collapsed{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* ── Eligibility section ── */
+.elig-section{border-top:2px solid #fde8e8;padding-top:16px;margin-top:6px}
+.elig-toggle{display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;margin-bottom:12px}
+.elig-toggle-label{font-weight:800;font-size:0.9rem;color:#9b2335;display:flex;align-items:center;gap:7px}
+.elig-body{display:none}
+.elig-body.open{display:block}
+
+.elig-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.elig-cols{grid-template-columns:1fr}}
+
+.elig-col-title{font-weight:800;font-size:0.82rem;padding:6px 12px;border-radius:8px 8px 0 0;text-align:center}
+.inc-title{background:#f0fff4;color:#276749}
+.exc-title{background:#fff5f5;color:#c53030}
+
+.cat-group{margin-bottom:10px}
+.cat-label{font-size:0.67rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;padding:3px 8px;border-radius:4px;display:inline-block;margin-bottom:5px}
+
+/* category colors */
+.cat-age    .cat-label{background:#ebf8ff;color:#2c5282}
+.cat-cardiac .cat-label{background:#fff5f5;color:#c53030}
+.cat-labs   .cat-label{background:#faf5ff;color:#553c9a}
+.cat-meds   .cat-label{background:#fffaf0;color:#744210}
+.cat-history .cat-label{background:#f0fff4;color:#276749}
+.cat-procedure .cat-label{background:#e6fffa;color:#234e52}
+.cat-lifestyle .cat-label{background:#fefcbf;color:#744210}
+.cat-admin  .cat-label{background:#f7fafc;color:#4a5568}
+.cat-general .cat-label{background:#fde8e8;color:#9b2335}
+
+.crit-item{font-size:0.79rem;color:#2d3748;line-height:1.6;padding:4px 0 4px 14px;border-left:3px solid transparent;margin-bottom:3px;position:relative}
+.inc-col .crit-item{border-left-color:#68d391}
+.exc-col .crit-item{border-left-color:#fc8181}
+.crit-item::before{content:'';position:absolute;left:-6px;top:10px;width:8px;height:8px;border-radius:50%;background:currentColor}
+.inc-col .crit-item::before{color:#68d391}
+.exc-col .crit-item::before{color:#fc8181}
+
+.eligibility-summary{display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.elig-pill{background:#f7fafc;border:1px solid #e2e8f0;border-radius:20px;padding:3px 10px;font-size:0.72rem;color:#4a5568;font-weight:600}
+
+.trial-footer{display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap}
+.expand-btn{background:none;border:none;color:#c0392b;font-size:0.78rem;font-weight:700;cursor:pointer;padding:0}
+.link-btn{background:#9b2335;color:#fff;border-radius:7px;padding:6px 14px;font-size:0.78rem;font-weight:700;text-decoration:none}
+.link-btn:hover{background:#7b1d29}
+.conditions{font-size:0.74rem;color:#718096;flex:1;text-align:right}
+
+.source-note{text-align:center;padding:20px;font-size:0.75rem;color:#a0aec0}
+.source-note a{color:#c0392b}
+
+/* ── Skill (S0/S1/S2/S3) view ── */
+.sk-s0 .cat-label{background:#fff3cd;color:#856404;border:1px solid #ffc107}
+.sk-s1 .cat-label{background:#d1e7dd;color:#0f5132;border:1px solid #a3cfbb}
+.sk-s2 .cat-label{background:#cff4fc;color:#055160;border:1px solid #9eeaf9}
+.sk-s3 .cat-label{background:#e2d9f3;color:#432874;border:1px solid #c5b3e6}
+
+.view-toggle{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+.view-btn{border:1.5px solid #e2e8f0;background:#fff;border-radius:6px;padding:5px 14px;font-size:0.75rem;font-weight:700;cursor:pointer;color:#4a5568;transition:all .15s}
+.view-btn.active{background:#9b2335;color:#fff;border-color:#9b2335}
+.view-btn:hover:not(.active){background:#fde8e8;border-color:#c0392b;color:#922b21}
+
+.skill-legend{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;padding:8px 12px;background:#f7fafc;border-radius:8px;font-size:0.68rem}
+.skill-legend span{font-weight:700;padding:2px 8px;border-radius:4px}
+.sk-s0-b{background:#fff3cd;color:#856404;border:1px solid #ffc107}
+.sk-s1-b{background:#d1e7dd;color:#0f5132;border:1px solid #a3cfbb}
+.sk-s2-b{background:#cff4fc;color:#055160;border:1px solid #9eeaf9}
+.sk-s3-b{background:#e2d9f3;color:#432874;border:1px solid #c5b3e6}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>❤️ Cardiology Clinical Trials</h1>
+  <p>Completed trials with results · Criteria by category &amp; EHR skill level (S0–S3) · Source: ClinicalTrials.gov</p>
+</header>
+
+<div class="controls">
+  <input class="search-input" id="searchInput" type="text" placeholder="Search title, keyword, sponsor…" oninput="filterCards()">
+  <button class="btn btn-red" onclick="fetchTrials()">🔄 Refresh</button>
+  <button class="btn btn-outline" onclick="clearSearch()">Clear</button>
+  <span class="count-badge" id="countBadge">Loading…</span>
+</div>
+
+<div class="page">
+  <div id="output"><div class="loading"><div class="spinner"></div>Fetching trials from ClinicalTrials.gov…</div></div>
+  <div class="source-note">Data from <a href="https://clinicaltrials.gov" target="_blank">ClinicalTrials.gov</a> API · Completed · Has Results · Condition: heart attack / cardiology</div>
+</div>
+
+<script>
+let allTrials = [];
+
+// ── S0/S1/S2/S3 Skill classifier (ctcr-skills scheme) ──────────────────
+// S0 = Undeterminable (consent, investigator judgment, trial-relative timing)
+// S1 = Structured data (EHR SQL: age, labs, vitals, Rx, gender)
+// S2 = Clinical notes (history, prior procedures, functional status)
+// S3 = Hybrid (try structured first; fall back to notes)
+const SKILLS = [
+  { key:'S0', label:'S0 — Undeterminable',   color:'sk-s0',
+    desc:'Cannot be assessed from EHR — needs prospective data or clinical judgment',
+    rx:/willing(?:ness)?\s+to\s+(?:comply|participate|sign|return|follow|undergo)|able\s+to\s+(?:understand|provide|return|follow|comply|give\s+consent)|(?:written|informed)\s+consent|investigator['']?s?\s+(?:judg|opini|discret|assess)|per\s+(?:the\s+)?(?:physician|investigator|clinician|provider|study\s+team)|at\s+(?:physician|investigator|clinician)\s+discretion|life\s+expectancy|prognos(?:is|tic|ed)|within\s+\d+\s+hours?\s+of\s+(?:randomiz|enroll|first\s+dose|study\s+drug|admission\s+to|procedure)|timing|plan(?:ning)?\s+to|intend(?:ing)?\s+to|expect(?:ed)?\s+to|language\b|geograph|availab(?:le|ility)|contact\s+(?:able|ible)|follow.?up\s+(?:visit|possible)/i },
+  { key:'S1', label:'S1 — Structured Data',  color:'sk-s1',
+    desc:'Directly evaluable via SQL on EHR structured tables (labs, vitals, demographics, prescriptions)',
+    rx:/(?:\bage\b|years?\s+of\s+age|aged?\b).*?\d|\d+.*?years?\s+(?:of\s+age|old)\b|(?:≥|≤|>=|<=|>\s*\d|<\s*\d).*?(?:year|age|mmHg|bpm|kg|mg\/(?:d[Ll]|L)|mmol\/[Ll]|μmol|nmol|pmol|ng\/(?:m[Ll]|dL)|pg\/m[Ll]|U\/[Ll]|g\/d[Ll]|%|mL\/min|cm|m²)|hemoglobin|hematocrit|platelet\s*count|creatinine|eGFR\b|GFR\b|HbA1c|fasting\s+glucose|total\s+cholesterol|LDL\b|HDL\b|triglyceride|ALT\b|AST\b|bilirubin|INR\b|PT\b(?!T)|PTT\b|aPTT\b|WBC\b|RBC\b|potassium|sodium|serum\s+\w+|blood\s+count|CBC\b|systolic|diastolic|blood\s+pressure\b|heart\s+rate\b|pulse\b|temperature\b|SpO2|oxygen\s+saturation|BMI\b|body\s+mass\s+index|body\s+weight\b|height\b|sex\s*[:=]|gender\s*[:=]|^(?:female|male)\b|(?:female|male)\s+(?:sex|gender|only|patients?)|currently\s+(?:taking|receiving|on)\s+|on\s+(?:stable\s+)?(?:statin|aspirin|heparin|warfarin|insulin|anticoagul|antiplatelet|beta.block|ACE\s+inhibit|ARB\b|metformin)/i },
+  { key:'S2', label:'S2 — Clinical Notes',   color:'sk-s2',
+    desc:'Requires LLM search in unstructured clinical notes (history, prior procedures, subjective status)',
+    rx:/(?:history\s+of|medical\s+history|past\s+(?:medical|surgical|cardiac|history)|prior\s+(?:episode|admission|hospitalization|treatment|diagnosis)|previous\s+(?:episode|admission|treatment|diagnosis)|documented\s+(?:history|diagnosis|evidence)|known\s+(?:history\s+of|to\s+have)|suffered\s+(?:a|from)|evidence\s+of|record\s+of)|(?:underwent|had\s+(?:a|an|prior|previous)\s+(?:surgery|procedure|operation|intervention|episode)|received\s+(?:prior|previous)\s+(?:therapy|treatment))|(?:functional\s+status|NYHA\s+class|New\s+York\s+Heart|functional\s+capacity|exercise\s+tolerance)|(?:smok(?:ing|er|ed)|tobacco|nicotine|alcohol(?:ic|ism)?|substance\s+abuse|drug\s+abuse|illicit\s+drug)|(?:cognitive\s+(?:impair|dysfunct|decline)|dementia|Alzheimer|psychiatric|mental\s+(?:disorder|illness|health)|depression|anxiety|psychosis)/i },
+  { key:'S3', label:'S3 — Hybrid',            color:'sk-s3',
+    desc:'Try structured EHR data first; fall back to clinical notes if result is unknown',
+    rx:/CABG\b|PCI\b|percutaneous\s+coronary|coronary\s+artery\s+bypass|stent(?:ing)?\b|bypass\s+surgery|angioplasty|cardiac\s+transplant|heart\s+transplant|implant(?:able|ed)\s+(?:cardioverter|defibrillat|pacemaker|device|ICD|CRT)|ICD\b|defibrillat|pacemaker|catheter\s+ablation|ablation|revascular|heart\s+failure|cardiomyopathy|atrial\s+fibrillat|coronary\s+artery\s+disease|CAD\b|ischemic\s+(?:heart|cardiomy)|myocardial\s+infarction\b|MI\b|diabetes\s+mellitus|type\s+[12]\s+diabetes|hypertension|chronic\s+kidney|renal\s+(?:insufficiency|failure|impairment|disease)|hepat(?:ic|itis|omegaly)|cirrhosis|liver\s+(?:disease|failure|impairment)|COPD\b|chronic\s+obstructive|asthma|cancer\b|tumor\b|malign|neoplasm|HIV\b|AIDS\b|stroke\b|TIA\b|transient\s+ischemic|peripheral\s+artery|peripheral\s+vascular|PAD\b|anemia\b|thrombocytopenia/i },
+];
+
+function classifySkill(text) {
+  if (SKILLS[0].rx.test(text)) return SKILLS[0]; // S0 first — admin/consent/timing
+  if (SKILLS[1].rx.test(text)) return SKILLS[1]; // S1 — specific numeric/lab/vital
+  if (SKILLS[3].rx.test(text)) return SKILLS[3]; // S3 — known diagnoses/procedures (hybrid)
+  if (SKILLS[2].rx.test(text)) return SKILLS[2]; // S2 — history/notes
+  return SKILLS[2]; // default S2
+}
+
+function groupBySkill(items) {
+  const groups = {};
+  items.forEach(text => {
+    const sk = classifySkill(text);
+    if (!groups[sk.key]) groups[sk.key] = { ...sk, items:[] };
+    groups[sk.key].items.push(text);
+  });
+  // Return in S0→S3 order
+  return ['S0','S1','S2','S3'].filter(k => groups[k]).map(k => groups[k]);
+}
+
+// ── Category classifier ───────────────────────────────
+const CATEGORIES = [
+  { key:'age',       label:'Age / Demographics',    color:'cat-age',
+    rx:/\bage\b|years? old|≥|≤|adult|pediatr|child|geriatr|sex|gender|female|male|women|men|birth control|pregnan|nursing|breastfeed/i },
+  { key:'cardiac',   label:'Cardiac Condition',     color:'cat-cardiac',
+    rx:/heart|cardiac|myocardial|MI\b|ejection fraction|LVEF|LVEDV|arrhy|atrial|ventricul|valve|valvul|coronary|angina|ACS\b|STEMI|NSTEMI|heart failure|cardiomyop|pericardi|endocardi|QT|QTc/i },
+  { key:'labs',      label:'Lab Values',             color:'cat-labs',
+    rx:/hemoglobin|hematocrit|platelet|INR|PTT|creatinine|eGFR|GFR\b|HbA1c|glucose|cholesterol|triglyceride|ALT|AST|bilirubin|mg\/dl|mmol|μmol|ng\/ml|pg\/ml|U\/L|lab\b|blood count|CBC\b|WBC|RBC|potassium|sodium|electrolyte/i },
+  { key:'meds',      label:'Medications / Therapy',  color:'cat-meds',
+    rx:/medication|drug\b|therapy|treatment|warfarin|anticoagulant|heparin|statin|aspirin|ACE\b|ARB\b|beta.block|nitroglycerin|insulin|thrombolytic|fibrinolytic|contraindication|allerg|hypersensit|immunosuppress|steroid|NSAID|digoxin|amiodarone/i },
+  { key:'procedure', label:'Prior Procedures',       color:'cat-procedure',
+    rx:/CABG\b|PCI\b|stent|bypass|angioplasty|surgery|surgical|transplant|implant|device|pacemaker|ICD\b|defibrillat|catheter|ablation|valv.*repair|valv.*replac|revascular/i },
+  { key:'history',   label:'Medical History',        color:'cat-history',
+    rx:/history|previous|prior|past|diagnosed|known|chronic|current|suffer|evidence|documented|confir|record/i },
+  { key:'lifestyle', label:'Lifestyle / Behavioral', color:'cat-lifestyle',
+    rx:/alcohol|substance|drug abuse|smok|tobacco|nicotine|physical activ|exercise|BMI|obese|obesity|weight|pregnan|nursing|contraception/i },
+  { key:'admin',     label:'Administrative',         color:'cat-admin',
+    rx:/consent|enroll|trial|comply|visit|follow.?up|investigational|protocol|randomiz|eligible|exclusion|inclusion|criteria|study|participant|understand|language|able to/i },
+  { key:'general',   label:'General Health',         color:'cat-general',
+    rx:/life expectancy|stable|hemodynamic|functional|NYHA|performance status|ECOG|karnofsky|comorbid|complication|active|infection|sepsis|malign|cancer|tumor|neoplasm|renal|hepat|liver|lung|pulmonary|cerebr|stroke|TIA\b|neurolog/i },
+];
+
+function classifyCriterion(text) {
+  for (const cat of CATEGORIES) {
+    if (cat.rx.test(text)) return cat;
+  }
+  return { key:'general', label:'General Health', color:'cat-general' };
+}
+
+// ── Parse raw eligibility text ────────────────────────
+function parseEligibility(raw) {
+  if (!raw) return { inclusion:[], exclusion:[] };
+  // Split on Inclusion / Exclusion headers (case-insensitive, various formats)
+  const incMatch = raw.match(/inclus(?:ion)?\s+criteria?\s*[:\n]/i);
+  const excMatch = raw.match(/exclus(?:ion)?\s+criteria?\s*[:\n]/i);
+  let incText = '', excText = '';
+
+  if (incMatch && excMatch) {
+    const incStart = incMatch.index + incMatch[0].length;
+    const excStart = excMatch.index + excMatch[0].length;
+    if (incStart < excStart) {
+      incText = raw.slice(incStart, excMatch.index);
+      excText = raw.slice(excStart);
+    } else {
+      excText = raw.slice(excStart, incMatch.index);
+      incText = raw.slice(incStart);
+    }
+  } else if (incMatch) {
+    incText = raw.slice(incMatch.index + incMatch[0].length);
+  } else if (excMatch) {
+    excText = raw.slice(excMatch.index + excMatch[0].length);
+  } else {
+    incText = raw;
+  }
+
+  return {
+    inclusion: extractItems(incText),
+    exclusion: extractItems(excText),
+  };
+}
+
+function extractItems(text) {
+  if (!text) return [];
+  // Split on numbered list items or bullet points
+  const lines = text
+    .replace(/\\n/g, '\n')
+    .replace(/\\\[/g,'[').replace(/\\\]/g,']')
+    .replace(/\\\*/g,'*').replace(/\\</g,'<')
+    .split(/\n/)
+    .map(l => l.replace(/^\s*[\d]+[\.\)]\s*/, '').replace(/^\s*[-•*]\s*/, '').trim())
+    .filter(l => l.length > 8 && !/^(patients?|subjects?|participants?)\s+(will\s+be\s+)?(excluded|included)\s+if/i.test(l));
+  return lines;
+}
+
+// ── Group criteria by category ────────────────────────
+function groupByCategory(items) {
+  const groups = {};
+  items.forEach(text => {
+    const cat = classifyCriterion(text);
+    if (!groups[cat.key]) groups[cat.key] = { ...cat, items:[] };
+    groups[cat.key].items.push(text);
+  });
+  return Object.values(groups);
+}
+
+// ── API fetch ─────────────────────────────────────────
+async function fetchTrials() {
+  document.getElementById('output').innerHTML =
+    '<div class="loading"><div class="spinner"></div>Fetching trials from ClinicalTrials.gov…</div>';
+  document.getElementById('countBadge').textContent = 'Loading…';
+
+  const url = 'https://clinicaltrials.gov/api/v2/studies'
+    + '?query.cond=heart+attack+cardiology'
+    + '&filter.overallStatus=COMPLETED'
+    + '&aggFilters=results%3Awith'
+    + '&pageSize=10&format=json';
+
+  try {
+    const res  = await fetch(url);
+    if (!res.ok) throw new Error('API returned ' + res.status);
+    const data = await res.json();
+    allTrials  = (data.studies || []).map(parseStudy);
+    renderCards(allTrials);
+  } catch(e) {
+    document.getElementById('output').innerHTML =
+      `<div class="error-box">⚠️ Could not load trials: ${e.message}<br><br>
+       <button class="btn btn-red" onclick="fetchTrials()">Try again</button></div>`;
+    document.getElementById('countBadge').textContent = 'Error';
+  }
+}
+
+function parseStudy(s) {
+  const p    = s.protocolSection;
+  const id   = p.identificationModule   || {};
+  const stat = p.statusModule            || {};
+  const des  = p.descriptionModule       || {};
+  const cond = p.conditionsModule        || {};
+  const des2 = p.designModule            || {};
+  const spon = p.sponsorCollaboratorsModule || {};
+  const out  = p.outcomesModule          || {};
+  const elig = p.eligibilityModule       || {};
+
+  const phases = (des2.phases || [])
+    .map(ph => ph.replace('PHASE','Phase ').replace('NA','N/A')).join(', ') || 'N/A';
+
+  const enrollment = des2.enrollmentInfo
+    ? `${des2.enrollmentInfo.count?.toLocaleString()} (${des2.enrollmentInfo.type?.toLowerCase()})`
+    : 'N/A';
+
+  const rawElig = elig.eligibilityCriteria || '';
+  const parsed  = parseEligibility(rawElig);
+
+  return {
+    nctId:      id.nctId,
+    title:      id.briefTitle || 'Untitled',
+    status:     stat.overallStatus || 'COMPLETED',
+    start:      stat.startDateStruct?.date || 'N/A',
+    completion: stat.completionDateStruct?.date || 'N/A',
+    phase:      phases,
+    enrollment,
+    sponsor:    spon.leadSponsor?.name || 'N/A',
+    summary:    des.briefSummary || 'No summary available.',
+    conditions: (cond.conditions || []).join(' · '),
+    studyType:  des2.studyType || '',
+    primaryOutcome: (out.primaryOutcomes || [])[0]?.measure || '',
+    eligSex:    elig.sex || '',
+    eligMinAge: elig.minimumAge || '',
+    eligMaxAge: elig.maximumAge || '',
+    eligHealthy: elig.healthyVolunteers,
+    inclusion:  parsed.inclusion,
+    exclusion:  parsed.exclusion,
+  };
+}
+
+// ── Render all cards ──────────────────────────────────
+function renderCards(trials) {
+  if (!trials.length) {
+    document.getElementById('output').innerHTML =
+      '<div class="error-box">No trials match your search.</div>';
+    document.getElementById('countBadge').textContent = '0 trials';
+    return;
+  }
+  document.getElementById('countBadge').textContent =
+    `${trials.length} trial${trials.length!==1?'s':''}`;
+  document.getElementById('output').innerHTML =
+    `<div class="trial-grid">${trials.map((t,i)=>trialCard(t,i)).join('')}</div>`;
+}
+
+function trialCard(t, i) {
+  const phaseColor = /[34]/.test(t.phase) ? 'b-purple'
+                   : /2/.test(t.phase)    ? 'b-orange' : 'b-gray';
+
+  const incGroups = groupByCategory(t.inclusion);
+  const excGroups = groupByCategory(t.exclusion);
+  const incSkills = groupBySkill(t.inclusion);
+  const excSkills = groupBySkill(t.exclusion);
+
+  const eligPills = [
+    t.eligSex    && `👤 ${t.eligSex}`,
+    t.eligMinAge && `⬇️ Min ${t.eligMinAge}`,
+    t.eligMaxAge && `⬆️ Max ${t.eligMaxAge}`,
+    t.eligHealthy === false && '🚫 No healthy volunteers',
+    t.eligHealthy === true  && '✅ Healthy volunteers OK',
+  ].filter(Boolean).map(p=>`<span class="elig-pill">${p}</span>`).join('');
+
+  const renderGroup = (groups, colClass) => groups.map(g => `
+    <div class="cat-group ${g.color}">
+      <div class="cat-label">${g.label}</div>
+      ${g.items.map(item=>`
+        <div class="crit-item ${colClass}">${item.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+      `).join('')}
+    </div>`).join('');
+
+  // Skill view legend tooltip
+  const skillLegend = `
+    <div class="skill-legend">
+      <span class="sk-s0-b" title="${SKILLS[0].desc}">S0 Undeterminable</span>
+      <span class="sk-s1-b" title="${SKILLS[1].desc}">S1 Structured Data</span>
+      <span class="sk-s2-b" title="${SKILLS[2].desc}">S2 Clinical Notes</span>
+      <span class="sk-s3-b" title="${SKILLS[3].desc}">S3 Hybrid</span>
+      <span style="color:#a0aec0;font-size:0.67rem;align-self:center">— hover labels for details</span>
+    </div>`;
+
+  const hasElig = t.inclusion.length + t.exclusion.length > 0;
+
+  return `
+  <div class="trial-card" id="card_${i}">
+    <div class="trial-header">
+      <div class="trial-num">#${i+1}<small>${t.nctId}</small></div>
+      <div class="trial-title">${t.title}</div>
+    </div>
+
+    <div class="badges">
+      <span class="badge b-green">✅ ${t.status}</span>
+      ${t.phase!=='N/A'?`<span class="badge ${phaseColor}">📊 ${t.phase}</span>`:''}
+      ${t.studyType?`<span class="badge b-blue">🔬 ${t.studyType}</span>`:''}
+      ${t.enrollment!=='N/A'?`<span class="badge b-gray">👥 ${t.enrollment} enrolled</span>`:''}
+    </div>
+
+    <div class="trial-meta">
+      <div class="meta-item"><div class="meta-label">Start</div><div class="meta-value">${t.start}</div></div>
+      <div class="meta-item"><div class="meta-label">Completed</div><div class="meta-value">${t.completion}</div></div>
+      <div class="meta-item"><div class="meta-label">Lead Sponsor</div><div class="meta-value">${t.sponsor}</div></div>
+      ${t.primaryOutcome?`<div class="meta-item" style="grid-column:1/-1"><div class="meta-label">Primary Outcome</div><div class="meta-value">${t.primaryOutcome}</div></div>`:''}
+    </div>
+
+    <div class="trial-summary collapsed" id="sum_${i}">${t.summary}</div>
+    <button class="expand-btn" id="expBtn_${i}" onclick="toggleSummary(${i})" style="margin-bottom:14px">▼ Read summary</button>
+
+    ${hasElig ? `
+    <div class="elig-section">
+      <div class="elig-toggle" onclick="toggleElig(${i})">
+        <div class="elig-toggle-label">📋 Inclusion &amp; Exclusion Criteria
+          <span style="font-size:0.75rem;font-weight:400;color:#718096">
+            (${t.inclusion.length} inclusion · ${t.exclusion.length} exclusion)
+          </span>
+        </div>
+        <button class="btn btn-outline btn-sm" id="eligBtn_${i}">▼ Show</button>
+      </div>
+      <div class="elig-body" id="eligBody_${i}">
+        ${eligPills ? `<div class="eligibility-summary">${eligPills}</div>` : ''}
+
+        <div class="view-toggle">
+          <span style="font-size:0.75rem;color:#718096;font-weight:600;margin-right:4px">View:</span>
+          <button class="view-btn active" id="catBtn_${i}" onclick="switchView(${i},'cat')">🏷️ By Category</button>
+          <button class="view-btn" id="sklBtn_${i}" onclick="switchView(${i},'skl')">⚡ By EHR Skill (S0–S3)</button>
+        </div>
+
+        <div id="catView_${i}">
+          <div class="elig-cols">
+            <div>
+              <div class="elig-col-title inc-title">✅ Inclusion Criteria (${t.inclusion.length})</div>
+              ${t.inclusion.length ? renderGroup(incGroups,'inc-col') : '<p style="font-size:0.8rem;color:#a0aec0;padding:8px">None listed.</p>'}
+            </div>
+            <div>
+              <div class="elig-col-title exc-title">🚫 Exclusion Criteria (${t.exclusion.length})</div>
+              ${t.exclusion.length ? renderGroup(excGroups,'exc-col') : '<p style="font-size:0.8rem;color:#a0aec0;padding:8px">None listed.</p>'}
+            </div>
+          </div>
+        </div>
+
+        <div id="sklView_${i}" style="display:none">
+          ${skillLegend}
+          <div class="elig-cols">
+            <div>
+              <div class="elig-col-title inc-title">✅ Inclusion Criteria (${t.inclusion.length})</div>
+              ${t.inclusion.length ? renderGroup(incSkills,'inc-col') : '<p style="font-size:0.8rem;color:#a0aec0;padding:8px">None listed.</p>'}
+            </div>
+            <div>
+              <div class="elig-col-title exc-title">🚫 Exclusion Criteria (${t.exclusion.length})</div>
+              ${t.exclusion.length ? renderGroup(excSkills,'exc-col') : '<p style="font-size:0.8rem;color:#a0aec0;padding:8px">None listed.</p>'}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>` : ''}
+
+    <div class="trial-footer">
+      <a class="link-btn" href="https://clinicaltrials.gov/study/${t.nctId}" target="_blank">View Full Trial ↗</a>
+      ${t.conditions?`<span class="conditions">📋 ${t.conditions}</span>`:''}
+    </div>
+  </div>`;
+}
+
+function toggleSummary(i) {
+  const el  = document.getElementById('sum_'+i);
+  const btn = document.getElementById('expBtn_'+i);
+  const c   = el.classList.toggle('collapsed');
+  btn.textContent = c ? '▼ Read summary' : '▲ Hide summary';
+}
+
+function toggleElig(i) {
+  const body = document.getElementById('eligBody_'+i);
+  const btn  = document.getElementById('eligBtn_'+i);
+  const open = body.classList.toggle('open');
+  btn.textContent = open ? '▲ Hide' : '▼ Show';
+}
+
+function switchView(i, mode) {
+  const catView = document.getElementById('catView_'+i);
+  const sklView = document.getElementById('sklView_'+i);
+  const catBtn  = document.getElementById('catBtn_'+i);
+  const sklBtn  = document.getElementById('sklBtn_'+i);
+  if (mode === 'cat') {
+    catView.style.display = '';
+    sklView.style.display = 'none';
+    catBtn.classList.add('active');
+    sklBtn.classList.remove('active');
+  } else {
+    catView.style.display = 'none';
+    sklView.style.display = '';
+    sklBtn.classList.add('active');
+    catBtn.classList.remove('active');
+  }
+}
+
+function filterCards() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  if (!q) { renderCards(allTrials); return; }
+  renderCards(allTrials.filter(t =>
+    t.title.toLowerCase().includes(q) ||
+    t.summary.toLowerCase().includes(q) ||
+    t.sponsor.toLowerCase().includes(q) ||
+    t.conditions.toLowerCase().includes(q) ||
+    t.inclusion.join(' ').toLowerCase().includes(q) ||
+    t.exclusion.join(' ').toLowerCase().includes(q)
+  ));
+}
+
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  renderCards(allTrials);
+}
+
+fetchTrials();
+</script>
+</body>
+</html>
