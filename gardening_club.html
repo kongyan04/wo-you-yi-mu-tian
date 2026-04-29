@@ -198,6 +198,8 @@ nav{background:#fff;border-bottom:2px solid #e2e8f0;display:flex;overflow-x:auto
 .nur-filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
 .nur-filter-btn{background:#f0fff4;color:#276749;border:1px solid #c6f6d5;border-radius:8px;padding:5px 12px;font-size:0.78rem;font-weight:700;cursor:pointer}
 .nur-filter-btn.active,.nur-filter-btn:hover{background:#2d6a4f;color:#fff;border-color:#2d6a4f}
+.nur-star-pick{color:#718096;font-size:1.3rem;cursor:pointer;transition:color .1s}
+.nur-star-pick:hover{color:#f6ad55}
 
 /* ── Responsive ── */
 @media(max-width:640px){.grid2{grid-template-columns:1fr}.fg-row{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.ft-grid{grid-template-columns:1fr}}
@@ -1868,6 +1870,62 @@ const NURSERIES = [
 const NUR_TAGS = ['全部','蔬菜苗','果树','乔灌木','多年生','香草','一年生'];
 let nurActiveTag = '全部';
 
+// ── Nursery reviews (localStorage) ────────────────────
+function nurReviews() {
+  return JSON.parse(localStorage.getItem('gc_nur_reviews') || '{}');
+}
+function nurSaveReviews(data) {
+  localStorage.setItem('gc_nur_reviews', JSON.stringify(data));
+}
+function nurKey(name) { return name.replace(/\W+/g,'_'); }
+
+function nurStars(n, interactive, key) {
+  if (interactive) {
+    return [1,2,3,4,5].map(i =>
+      `<span class="nur-star-pick" data-v="${i}" onclick="nurPickStar('${key}',${i})" title="${i}星">☆</span>`
+    ).join('');
+  }
+  const reviews = nurReviews()[key] || [];
+  if (!reviews.length) return '<span style="color:#a0aec0;font-size:0.75rem">暂无评分</span>';
+  const avg = reviews.reduce((s,r)=>s+r.stars,0)/reviews.length;
+  const full = Math.round(avg);
+  return [1,2,3,4,5].map(i=>`<span style="color:${i<=full?'#f6ad55':'#e2e8f0'};font-size:1.1rem">★</span>`).join('')
+    + ` <span style="font-size:0.75rem;color:#718096">${avg.toFixed(1)} (${reviews.length}条)</span>`;
+}
+
+function nurPickStar(key, val) {
+  // Highlight stars in the form
+  document.querySelectorAll(`#nurForm_${key} .nur-star-pick`).forEach(s => {
+    s.textContent = parseInt(s.dataset.v) <= val ? '★' : '☆';
+    s.style.color  = parseInt(s.dataset.v) <= val ? '#f6ad55' : '#718096';
+  });
+  document.getElementById(`nurStarVal_${key}`).value = val;
+}
+
+function nurSubmitReview(key) {
+  const stars = parseInt(document.getElementById(`nurStarVal_${key}`).value || '0');
+  const comment = document.getElementById(`nurComment_${key}`).value.trim();
+  const author = document.getElementById(`nurAuthor_${key}`).value.trim() || '匿名';
+  if (!stars) { alert('请先选择星级！'); return; }
+  if (!comment) { alert('请写一点评论！'); return; }
+  const data = nurReviews();
+  if (!data[key]) data[key] = [];
+  data[key].unshift({ stars, comment, author, date: new Date().toLocaleDateString('zh-CN') });
+  nurSaveReviews(data);
+  renderNurseries();
+  toast('评价已保存！');
+}
+
+function nurDeleteReview(key, idx) {
+  const data = nurReviews();
+  if (data[key]) { data[key].splice(idx,1); nurSaveReviews(data); renderNurseries(); }
+}
+
+function nurToggleForm(key) {
+  const el = document.getElementById(`nurForm_${key}`);
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
 function renderNurseries() {
   const filterDiv = document.getElementById('nurFilterBtns');
   filterDiv.innerHTML = NUR_TAGS.map(t =>
@@ -1878,7 +1936,21 @@ function renderNurseries() {
     ? NURSERIES
     : NURSERIES.filter(n => n.tags.some(t => t.includes(nurActiveTag)));
 
-  document.getElementById('nurGrid').innerHTML = list.map(n => `
+  document.getElementById('nurGrid').innerHTML = list.map(n => {
+    const key = nurKey(n.name);
+    const reviews = nurReviews()[key] || [];
+    const reviewHtml = reviews.length ? reviews.map((r,i) => `
+      <div style="background:#fffaf0;border-radius:8px;padding:8px 10px;font-size:0.78rem;position:relative">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+          ${[1,2,3,4,5].map(s=>`<span style="color:${s<=r.stars?'#f6ad55':'#e2e8f0'}">★</span>`).join('')}
+          <strong style="color:#2d3748">${r.author}</strong>
+          <span style="color:#a0aec0">${r.date}</span>
+          <button onclick="nurDeleteReview('${key}',${i})" style="margin-left:auto;background:none;border:none;color:#fc8181;cursor:pointer;font-size:0.7rem;padding:0">删除</button>
+        </div>
+        <div style="color:#4a5568">${r.comment}</div>
+      </div>`).join('') : '';
+
+    return `
     <div class="nur-card">
       <div class="nur-head">
         <div class="nur-icon">${n.icon}</div>
@@ -1887,24 +1959,42 @@ function renderNurseries() {
           <span class="nur-dist">📍 ${n.dist}</span>
         </div>
       </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        ${nurStars(n, false, key)}
+        <button class="btn btn-soft btn-xs" onclick="nurToggleForm('${key}')">✏️ 写评价</button>
+      </div>
       <div class="nur-tags">${n.tags.map(t=>`<span class="nur-tag">${t}</span>`).join('')}</div>
       <div class="nur-info">
-        <div class="nur-row">
-          <span class="nur-row-icon">📌</span>
-          <a href="https://maps.google.com/?q=${encodeURIComponent(n.addr)}" target="_blank">${n.addr}</a>
-        </div>
-        <div class="nur-row">
-          <span class="nur-row-icon">📞</span>
-          <a href="tel:${n.phone.replace(/\D/g,'')}">${n.phone}</a>
-        </div>
-        ${n.web ? `<div class="nur-row"><span class="nur-row-icon">🌐</span><a href="https://${n.web}" target="_blank">${n.web}</a></div>` : ''}
-        <div class="nur-row">
-          <span class="nur-row-icon">🕐</span>
-          <span>${n.hours}</span>
-        </div>
+        <div class="nur-row"><span class="nur-row-icon">📌</span>
+          <a href="https://maps.google.com/?q=${encodeURIComponent(n.addr)}" target="_blank">${n.addr}</a></div>
+        <div class="nur-row"><span class="nur-row-icon">📞</span>
+          <a href="tel:${n.phone.replace(/\D/g,'')}">${n.phone}</a></div>
+        ${n.web?`<div class="nur-row"><span class="nur-row-icon">🌐</span><a href="https://${n.web}" target="_blank">${n.web}</a></div>`:''}
+        <div class="nur-row"><span class="nur-row-icon">🕐</span><span>${n.hours}</span></div>
       </div>
       <div class="nur-note">${n.note}</div>
-    </div>`).join('');
+
+      <!-- Review form -->
+      <div id="nurForm_${key}" style="display:none;border-top:1px solid #f0fff4;padding-top:10px;display:none">
+        <div style="font-size:0.8rem;font-weight:700;color:#2d6a4f;margin-bottom:6px">写评价</div>
+        <div style="display:flex;gap:3px;margin-bottom:6px;font-size:1.3rem;cursor:pointer">
+          ${[1,2,3,4,5].map(i=>`<span class="nur-star-pick" data-v="${i}" onclick="nurPickStar('${key}',${i})">☆</span>`).join('')}
+        </div>
+        <input id="nurStarVal_${key}" type="hidden" value="0">
+        <input id="nurAuthor_${key}" placeholder="您的姓名（可选）"
+          style="width:100%;border:1px solid #e2e8f0;border-radius:6px;padding:5px 8px;font-size:0.8rem;margin-bottom:6px">
+        <textarea id="nurComment_${key}" placeholder="写下您的评价…" rows="3"
+          style="width:100%;border:1px solid #e2e8f0;border-radius:6px;padding:6px 8px;font-size:0.8rem;resize:vertical;margin-bottom:6px"></textarea>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-green btn-sm" onclick="nurSubmitReview('${key}')">提交评价</button>
+          <button class="btn btn-soft btn-sm" onclick="nurToggleForm('${key}')">取消</button>
+        </div>
+      </div>
+
+      <!-- Existing reviews -->
+      ${reviews.length ? `<div style="display:flex;flex-direction:column;gap:6px;border-top:1px solid #f0fff4;padding-top:8px">${reviewHtml}</div>` : ''}
+    </div>`;
+  }).join('');
 }
 
 function nurFilter(tag) {
