@@ -241,7 +241,7 @@ nav{background:#fff;border-bottom:2px solid #e2e8f0;display:flex;overflow-x:auto
 
     <!-- Monthly Announcement -->
     <div class="panel" id="dashAnnouncePanel">
-      <div class="panel-title" id="dashAnnounceTitle">🗓️ 全年种植指南
+      <div class="panel-title" id="dashAnnounceTitle">📢 本月园艺活动
         <button class="btn btn-soft btn-sm" onclick="showTab('calendar')">完整日历</button>
       </div>
       <div id="dashAnnounce"></div>
@@ -1414,8 +1414,8 @@ function renderDashboard() {
     [state.plantings.filter(p=>p.isDefault).length, 'NJ默认', '🗓️'],
   ].map(([n,l,e]) => `<div class="stat"><div class="stat-n">${e}</div><div class="stat-n" style="font-size:1.4rem">${n}</div><div class="stat-l">${l}</div></div>`).join('');
 
-  // ── Yearly announcement (default view) ──
-  if (!announceView) announceView = 'year';
+  // ── Monthly announcement (default view) ──
+  if (!announceView) announceView = 'month';
   renderMonthlyAnnouncement();
 
   // Action needed: upcoming dates within 14 days
@@ -1481,7 +1481,7 @@ function renderDashboard() {
 // ── Monthly / Yearly Announcement ────────────────────────────────────────────
 let announceYear   = new Date().getFullYear();
 let announceMonth  = new Date().getMonth(); // 0-indexed
-let announceView   = 'year'; // 'month' | 'year'
+let announceView   = 'month'; // 'month' | 'year'
 let yearViewFilter  = '全部蔬菜'; // vegetable name filter for year view
 let yearSeasonFilter = '全部季节'; // season label filter for year view
 
