@@ -222,12 +222,16 @@ nav{background:#fff;border-bottom:2px solid #e2e8f0;display:flex;overflow-x:auto
 
 <nav>
   <button class="nav-btn active" onclick="showTab('dashboard')">🏡 主页</button>
-  <button class="nav-btn" onclick="showTab('seeds')">🌰 种子交换</button>
+
   <button class="nav-btn" onclick="showTab('plantings')">🌿 我的花园</button>
-  <button class="nav-btn" onclick="showTab('calendar')">📅 日历</button>
-  <button class="nav-btn" onclick="showTab('members')">👥 成员</button>
   <button class="nav-btn" onclick="showTab('fruittrees')">🍎 果树指南</button>
+  <button class="nav-btn" onclick="showTab('onlinetrees')">🌳 网购果树</button>
+  <button class="nav-btn" onclick="showTab('vegguide')">🥬 蔬菜指南</button>
+  <button class="nav-btn" onclick="showTab('onlineshops')">🛒 网购蔬菜种子</button>
   <button class="nav-btn" onclick="showTab('nurseries')">🏪 附近苗圃</button>
+  <button class="nav-btn" onclick="showTab('calendar')">📅 日历</button>
+  <button class="nav-btn" onclick="showTab('members')" style="margin-left:auto">👥 成员</button>
+
 </nav>
 
 <!-- ═══════════════════ DASHBOARD ═══════════════════ -->
@@ -251,9 +255,7 @@ nav{background:#fff;border-bottom:2px solid #e2e8f0;display:flex;overflow-x:auto
         <div id="dashSeedNow"></div>
       </div>
       <div class="panel">
-        <div class="panel-title">🔄 最新种子交换
-          <button class="btn btn-soft btn-sm" onclick="showTab('seeds')">浏览</button>
-        </div>
+        <div class="panel-title">🔄 最新种子交换</div>
         <div id="dashExchange"></div>
       </div>
     </div>
@@ -264,16 +266,6 @@ nav{background:#fff;border-bottom:2px solid #e2e8f0;display:flex;overflow-x:auto
   </div>
 </div>
 
-<!-- ═══════════════════ SEED EXCHANGE ═══════════════════ -->
-<div class="tab-pane" id="tab-seeds">
-  <div class="page">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
-      <div class="filter-row" id="seedTypeFilter" style="margin:0"></div>
-      <button class="btn btn-green" onclick="openModal('addSeedModal')">+ 提供种子 / 植物</button>
-    </div>
-    <div class="grid3" id="seedGrid"></div>
-  </div>
-</div>
 
 <!-- ═══════════════════ MY GARDEN ═══════════════════ -->
 <div class="tab-pane" id="tab-plantings">
@@ -281,7 +273,6 @@ nav{background:#fff;border-bottom:2px solid #e2e8f0;display:flex;overflow-x:auto
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
       <div class="filter-row" id="plantingFilter" style="margin:0"></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn btn-soft" onclick="loadZone5Defaults()" title="加载5区推荐种植日期">🗓️ 加载5区默认</button>
         <button class="btn btn-green" onclick="openAddPlanting()">+ 添加种植</button>
       </div>
     </div>
@@ -308,7 +299,6 @@ nav{background:#fff;border-bottom:2px solid #e2e8f0;display:flex;overflow-x:auto
           <button class="cal-today-btn" onclick="calGoToday()">今天</button>
         </div>
         <div style="display:flex;gap:8px;align-items:center">
-          <button class="btn btn-soft btn-sm" onclick="loadZone5Defaults()">🗓️ 5区</button>
           <button class="cal-nav-btn" onclick="calNext()">&#8594;</button>
         </div>
       </div>
@@ -323,7 +313,6 @@ nav{background:#fff;border-bottom:2px solid #e2e8f0;display:flex;overflow-x:auto
       <div class="cal-grid" id="calGrid"></div>
       <div id="calNoEvents" style="display:none;text-align:center;padding:20px;color:#a0aec0;font-size:0.88rem">
         本月暂无种植活动。
-        <button class="btn btn-soft btn-sm" style="margin-left:10px" onclick="loadZone5Defaults()">加载5区默认</button>
       </div>
     </div>
     <div class="panel" id="calDayPanel" style="display:none">
@@ -350,7 +339,7 @@ nav{background:#fff;border-bottom:2px solid #e2e8f0;display:flex;overflow-x:auto
       <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
         <span style="font-size:1.5rem">🏪</span>
         <div>
-          <div style="font-weight:800;font-size:1.1rem;color:#1a202c">Millburn附近苗圃 — Nurseries Near Millburn, NJ</div>
+          <div style="font-weight:800;font-size:1.1rem;color:#1a202c">Millburn附近苗圃</div>
           <div style="font-size:0.8rem;color:#718096;margin-top:2px">20英里范围内 · 出售蔬菜苗、果树、花卉的园艺中心 · 建议出发前致电确认营业时间</div>
         </div>
       </div>
@@ -367,7 +356,7 @@ nav{background:#fff;border-bottom:2px solid #e2e8f0;display:flex;overflow-x:auto
       <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
         <span style="font-size:1.5rem">🍎</span>
         <div>
-          <div style="font-weight:800;font-size:1.1rem;color:#1a202c">5区果树指南 — Zone 5 Fruit Tree Guide</div>
+          <div style="font-weight:800;font-size:1.1rem;color:#1a202c">NJ 6b–7a果树指南</div>
           <div style="font-size:0.8rem;color:#718096;margin-top:2px">新泽西 · 蒙特克莱尔地区适种果树 · 最低耐寒 -28°C / -20°F</div>
         </div>
         <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap" id="ftCatBtns"></div>
@@ -377,7 +366,671 @@ nav{background:#fff;border-bottom:2px solid #e2e8f0;display:flex;overflow-x:auto
   </div>
 </div>
 
+<!-- ═══════════════════ VEG GUIDE ═══════════════════ -->
+<div class="tab-pane" id="tab-vegguide">
+  <div class="page">
+    <div class="panel" style="margin-bottom:16px">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <span style="font-size:1.5rem">🥬</span>
+        <div>
+          <div style="font-weight:800;font-size:1.1rem;color:#1a202c">NJ 6b–7a蔬菜指南</div>
+          <div style="font-size:0.8rem;color:#718096;margin-top:2px">新泽西 · 最后霜冻 约4月25日 · 初霜 约10月20日</div>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap" id="vgCatBtns"></div>
+      </div>
+    </div>
+    <div id="vgGrid"></div>
+  </div>
+</div>
+
+<!-- ══════════════ ONLINE SHOPS ══════════════ -->
+<div class="tab-pane" id="tab-onlineshops">
+  <div class="page">
+
+    <div class="panel" style="margin-bottom:16px">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <span style="font-size:1.5rem">🛒</span>
+        <div>
+          <div style="font-weight:800;font-size:1.1rem;color:#1a202c">网上购买种子与植物</div>
+          <div style="font-size:0.8rem;color:#718096;margin-top:2px">精选亚洲蔬菜种子专卖店 &amp; 综合网上苗圃</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ASIAN SPECIALTY ── -->
+    <div style="font-size:0.78rem;font-weight:800;color:#2d6a4f;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid #d8f3dc;">
+      🌸 亚洲特色种子专卖
+    </div>
+
+    <div class="grid3" style="margin-bottom:28px">
+
+      <div class="panel" style="margin:0;border-left:4px solid #f6ad55">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="font-size:1.8rem">🌏</span>
+          <div>
+            <div style="font-weight:800;font-size:1rem;color:#1a202c">Kitazawa Seed Co.</div>
+            <div style="font-size:0.74rem;color:#718096">Oakland, CA · Since 1917 · 美国最老亚洲种子公司</div>
+          </div>
+          <span style="margin-left:auto;background:#fefcbf;color:#744210;border-radius:6px;padding:3px 8px;font-size:0.7rem;font-weight:700">亚洲专卖</span>
+        </div>
+        <div style="font-size:0.82rem;color:#4a5568;margin-bottom:10px;line-height:1.55">
+          专卖日本、中国、韩国蔬菜种子。白菜、小白菜、苦瓜、冬瓜、芥菜、紫苏一应俱全。
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+          <span style="background:#fef3c7;color:#92400e;border-radius:5px;padding:2px 7px;font-size:0.7rem;font-weight:600">白菜</span>
+          <span style="background:#fef3c7;color:#92400e;border-radius:5px;padding:2px 7px;font-size:0.7rem;font-weight:600">苦瓜</span>
+          <span style="background:#fef3c7;color:#92400e;border-radius:5px;padding:2px 7px;font-size:0.7rem;font-weight:600">大根萝卜</span>
+          <span style="background:#fef3c7;color:#92400e;border-radius:5px;padding:2px 7px;font-size:0.7rem;font-weight:600">紫苏</span>
+          <span style="background:#fef3c7;color:#92400e;border-radius:5px;padding:2px 7px;font-size:0.7rem;font-weight:600">冬瓜</span>
+        </div>
+        <a href="https://www.kitazawaseed.com" target="_blank" class="btn btn-orange" style="text-decoration:none;display:inline-block;font-size:0.8rem">
+          访问商店 ↗
+        </a>
+      </div>
+
+      <div class="panel" style="margin:0;border-left:4px solid #68d391">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="font-size:1.8rem">🥬</span>
+          <div>
+            <div style="font-weight:800;font-size:1rem;color:#1a202c">Evergreen Seeds</div>
+            <div style="font-size:0.74rem;color:#718096">California · 中国蔬菜种子专家</div>
+          </div>
+          <span style="margin-left:auto;background:#fefcbf;color:#744210;border-radius:6px;padding:3px 8px;font-size:0.7rem;font-weight:700">亚洲专卖</span>
+        </div>
+        <div style="font-size:0.82rem;color:#4a5568;margin-bottom:10px;line-height:1.55">
+          专注中国传统蔬菜种子，品种非常齐全。芥兰、空心菜、丝瓜、蒜薹、菜心都有。
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+          <span style="background:#f0fff4;color:#276749;border-radius:5px;padding:2px 7px;font-size:0.7rem;font-weight:600">芥兰</span>
+          <span style="background:#f0fff4;color:#276749;border-radius:5px;padding:2px 7px;font-size:0.7rem;font-weight:600">空心菜</span>
+          <span style="background:#f0fff4;color:#276749;border-radius:5px;padding:2px 7px;font-size:0.7rem;font-weight:600">丝瓜</span>
+          <span style="background:#f0fff4;color:#276749;border-radius:5px;padding:2px 7px;font-size:0.7rem;font-weight:600">菜心</span>
+        </div>
+        <a href="https://www.evergreenseeds.com" target="_blank" class="btn btn-green" style="text-decoration:none;display:inline-block;font-size:0.8rem">
+          访问商店 ↗
+        </a>
+      </div>
+
+      <div class="panel" style="margin:0;border-left:4px solid #63b3ed">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="font-size:1.8rem">🌿</span>
+          <div>
+            <div style="font-weight:800;font-size:1rem;color:#1a202c">East West Seed</div>
+            <div style="font-size:0.74rem;color:#718096">eastwestseed.com · 东南亚蔬菜种子</div>
+          </div>
+          <span style="margin-left:auto;background:#fefcbf;color:#744210;border-radius:6px;padding:3px 8px;font-size:0.7rem;font-weight:700">亚洲专卖</span>
+        </div>
+        <div style="font-size:0.82rem;color:#4a5568;margin-bottom:10px;line-height:1.55">
+          东南亚及热带亚洲蔬菜、香草种子。苦瓜、辣椒、蒲公英叶、香茅、南瓜等。
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+          <span style="background:#ebf8ff;color:#2b6cb0;border-radius:5px;padding:2px 7px;font-size:0.7rem;font-weight:600">苦瓜</span>
+          <span style="background:#ebf8ff;color:#2b6cb0;border-radius:5px;padding:2px 7px;font-size:0.7rem;font-weight:600">亚洲辣椒</span>
+          <span style="background:#ebf8ff;color:#2b6cb0;border-radius:5px;padding:2px 7px;font-size:0.7rem;font-weight:600">亚洲南瓜</span>
+        </div>
+        <a href="https://www.eastwestseed.com" target="_blank" class="btn btn-soft" style="text-decoration:none;display:inline-block;font-size:0.8rem">
+          访问商店 ↗
+        </a>
+      </div>
+
+      <div class="panel" style="margin:0;border-left:4px solid #f6ad55">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="font-size:1.8rem">🍀</span>
+          <div>
+            <div style="font-weight:800;font-size:1rem;color:#1a202c">Strictly Medicinal Seeds</div>
+            <div style="font-size:0.74rem;color:#718096">strictlymedicinalseeds.com · 药用香草</div>
+          </div>
+          <span style="margin-left:auto;background:#fefcbf;color:#744210;border-radius:6px;padding:3px 8px;font-size:0.7rem;font-weight:700">亚洲专卖</span>
+        </div>
+        <div style="font-size:0.82rem;color:#4a5568;margin-bottom:10px;line-height:1.55">
+          亚洲传统药用植物和香草种子。艾草、枸杞、薏仁、茅根等中草药种子齐全。
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+          <span style="background:#fef3c7;color:#92400e;border-radius:5px;padding:2px 7px;font-size:0.7rem;font-weight:600">艾草</span>
+          <span style="background:#fef3c7;color:#92400e;border-radius:5px;padding:2px 7px;font-size:0.7rem;font-weight:600">枸杞</span>
+          <span style="background:#fef3c7;color:#92400e;border-radius:5px;padding:2px 7px;font-size:0.7rem;font-weight:600">薏仁</span>
+        </div>
+        <a href="https://www.strictlymedicinalseeds.com" target="_blank" class="btn btn-orange" style="text-decoration:none;display:inline-block;font-size:0.8rem">
+          访问商店 ↗
+        </a>
+      </div>
+
+      <div class="panel" style="margin:0;border-left:4px solid #b794f4">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="font-size:1.8rem">🌸</span>
+          <div>
+            <div style="font-weight:800;font-size:1rem;color:#1a202c">One Green World</div>
+            <div style="font-size:0.74rem;color:#718096">onegreenworld.com · 亚洲果树苗圃</div>
+          </div>
+          <span style="margin-left:auto;background:#fefcbf;color:#744210;border-radius:6px;padding:3px 8px;font-size:0.7rem;font-weight:700">亚洲植株</span>
+        </div>
+        <div style="font-size:0.82rem;color:#4a5568;margin-bottom:10px;line-height:1.55">
+          亚洲梨、柿子、无花果、枇杷等果树苗木。品种丰富，包括许多亚洲原生果树品种。
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+          <span style="background:#faf5ff;color:#553c9a;border-radius:5px;padding:2px 7px;font-size:0.7rem;font-weight:600">亚洲梨</span>
+          <span style="background:#faf5ff;color:#553c9a;border-radius:5px;padding:2px 7px;font-size:0.7rem;font-weight:600">柿子</span>
+          <span style="background:#faf5ff;color:#553c9a;border-radius:5px;padding:2px 7px;font-size:0.7rem;font-weight:600">枇杷</span>
+        </div>
+        <a href="https://www.onegreenworld.com" target="_blank" class="btn btn-soft" style="text-decoration:none;display:inline-block;font-size:0.8rem;background:#e9d8fd;color:#553c9a">
+          访问商店 ↗
+        </a>
+      </div>
+
+      <div class="panel" style="margin:0;border-left:4px solid #fc8181">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <span style="font-size:1.8rem">🛍️</span>
+          <div>
+            <div style="font-weight:800;font-size:1rem;color:#1a202c">Etsy — 亚洲种子卖家</div>
+            <div style="font-size:0.74rem;color:#718096">etsy.com · 个人卖家 · 稀有品种</div>
+          </div>
+          <span style="margin-left:auto;background:#fefcbf;color:#744210;border-radius:6px;padding:3px 8px;font-size:0.7rem;font-weight:700">亚洲专卖</span>
+        </div>
+        <div style="font-size:0.82rem;color:#4a5568;margin-bottom:10px;line-height:1.55">
+          Etsy上有许多中国、日本、越南卖家出售稀有亚洲蔬菜种子，包括大陆引进的品种。
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+          <span style="background:#fff5f5;color:#c53030;border-radius:5px;padding:2px 7px;font-size:0.7rem;font-weight:600">稀有品种</span>
+          <span style="background:#fff5f5;color:#c53030;border-radius:5px;padding:2px 7px;font-size:0.7rem;font-weight:600">手工包装</span>
+        </div>
+        <a href="https://www.etsy.com/search?q=chinese+vegetable+seeds+asian" target="_blank" class="btn btn-red" style="text-decoration:none;display:inline-block;font-size:0.8rem">
+          搜索种子 ↗
+        </a>
+      </div>
+
+    </div>
+
+    <!-- ── GENERAL SEEDS ── -->
+    <div style="font-size:0.78rem;font-weight:800;color:#2d6a4f;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid #d8f3dc;">
+      🌱 综合种子网店
+    </div>
+
+    <div class="grid3" style="margin-bottom:28px">
+
+      <div class="panel" style="margin:0">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <span style="font-size:1.6rem">🌾</span>
+          <div>
+            <div style="font-weight:800;font-size:0.95rem;color:#1a202c">Baker Creek Heirloom Seeds</div>
+            <div style="font-size:0.73rem;color:#718096">rareseeds.com · 传统品种 · 有亚洲蔬菜专区</div>
+          </div>
+        </div>
+        <div style="font-size:0.8rem;color:#4a5568;margin-bottom:10px;line-height:1.5">
+          美国最大的传统种子公司，有专门的亚洲蔬菜分类，含苦瓜、白菜、菜薹、番薯叶等。选择极为丰富。
+        </div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px">
+          <span style="background:#f0fff4;color:#276749;border-radius:5px;padding:2px 7px;font-size:0.68rem;font-weight:600">传统品种</span>
+          <span style="background:#f0fff4;color:#276749;border-radius:5px;padding:2px 7px;font-size:0.68rem;font-weight:600">有亚洲蔬菜区</span>
+          <span style="background:#f0fff4;color:#276749;border-radius:5px;padding:2px 7px;font-size:0.68rem;font-weight:600">非转基因</span>
+        </div>
+        <a href="https://www.rareseeds.com/store/vegetables/asian-vegetables" target="_blank" class="btn btn-green" style="text-decoration:none;display:inline-block;font-size:0.78rem">
+          亚洲蔬菜专区 ↗
+        </a>
+      </div>
+
+      <div class="panel" style="margin:0">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <span style="font-size:1.6rem">🥕</span>
+          <div>
+            <div style="font-weight:800;font-size:0.95rem;color:#1a202c">Johnny's Selected Seeds</div>
+            <div style="font-size:0.73rem;color:#718096">johnnyseeds.com · 专业级 · 高发芽率</div>
+          </div>
+        </div>
+        <div style="font-size:0.8rem;color:#4a5568;margin-bottom:10px;line-height:1.5">
+          专业级蔬菜种子，发芽率高，品质稳定。有中国大白菜、日本茄子、亚洲黄瓜等品种。
+        </div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px">
+          <span style="background:#ebf8ff;color:#2b6cb0;border-radius:5px;padding:2px 7px;font-size:0.68rem;font-weight:600">专业级</span>
+          <span style="background:#ebf8ff;color:#2b6cb0;border-radius:5px;padding:2px 7px;font-size:0.68rem;font-weight:600">高发芽率</span>
+        </div>
+        <a href="https://www.johnnyseeds.com" target="_blank" class="btn btn-soft" style="text-decoration:none;display:inline-block;font-size:0.78rem">
+          访问商店 ↗
+        </a>
+      </div>
+
+      <div class="panel" style="margin:0">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <span style="font-size:1.6rem">🌻</span>
+          <div>
+            <div style="font-weight:800;font-size:0.95rem;color:#1a202c">Seed Savers Exchange</div>
+            <div style="font-size:0.73rem;color:#718096">seedsavers.org · 非营利 · 保护传统品种</div>
+          </div>
+        </div>
+        <div style="font-size:0.8rem;color:#4a5568;margin-bottom:10px;line-height:1.5">
+          非营利组织，致力于保存传统蔬菜品种。有少量亚洲品种，可加入会员交换种子。
+        </div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px">
+          <span style="background:#faf5ff;color:#553c9a;border-radius:5px;padding:2px 7px;font-size:0.68rem;font-weight:600">非营利</span>
+          <span style="background:#faf5ff;color:#553c9a;border-radius:5px;padding:2px 7px;font-size:0.68rem;font-weight:600">会员交换</span>
+        </div>
+        <a href="https://www.seedsavers.org" target="_blank" class="btn btn-soft" style="text-decoration:none;display:inline-block;font-size:0.78rem;background:#e9d8fd;color:#553c9a">
+          访问商店 ↗
+        </a>
+      </div>
+
+      <div class="panel" style="margin:0">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <span style="font-size:1.6rem">🪴</span>
+          <div>
+            <div style="font-weight:800;font-size:0.95rem;color:#1a202c">True Leaf Market</div>
+            <div style="font-size:0.73rem;color:#718096">trueleafmarket.com · 价格实惠 · 量大优惠</div>
+          </div>
+        </div>
+        <div style="font-size:0.8rem;color:#4a5568;margin-bottom:10px;line-height:1.5">
+          价格实惠，可以按重量大量购买。有亚洲蔬菜分区，适合大量种植。
+        </div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px">
+          <span style="background:#fef3c7;color:#92400e;border-radius:5px;padding:2px 7px;font-size:0.68rem;font-weight:600">价格实惠</span>
+          <span style="background:#fef3c7;color:#92400e;border-radius:5px;padding:2px 7px;font-size:0.68rem;font-weight:600">可批量购买</span>
+        </div>
+        <a href="https://www.trueleafmarket.com" target="_blank" class="btn btn-orange" style="text-decoration:none;display:inline-block;font-size:0.78rem">
+          访问商店 ↗
+        </a>
+      </div>
+
+      <div class="panel" style="margin:0">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <span style="font-size:1.6rem">🌺</span>
+          <div>
+            <div style="font-weight:800;font-size:0.95rem;color:#1a202c">Burpee</div>
+            <div style="font-size:0.73rem;color:#718096">burpee.com · 老牌 · 广泛选择</div>
+          </div>
+        </div>
+        <div style="font-size:0.8rem;color:#4a5568;margin-bottom:10px;line-height:1.5">
+          美国最知名的种子公司之一。有部分亚洲蔬菜品种，也出售蔬菜苗，适合初学者。
+        </div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px">
+          <span style="background:#f0fff4;color:#276749;border-radius:5px;padding:2px 7px;font-size:0.68rem;font-weight:600">老牌品牌</span>
+          <span style="background:#f0fff4;color:#276749;border-radius:5px;padding:2px 7px;font-size:0.68rem;font-weight:600">出售植株</span>
+        </div>
+        <a href="https://www.burpee.com" target="_blank" class="btn btn-green" style="text-decoration:none;display:inline-block;font-size:0.78rem">
+          访问商店 ↗
+        </a>
+      </div>
+
+      <div class="panel" style="margin:0">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <span style="font-size:1.6rem">🌳</span>
+          <div>
+            <div style="font-weight:800;font-size:0.95rem;color:#1a202c">Raintree Nursery</div>
+            <div style="font-size:0.73rem;color:#718096">raintreenursery.com · 果树苗木</div>
+          </div>
+        </div>
+        <div style="font-size:0.8rem;color:#4a5568;margin-bottom:10px;line-height:1.5">
+          专卖果树和浆果苗木，有亚洲梨、枇杷、柿子、猕猴桃等亚洲果树。可邮寄到新泽西。
+        </div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px">
+          <span style="background:#ebf8ff;color:#2b6cb0;border-radius:5px;padding:2px 7px;font-size:0.68rem;font-weight:600">果树苗木</span>
+          <span style="background:#ebf8ff;color:#2b6cb0;border-radius:5px;padding:2px 7px;font-size:0.68rem;font-weight:600">邮寄活体</span>
+        </div>
+        <a href="https://www.raintreenursery.com" target="_blank" class="btn btn-soft" style="text-decoration:none;display:inline-block;font-size:0.78rem">
+          访问商店 ↗
+        </a>
+      </div>
+
+    </div>
+
+    <!-- ── TIP ── -->
+    <div class="panel" style="margin:0;background:#f0fff4;border:1px solid #c6f6d5">
+      <div style="font-size:0.85rem;color:#276749;font-weight:700;margin-bottom:6px">💡 购买小贴士</div>
+      <ul style="font-size:0.82rem;color:#4a5568;line-height:1.8;padding-left:18px">
+        <li>亚洲蔬菜种子最好在 <strong>Kitazawa</strong> 或 <strong>Evergreen Seeds</strong> 购买，品种最全，专业性最强。</li>
+        <li>Etsy上可以找到大陆引进的稀有品种，但注意选择信誉好的卖家。</li>
+        <li>果树苗木建议选择 <strong>One Green World</strong> 或 <strong>Raintree</strong>，可以直接邮寄到 NJ。</li>
+        <li>大量购买时 <strong>True Leaf Market</strong> 价格最优惠。</li>
+        <li>春季（3月–5月）和秋季（8月–9月）是网购种子的最佳时机，避开断货期。</li>
+      </ul>
+    </div>
+
+
+  </div>
+</div>
+
+<!-- ══════════════ ONLINE FRUIT TREES ══════════════ -->
+<div class="tab-pane" id="tab-onlinetrees">
+  <div class="page">
+
+    <!-- Section: Asian Specialty -->
+    <div class="panel">
+      <div class="panel-title">🌸 亚洲特色果树专卖</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px">
+
+        <div style="border:1.5px solid #c6f6d5;border-radius:12px;padding:16px">
+          <div style="font-size:1.3rem;margin-bottom:6px">🌺</div>
+          <div style="font-weight:800;font-size:0.95rem">Logee's Tropical Plants</div>
+          <div style="font-size:0.78rem;color:#718096;margin:4px 0 8px">百年老苗圃，荔枝、龙眼、柑橘盆栽专家，发货至全美</div>
+          <a href="https://www.logees.com" target="_blank" style="font-size:0.8rem;color:#2d6a4f;font-weight:700">logees.com →</a>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px">
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">荔枝 Lychee</span>
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">龙眼 Longan</span>
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">柑橘 Citrus</span>
+          </div>
+        </div>
+
+        <div style="border:1.5px solid #c6f6d5;border-radius:12px;padding:16px">
+          <div style="font-size:1.3rem;margin-bottom:6px">🏝️</div>
+          <div style="font-weight:800;font-size:0.95rem">Everglades Farm</div>
+          <div style="font-size:0.78rem;color:#718096;margin:4px 0 8px">佛罗里达热带果树农场，荔枝、龙眼、番石榴稀有品种最全</div>
+          <a href="https://everglades.farm" target="_blank" style="font-size:0.8rem;color:#2d6a4f;font-weight:700">everglades.farm →</a>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px">
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">荔枝 Lychee</span>
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">龙眼 Longan</span>
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">热带稀有品种</span>
+          </div>
+        </div>
+
+        <div style="border:1.5px solid #c6f6d5;border-radius:12px;padding:16px">
+          <div style="font-size:1.3rem;margin-bottom:6px">🥭</div>
+          <div style="font-weight:800;font-size:0.95rem">One Green World</div>
+          <div style="font-size:0.78rem;color:#718096;margin:4px 0 8px">亚洲梨32种、柿子17种、枇杷12种，全美50州发货</div>
+          <a href="https://onegreenworld.com" target="_blank" style="font-size:0.8rem;color:#2d6a4f;font-weight:700">onegreenworld.com →</a>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px">
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">亚洲梨 Asian Pear</span>
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">柿子 Persimmon</span>
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">枇杷 Loquat</span>
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">杨梅 Bayberry</span>
+          </div>
+        </div>
+
+        <div style="border:1.5px solid #c6f6d5;border-radius:12px;padding:16px">
+          <div style="font-size:1.3rem;margin-bottom:6px">🌿</div>
+          <div style="font-weight:800;font-size:0.95rem">Isons Nursery</div>
+          <div style="font-size:0.78rem;color:#718096;margin:4px 0 8px">经营90年老牌苗圃，枣树、猕猴桃及浆果类</div>
+          <a href="https://www.isons.com" target="_blank" style="font-size:0.8rem;color:#2d6a4f;font-weight:700">isons.com →</a>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px">
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">中国大枣 Chinese Jujube</span>
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">猕猴桃 Kiwi</span>
+          </div>
+        </div>
+
+        <div style="border:1.5px solid #c6f6d5;border-radius:12px;padding:16px">
+          <div style="font-size:1.3rem;margin-bottom:6px">🍋</div>
+          <div style="font-weight:800;font-size:0.95rem">Four Winds Growers</div>
+          <div style="font-size:0.78rem;color:#718096;margin:4px 0 8px">盆栽柑橘专家，60+品种，金橘、砂糖橘、柠檬全有</div>
+          <a href="https://www.fourwindsgrowers.com" target="_blank" style="font-size:0.8rem;color:#2d6a4f;font-weight:700">fourwindsgrowers.com →</a>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px">
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">金橘 Kumquat</span>
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">砂糖橘 Mandarin</span>
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">柠檬 Lemon</span>
+          </div>
+        </div>
+
+        <div style="border:1.5px solid #c6f6d5;border-radius:12px;padding:16px">
+          <div style="font-size:1.3rem;margin-bottom:6px">🔴</div>
+          <div style="font-weight:800;font-size:0.95rem">Ty Ty Nursery</div>
+          <div style="font-size:0.78rem;color:#718096;margin:4px 0 8px">近50年老牌，枇杷、枣树、柿子、亚洲梨，全国快递</div>
+          <a href="https://www.tytyga.com" target="_blank" style="font-size:0.8rem;color:#2d6a4f;font-weight:700">tytyga.com →</a>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px">
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">枇杷 Loquat</span>
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">枣树 Jujube</span>
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">柿子 Persimmon</span>
+          </div>
+        </div>
+
+        <div style="border:1.5px solid #c6f6d5;border-radius:12px;padding:16px">
+          <div style="font-size:1.3rem;margin-bottom:6px">🌳</div>
+          <div style="font-weight:800;font-size:0.95rem">Fast Growing Trees</div>
+          <div style="font-size:0.78rem;color:#718096;margin:4px 0 8px">亚洲梨、荔枝、枇杷、金橘等，$99以上免运费到 NJ</div>
+          <a href="https://www.fast-growing-trees.com" target="_blank" style="font-size:0.8rem;color:#2d6a4f;font-weight:700">fast-growing-trees.com →</a>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px">
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">荔枝 Lychee</span>
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">枇杷 Loquat</span>
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">亚洲梨 Asian Pear</span>
+          </div>
+        </div>
+
+        <div style="border:1.5px solid #c6f6d5;border-radius:12px;padding:16px">
+          <div style="font-size:1.3rem;margin-bottom:6px">🛍️</div>
+          <div style="font-weight:800;font-size:0.95rem">Etsy — 亚洲果树卖家</div>
+          <div style="font-size:0.78rem;color:#718096;margin:4px 0 8px">搜索"lychee tree"、"jujube seedling"可找到华人园艺卖家，稀有品种多</div>
+          <a href="https://www.etsy.com/search?q=asian+fruit+tree+seedling" target="_blank" style="font-size:0.8rem;color:#2d6a4f;font-weight:700">Etsy Asian Fruit Trees →</a>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px">
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">稀有品种</span>
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">华人卖家</span>
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">嫁接苗</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Section: General Fruit Tree Nurseries -->
+    <div class="panel">
+      <div class="panel-title">🍎 综合果树苗圃</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px">
+
+        <div style="border:1.5px solid #e2e8f0;border-radius:12px;padding:16px">
+          <div style="font-size:1.3rem;margin-bottom:6px">🌳</div>
+          <div style="font-weight:800;font-size:0.95rem">Raintree Nursery</div>
+          <div style="font-size:0.78rem;color:#718096;margin:4px 0 8px">华盛顿州老牌，苹果/梨/樱桃/李品种齐全，裸根苗邮寄</div>
+          <a href="https://www.raintreenursery.com" target="_blank" style="font-size:0.8rem;color:#2d6a4f;font-weight:700">raintreenursery.com →</a>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px">
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">苹果 Apple</span>
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">樱桃 Cherry</span>
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">裸根苗</span>
+          </div>
+        </div>
+
+        <div style="border:1.5px solid #e2e8f0;border-radius:12px;padding:16px">
+          <div style="font-size:1.3rem;margin-bottom:6px">🍒</div>
+          <div style="font-weight:800;font-size:0.95rem">Stark Bros Nursery</div>
+          <div style="font-size:0.78rem;color:#718096;margin:4px 0 8px">1816年创立，美国最老苗圃之一，矮化砧木适合小院</div>
+          <a href="https://www.starkbros.com" target="_blank" style="font-size:0.8rem;color:#2d6a4f;font-weight:700">starkbros.com →</a>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px">
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">矮化砧木</span>
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">桃 Peach</span>
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">李 Plum</span>
+          </div>
+        </div>
+
+        <div style="border:1.5px solid #e2e8f0;border-radius:12px;padding:16px">
+          <div style="font-size:1.3rem;margin-bottom:6px">🫐</div>
+          <div style="font-weight:800;font-size:0.95rem">Willis Orchard Company</div>
+          <div style="font-size:0.78rem;color:#718096;margin:4px 0 8px">热带/亚热带果树选择多，桑树、无花果、柿子齐全</div>
+          <a href="https://www.willisorchards.com" target="_blank" style="font-size:0.8rem;color:#2d6a4f;font-weight:700">willisorchards.com →</a>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px">
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">桑树 Mulberry</span>
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">无花果 Fig</span>
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">柿子 Persimmon</span>
+          </div>
+        </div>
+
+        <div style="border:1.5px solid #e2e8f0;border-radius:12px;padding:16px">
+          <div style="font-size:1.3rem;margin-bottom:6px">🌱</div>
+          <div style="font-weight:800;font-size:0.95rem">Nature Hills Nursery</div>
+          <div style="font-size:0.78rem;color:#718096;margin:4px 0 8px">美国最大在线苗圃之一，46州发货，$199以上免运费</div>
+          <a href="https://www.naturehills.com" target="_blank" style="font-size:0.8rem;color:#2d6a4f;font-weight:700">naturehills.com →</a>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px">
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">品种齐全</span>
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">全年发货</span>
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">可按州筛选</span>
+          </div>
+        </div>
+
+        <div style="border:1.5px solid #e2e8f0;border-radius:12px;padding:16px">
+          <div style="font-size:1.3rem;margin-bottom:6px">🌰</div>
+          <div style="font-weight:800;font-size:0.95rem">Burnt Ridge Nursery</div>
+          <div style="font-size:0.78rem;color:#718096;margin:4px 0 8px">华盛顿州家庭农场，亚洲梨/柿子/坚果类，1月–6月及秋季发货</div>
+          <a href="https://www.burntridgenursery.com" target="_blank" style="font-size:0.8rem;color:#2d6a4f;font-weight:700">burntridgenursery.com →</a>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px">
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">亚洲梨 Asian Pear</span>
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">柿子 Persimmon</span>
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">坚果 Nut Trees</span>
+          </div>
+        </div>
+
+        <div style="border:1.5px solid #e2e8f0;border-radius:12px;padding:16px">
+          <div style="font-size:1.3rem;margin-bottom:6px">🍎</div>
+          <div style="font-weight:800;font-size:0.95rem">Cummins Nursery</div>
+          <div style="font-size:0.78rem;color:#718096;margin:4px 0 8px">纽约州苗圃，矮化苹果/梨砧木专家，适合东北地区气候</div>
+          <a href="https://www.cumminsnursery.com" target="_blank" style="font-size:0.8rem;color:#2d6a4f;font-weight:700">cumminsnursery.com →</a>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px">
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">苹果 Apple</span>
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">梨 Pear</span>
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">矮化砧木</span>
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">适合东北地区</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Section: Berry Nurseries -->
+    <div class="panel">
+      <div class="panel-title">🫐 浆果苗圃</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px">
+
+        <div style="border:1.5px solid #c6f6d5;border-radius:12px;padding:16px">
+          <div style="font-size:1.3rem;margin-bottom:6px">🐺</div>
+          <div style="font-weight:800;font-size:0.95rem">Hartmann's Plant Company</div>
+          <div style="font-size:0.78rem;color:#718096;margin:4px 0 8px">枸杞（宁夏枸杞）、五味子等亚洲浆果专卖，品种稀有</div>
+          <a href="https://www.hartmannsplantcompany.com" target="_blank" style="font-size:0.8rem;color:#2d6a4f;font-weight:700">hartmannsplantcompany.com →</a>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px">
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">枸杞 Goji Berry</span>
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">五味子 Schisandra</span>
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">稀有品种</span>
+          </div>
+        </div>
+
+        <div style="border:1.5px solid #c6f6d5;border-radius:12px;padding:16px">
+          <div style="font-size:1.3rem;margin-bottom:6px">🫐</div>
+          <div style="font-weight:800;font-size:0.95rem">Nourse Farms</div>
+          <div style="font-size:0.78rem;color:#718096;margin:4px 0 8px">马萨诸塞州浆果专业苗圃，蓝莓/草莓/树莓品质最佳，近 NJ 发货快</div>
+          <a href="https://www.noursefarms.com" target="_blank" style="font-size:0.8rem;color:#2d6a4f;font-weight:700">noursefarms.com →</a>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px">
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">蓝莓 Blueberry</span>
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">草莓 Strawberry</span>
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">树莓 Raspberry</span>
+          </div>
+        </div>
+
+        <div style="border:1.5px solid #c6f6d5;border-radius:12px;padding:16px">
+          <div style="font-size:1.3rem;margin-bottom:6px">🍓</div>
+          <div style="font-weight:800;font-size:0.95rem">Indiana Berry</div>
+          <div style="font-size:0.78rem;color:#718096;margin:4px 0 8px">浆果品种最全在线苗圃之一，黑莓/蓝莓/醋栗/接骨木一站购齐</div>
+          <a href="https://www.indianaberry.com" target="_blank" style="font-size:0.8rem;color:#2d6a4f;font-weight:700">indianaberry.com →</a>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px">
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">黑莓 Blackberry</span>
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">醋栗 Gooseberry</span>
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">接骨木 Elderberry</span>
+          </div>
+        </div>
+
+        <div style="border:1.5px solid #c6f6d5;border-radius:12px;padding:16px">
+          <div style="font-size:1.3rem;margin-bottom:6px">🌊</div>
+          <div style="font-weight:800;font-size:0.95rem">One Green World</div>
+          <div style="font-size:0.78rem;color:#718096;margin:4px 0 8px">沙棘、枸杞、五味子等亚洲药食两用浆果，品种丰富</div>
+          <a href="https://onegreenworld.com" target="_blank" style="font-size:0.8rem;color:#2d6a4f;font-weight:700">onegreenworld.com →</a>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px">
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">沙棘 Sea Buckthorn</span>
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">枸杞 Goji</span>
+            <span style="background:#d8f3dc;color:#1b4332;border-radius:5px;padding:2px 8px;font-size:0.72rem">五味子 Schisandra</span>
+          </div>
+        </div>
+
+        <div style="border:1.5px solid #e2e8f0;border-radius:12px;padding:16px">
+          <div style="font-size:1.3rem;margin-bottom:6px">🍇</div>
+          <div style="font-weight:800;font-size:0.95rem">Raintree Nursery</div>
+          <div style="font-size:0.78rem;color:#718096;margin:4px 0 8px">蓝莓、树莓、醋栗、鹅莓种类齐全，裸根苗邮寄</div>
+          <a href="https://www.raintreenursery.com" target="_blank" style="font-size:0.8rem;color:#2d6a4f;font-weight:700">raintreenursery.com →</a>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px">
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">蓝莓 Blueberry</span>
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">醋栗 Currant</span>
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">鹅莓 Gooseberry</span>
+          </div>
+        </div>
+
+        <div style="border:1.5px solid #e2e8f0;border-radius:12px;padding:16px">
+          <div style="font-size:1.3rem;margin-bottom:6px">🌿</div>
+          <div style="font-weight:800;font-size:0.95rem">Stark Bros Nursery</div>
+          <div style="font-size:0.78rem;color:#718096;margin:4px 0 8px">草莓、蓝莓、树莓、黑莓，品种齐全，适合东北地区</div>
+          <a href="https://www.starkbros.com" target="_blank" style="font-size:0.8rem;color:#2d6a4f;font-weight:700">starkbros.com →</a>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:5px">
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">草莓 Strawberry</span>
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">蓝莓 Blueberry</span>
+            <span style="background:#ebebeb;color:#444;border-radius:5px;padding:2px 8px;font-size:0.72rem">黑莓 Blackberry</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Quick Reference Table -->
+    <div class="panel">
+      <div class="panel-title">📋 亚洲果树品种速查</div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:0.83rem">
+          <thead>
+            <tr style="background:#f0fff4">
+              <th style="padding:10px 12px;text-align:left;border-bottom:2px solid #c6f6d5;font-weight:700;color:#276749">果树 Tree</th>
+              <th style="padding:10px 12px;text-align:left;border-bottom:2px solid #c6f6d5;font-weight:700;color:#276749">英文名</th>
+              <th style="padding:10px 12px;text-align:left;border-bottom:2px solid #c6f6d5;font-weight:700;color:#276749">耐寒区 Zone</th>
+              <th style="padding:10px 12px;text-align:left;border-bottom:2px solid #c6f6d5;font-weight:700;color:#276749">推荐商家</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Zone 3 -->
+            <tr style="border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🟢 银杏（白果）</td><td style="padding:9px 12px">Ginkgo</td><td style="padding:9px 12px">3–9</td><td style="padding:9px 12px">Nature Hills, Fast Growing Trees</td></tr>
+            <tr style="background:#fafafa;border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🔴 枸杞</td><td style="padding:9px 12px">Goji Berry</td><td style="padding:9px 12px">3–10</td><td style="padding:9px 12px">Hartmann's, One Green World, Etsy</td></tr>
+            <tr style="border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🟡 沙棘</td><td style="padding:9px 12px">Sea Buckthorn</td><td style="padding:9px 12px">3–7</td><td style="padding:9px 12px">One Green World, Raintree</td></tr>
+            <tr style="background:#fafafa;border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🍓 草莓</td><td style="padding:9px 12px">Strawberry</td><td style="padding:9px 12px">3–10</td><td style="padding:9px 12px">Nourse Farms, Stark Bros, Indiana Berry</td></tr>
+            <tr style="border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🫐 蓝莓</td><td style="padding:9px 12px">Blueberry</td><td style="padding:9px 12px">3–7</td><td style="padding:9px 12px">Nourse Farms, Raintree, Stark Bros</td></tr>
+            <tr style="background:#fafafa;border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🟤 接骨木莓</td><td style="padding:9px 12px">Elderberry</td><td style="padding:9px 12px">3–9</td><td style="padding:9px 12px">Indiana Berry, One Green World, Raintree</td></tr>
+            <tr style="border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">⚫ 黑加仑</td><td style="padding:9px 12px">Black Currant</td><td style="padding:9px 12px">3–6</td><td style="padding:9px 12px">Indiana Berry, Raintree, One Green World</td></tr>
+            <tr style="background:#fafafa;border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🟢 醋栗/鹅莓</td><td style="padding:9px 12px">Gooseberry</td><td style="padding:9px 12px">3–8</td><td style="padding:9px 12px">Indiana Berry, Raintree, Stark Bros</td></tr>
+            <!-- Zone 4 -->
+            <tr style="border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🟠 柿子</td><td style="padding:9px 12px">Persimmon</td><td style="padding:9px 12px">4–9</td><td style="padding:9px 12px">One Green World, Willis Orchards, Ty Ty</td></tr>
+            <tr style="background:#fafafa;border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🫐 桑树</td><td style="padding:9px 12px">Mulberry</td><td style="padding:9px 12px">4–8</td><td style="padding:9px 12px">Willis Orchards, Nature Hills</td></tr>
+            <tr style="border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🍏 苹果/梨</td><td style="padding:9px 12px">Apple / Pear</td><td style="padding:9px 12px">4–8</td><td style="padding:9px 12px">Cummins (NY), Stark Bros, Raintree</td></tr>
+            <tr style="background:#fafafa;border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🟢 猕猴桃</td><td style="padding:9px 12px">Kiwi</td><td style="padding:9px 12px">4–9</td><td style="padding:9px 12px">One Green World, Isons, Raintree</td></tr>
+            <tr style="border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🟤 板栗</td><td style="padding:9px 12px">Chinese Chestnut</td><td style="padding:9px 12px">4–8</td><td style="padding:9px 12px">Burnt Ridge, Nature Hills, Stark Bros</td></tr>
+            <tr style="background:#fafafa;border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🔴 树莓/覆盆子</td><td style="padding:9px 12px">Raspberry</td><td style="padding:9px 12px">4–9</td><td style="padding:9px 12px">Nourse Farms, Indiana Berry, Stark Bros</td></tr>
+            <tr style="border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🟣 五味子</td><td style="padding:9px 12px">Schisandra (5-Flavor Berry)</td><td style="padding:9px 12px">4–8</td><td style="padding:9px 12px">Hartmann's, One Green World</td></tr>
+            <!-- Zone 5 -->
+            <tr style="border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🍈 亚洲梨</td><td style="padding:9px 12px">Asian Pear</td><td style="padding:9px 12px">5–9</td><td style="padding:9px 12px">One Green World, Raintree, Burnt Ridge</td></tr>
+            <tr style="background:#fafafa;border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">⚫ 黑莓</td><td style="padding:9px 12px">Blackberry</td><td style="padding:9px 12px">5–9</td><td style="padding:9px 12px">Indiana Berry, Stark Bros, Nourse Farms</td></tr>
+            <tr style="background:#fafafa;border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🔴 中国大枣</td><td style="padding:9px 12px">Jujube</td><td style="padding:9px 12px">5–10</td><td style="padding:9px 12px">Isons, Ty Ty, One Green World</td></tr>
+            <tr style="border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🍑 中国桃</td><td style="padding:9px 12px">Chinese Peach</td><td style="padding:9px 12px">5–9</td><td style="padding:9px 12px">Stark Bros, Nature Hills, Raintree</td></tr>
+            <tr style="background:#fafafa;border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🌸 日本樱桃</td><td style="padding:9px 12px">Japanese Cherry</td><td style="padding:9px 12px">5–8</td><td style="padding:9px 12px">Stark Bros, Nature Hills</td></tr>
+            <tr style="border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🟡 杏</td><td style="padding:9px 12px">Apricot (Asian)</td><td style="padding:9px 12px">5–8</td><td style="padding:9px 12px">Stark Bros, Raintree, Nature Hills</td></tr>
+            <tr style="background:#fafafa;border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🟣 李/梅</td><td style="padding:9px 12px">Japanese Plum / Mei</td><td style="padding:9px 12px">5–9</td><td style="padding:9px 12px">Stark Bros, Raintree, One Green World</td></tr>
+            <!-- Zone 6 -->
+            <tr style="border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🟤 无花果</td><td style="padding:9px 12px">Fig</td><td style="padding:9px 12px">6–10</td><td style="padding:9px 12px">Willis Orchards, Nature Hills, Stark Bros</td></tr>
+            <!-- Zone 7 -->
+            <tr style="background:#fafafa;border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🍑 枇杷</td><td style="padding:9px 12px">Loquat</td><td style="padding:9px 12px">7–10</td><td style="padding:9px 12px">One Green World, Ty Ty, Fast Growing Trees</td></tr>
+            <tr style="border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🔴 石榴</td><td style="padding:9px 12px">Pomegranate</td><td style="padding:9px 12px">7–11 / 盆栽</td><td style="padding:9px 12px">Fast Growing Trees, Willis Orchards, Ty Ty</td></tr>
+            <tr style="background:#fafafa;border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🔵 杨梅</td><td style="padding:9px 12px">Chinese Bayberry</td><td style="padding:9px 12px">7–10</td><td style="padding:9px 12px">One Green World, Etsy</td></tr>
+            <!-- Zone 8 -->
+            <tr style="border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🍋 金橘</td><td style="padding:9px 12px">Kumquat</td><td style="padding:9px 12px">8–11 / 盆栽</td><td style="padding:9px 12px">Four Winds Growers, Logee's</td></tr>
+            <tr style="background:#fafafa;border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🟡 柚子</td><td style="padding:9px 12px">Yuzu</td><td style="padding:9px 12px">8–11 / 盆栽</td><td style="padding:9px 12px">Four Winds Growers, Logee's</td></tr>
+            <!-- Zone 9 -->
+            <tr style="border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🍊 砂糖橘</td><td style="padding:9px 12px">Mandarin</td><td style="padding:9px 12px">9–11 / 盆栽</td><td style="padding:9px 12px">Four Winds Growers, Fast Growing Trees</td></tr>
+            <tr style="background:#fafafa;border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🟡 黄皮</td><td style="padding:9px 12px">Wampee</td><td style="padding:9px 12px">9–11 / 盆栽</td><td style="padding:9px 12px">Logee's, Everglades Farm, Etsy</td></tr>
+            <!-- Zone 10 -->
+            <tr style="border-bottom:1px solid #e2e8f0"><td style="padding:9px 12px">🌺 荔枝</td><td style="padding:9px 12px">Lychee</td><td style="padding:9px 12px">10–11 / 盆栽</td><td style="padding:9px 12px">Logee's, Everglades Farm, Fast Growing Trees</td></tr>
+            <tr style="background:#fafafa"><td style="padding:9px 12px">🍇 龙眼</td><td style="padding:9px 12px">Longan</td><td style="padding:9px 12px">10–11 / 盆栽</td><td style="padding:9px 12px">Logee's, Everglades Farm</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tip panel -->
+    <div class="panel" style="margin:0;background:#f0fff4;border:1px solid #c6f6d5">
+      <div style="font-size:0.85rem;color:#276749;font-weight:700;margin-bottom:6px">💡 购买小贴士</div>
+      <ul style="font-size:0.82rem;color:#4a5568;line-height:1.8;padding-left:18px">
+        <li>NJ 属于 <strong>Zone 6b–7a</strong>，大部分柑橘类需盆栽越冬；枇杷、柿子、枣树可露地种植。</li>
+        <li>购买裸根苗最佳时间是 <strong>早春（2月–4月）</strong>，苗圃通常在此时大量发货。</li>
+        <li>盆栽果树购买时选择 <strong>嫁接苗</strong>（grafted），比实生苗结果更早更稳定。</li>
+        <li>荔枝、龙眼等热带果树在 NJ 室内越冬需要充足光照，建议配合植物灯。</li>
+        <li>Cummins Nursery（纽约州）与 NJ 气候相同，发货更快，推荐苹果/梨首选。</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
 <!-- ══════════════ MODALS ══════════════ -->
+
 
 <!-- Add Seed -->
 <div class="backdrop" id="addSeedModal" onclick="closeOnBackdrop(event,'addSeedModal')">
@@ -571,19 +1224,21 @@ function showTab(name) {
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
   const btns = document.querySelectorAll('.nav-btn');
-  const labels = ['dashboard','seeds','plantings','calendar','members','fruittrees','nurseries'];
+  const labels = ['dashboard','plantings','members','fruittrees','onlinetrees','vegguide','onlineshops','nurseries','calendar'];
   btns[labels.indexOf(name)]?.classList.add('active');
   renderTab(name);
 }
 
 function renderTab(name) {
   if (name === 'dashboard')  renderDashboard();
-  if (name === 'seeds')      renderSeeds();
+
   if (name === 'plantings')  renderPlantings();
   if (name === 'calendar')   renderCalendar();
   if (name === 'members')    renderMembers();
   if (name === 'fruittrees') renderFruitTrees();
+  if (name === 'vegguide')   renderVegGuide();
   if (name === 'nurseries')  renderNurseries();
+  // onlineshops and onlinetrees tabs use static HTML, no render function needed
 }
 
 // ── Member selector ───────────────────────────────────────────────────────────
@@ -756,7 +1411,7 @@ function renderDashboard() {
     [realMemberCount,                        '俱乐部成员',   '👥'],
     [activeSeeds.length,                     '可用种子',     '🌰'],
     [state.plantings.filter(p => me ? p.memberId===me : !p.isDefault).length, me?'我的种植':'成员种植','🌿'],
-    [state.plantings.filter(p=>p.isDefault).length, '5区默认', '🗓️'],
+    [state.plantings.filter(p=>p.isDefault).length, 'NJ默认', '🗓️'],
   ].map(([n,l,e]) => `<div class="stat"><div class="stat-n">${e}</div><div class="stat-n" style="font-size:1.4rem">${n}</div><div class="stat-l">${l}</div></div>`).join('');
 
   // ── Monthly announcement ──
@@ -779,7 +1434,7 @@ function renderDashboard() {
   } else {
     seedNowEl.innerHTML = soon.map(p => {
       const sm = STATUS_META[p.status] || STATUS_META.seeded;
-      const zone = p.isDefault ? `<span style="font-size:0.68rem;background:#ebf8ff;color:#2b6cb0;border-radius:4px;padding:0 5px;margin-left:4px">5区</span>` : '';
+      const zone = p.isDefault ? `<span style="font-size:0.68rem;background:#ebf8ff;color:#2b6cb0;border-radius:4px;padding:0 5px;margin-left:4px">NJ</span>` : '';
       return `<div class="planting-row" style="cursor:pointer;padding:8px 10px" onclick="showTab('plantings')">
         <div style="width:40px;height:40px;flex-shrink:0;border-radius:50%;overflow:hidden;background:#e8f5e9;position:relative;display:flex;align-items:center;justify-content:center;font-size:1.3rem">
           <span class="picon-${p.id}">${sm.icon}</span>
@@ -823,9 +1478,11 @@ function renderDashboard() {
 }
 
 // ── Monthly / Yearly Announcement ────────────────────────────────────────────
-let announceYear  = new Date().getFullYear();
-let announceMonth = new Date().getMonth(); // 0-indexed
-let announceView  = 'year'; // 'month' | 'year'
+let announceYear   = new Date().getFullYear();
+let announceMonth  = new Date().getMonth(); // 0-indexed
+let announceView   = 'year'; // 'month' | 'year'
+let yearViewFilter  = '全部蔬菜'; // vegetable name filter for year view
+let yearSeasonFilter = '全部季节'; // season label filter for year view
 
 function announceNav(dir) {
   if (announceView === 'year') {
@@ -843,6 +1500,7 @@ function setAnnounceView(v) {
   announceView = v;
   // Reset month to current when switching back to month view
   if (v === 'month') { announceMonth = new Date().getMonth(); announceYear = new Date().getFullYear(); }
+  if (v === 'year')  { yearViewFilter = '全部蔬菜'; yearSeasonFilter = '全部季节'; }
   renderMonthlyAnnouncement();
   setTimeout(loadPlantThumbs, 0);
 }
@@ -856,7 +1514,7 @@ function renderMonthlyAnnouncement() {
   // ── title bar ──
   const navLabel = announceView === 'year'
     ? `🗓️ ${yr} 年 — 全年种植指南`
-    : `📢 ${MONTHS[mo]} ${yr} — 园艺指南${yr===nowYr&&mo===nowMo?' <span style="font-size:0.7rem;background:#2d6a4f;color:#fff;border-radius:4px;padding:1px 6px;vertical-align:middle">本月</span>':''}`;
+    : `📢 ${MONTHS[mo]} ${yr} — 园艺指南`;
 
   document.getElementById('dashAnnounceTitle').innerHTML =
     `<span style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
@@ -864,16 +1522,25 @@ function renderMonthlyAnnouncement() {
        ${navLabel}
        <button onclick="announceNav(1)" style="background:#d8f3dc;border:none;border-radius:6px;padding:3px 10px;cursor:pointer;font-size:1rem;font-weight:700;color:#1b4332">›</button>
      </span>
-     <span style="display:flex;gap:6px;align-items:center">
+     <span style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
        <button onclick="setAnnounceView('month')" style="border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:0.76rem;font-weight:700;${announceView==='month'?'background:#2d6a4f;color:#fff':'background:#d8f3dc;color:#1b4332'}">月视图</button>
        <button onclick="setAnnounceView('year')"  style="border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:0.76rem;font-weight:700;${announceView==='year' ?'background:#2d6a4f;color:#fff':'background:#d8f3dc;color:#1b4332'}">全年视图</button>
-       <button class="btn btn-soft btn-sm" onclick="showTab('calendar')">日历</button>
+       ${announceView==='year' ? (() => {
+         const selStyle = 'border:1px solid #c6f6d5;border-radius:6px;padding:3px 8px;font-size:0.76rem;font-weight:700;color:#1b4332;background:#d8f3dc;cursor:pointer';
+         const names = ['全部蔬菜', ...new Set(state.plantings.filter(p=>[p.seedDate,p.germDate,p.transDate,p.harvestDate].some(d=>d&&d.startsWith(yr))).map(p=>p.name).sort())];
+         const seasons = ['全部季节','春播','秋播','第二批','越冬'];
+         return `<select onchange="yearViewFilter=this.value;renderMonthlyAnnouncement()" style="${selStyle}">${names.map(n=>`<option value="${n}"${n===yearViewFilter?' selected':''}>${n}</option>`).join('')}</select>`
+               +`<select onchange="yearSeasonFilter=this.value;renderMonthlyAnnouncement()" style="${selStyle}">${seasons.map(s=>`<option value="${s}"${s===yearSeasonFilter?' selected':''}>${s}</option>`).join('')}</select>`;
+       })() : ''}
      </span>`;
 
   // ── YEAR VIEW ──────────────────────────────────────────────────────────────
   if (announceView === 'year') {
     const relevant = state.plantings.filter(p =>
-      [p.seedDate, p.germDate, p.transDate, p.harvestDate].some(d => d && d.startsWith(yr))
+      [p.seedDate, p.germDate, p.transDate, p.harvestDate].some(d => d && d.startsWith(yr)) &&
+      (yearViewFilter === '全部蔬菜' || p.name === yearViewFilter) &&
+      (yearSeasonFilter === '全部季节' ||
+        (yearSeasonFilter === '春播' ? !p.seasonLabel : p.seasonLabel === yearSeasonFilter))
     );
     if (!relevant.length) {
       document.getElementById('dashAnnounce').innerHTML =
@@ -1073,7 +1740,7 @@ function renderUpcoming() {
   const end = addDays(todayStr, 30);
   const events = [];
   state.plantings.forEach(p => {
-    const lbl = p.isDefault ? '📋 5区日程' : memberName(p.memberId);
+    const lbl = p.isDefault ? '📋 NJ日程' : memberName(p.memberId);
     if (p.seedDate    && p.seedDate >= todayStr    && p.seedDate <= end)    events.push({date:p.seedDate,    text:`🌰 播种：${p.name}${p.variety?' ('+p.variety+')':''}`,  sub:lbl, color:'#fbd38d', plant:p.name});
     if (p.germDate    && p.germDate >= todayStr    && p.germDate <= end)    events.push({date:p.germDate,    text:`🌱 发芽：${p.name}${p.variety?' ('+p.variety+')':''}`,sub:lbl, color:'#68d391', plant:p.name});
     if (p.transDate   && p.transDate >= todayStr   && p.transDate <= end)   events.push({date:p.transDate,   text:`🪴 移植：${p.name}${p.variety?' ('+p.variety+')':''}`,sub:lbl, color:'#63b3ed', plant:p.name});
@@ -1157,16 +1824,15 @@ let plantingFilter = 'mine';
 function renderPlantings() {
   const me = state.currentMember;
   const filters = me
-    ? [{k:'mine',l:'我的花园'},{k:'all',l:'所有成员'},{k:'zone5',l:'🗓️ 5区日程'},{k:'seeded',l:'🌰 已播种'},{k:'germinated',l:'🌱 已发芽'},{k:'transplanted',l:'🪴 已移植'},{k:'growing',l:'🌿 生长中'},{k:'harvested',l:'🥬 已收获'}]
-    : [{k:'all',l:'所有成员'},{k:'zone5',l:'🗓️ 5区日程'},{k:'seeded',l:'🌰 已播种'},{k:'germinated',l:'🌱 已发芽'},{k:'growing',l:'🌿 生长中'},{k:'harvested',l:'🥬 已收获'}];
+    ? [{k:'mine',l:'我的花园'},{k:'all',l:'所有成员'},{k:'seeded',l:'🌰 已播种'},{k:'germinated',l:'🌱 已发芽'},{k:'transplanted',l:'🪴 已移植'},{k:'growing',l:'🌿 生长中'},{k:'harvested',l:'🥬 已收获'}]
+    : [{k:'all',l:'所有成员'},{k:'seeded',l:'🌰 已播种'},{k:'germinated',l:'🌱 已发芽'},{k:'growing',l:'🌿 生长中'},{k:'harvested',l:'🥬 已收获'}];
 
   document.getElementById('plantingFilter').innerHTML = filters.map(f =>
     `<button class="filter-btn ${f.k===plantingFilter?'active':''}" onclick="setPlantingFilter('${f.k}')">${f.l}</button>`
   ).join('');
 
-  let list = state.plantings;
+  let list = state.plantings.filter(p => !p.isDefault); // never show NJ defaults in My Garden
   if      (plantingFilter === 'mine'  && me) list = list.filter(p => p.memberId === me);
-  else if (plantingFilter === 'zone5')       list = list.filter(p => p.isDefault);
   else if (plantingFilter !== 'all' && plantingFilter !== 'mine') list = list.filter(p => p.status === plantingFilter);
   list = [...list].sort((a,b) => (a.seedDate||'').localeCompare(b.seedDate||''));
 
@@ -1188,7 +1854,7 @@ function renderPlantings() {
       return `<span class="date-chip ${past?'done':''}" style="${soon?'border-color:#f6ad55;background:#fffaf0;color:#c05621':''}">${icon} ${label} ${fmtDate(d)}${soon?' ⚠️':''}</span>`;
     };
     const zoneBadge = p.isDefault
-      ? `<span style="font-size:0.68rem;background:#ebf8ff;color:#2b6cb0;border:1px solid #bee3f8;border-radius:5px;padding:1px 6px;margin-left:5px">5区</span>` : '';
+      ? `<span style="font-size:0.68rem;background:#ebf8ff;color:#2b6cb0;border:1px solid #bee3f8;border-radius:5px;padding:1px 6px;margin-left:5px">NJ</span>` : '';
     const ownerLabel = !isOwn
       ? `<span style="font-size:0.72rem;color:#a0aec0;margin-left:6px">来自 ${memberName(p.memberId)}</span>` : '';
     return `
@@ -1394,7 +2060,7 @@ function showCalDay(dateStr) {
   const events = [];
   state.plantings.forEach(p => {
     const n = p.variety ? `${p.name} — ${p.variety}` : p.name;
-    const lbl = p.isDefault ? '📋 5区日程' : memberName(p.memberId);
+    const lbl = p.isDefault ? '📋 NJ日程' : memberName(p.memberId);
     const note = p.notes ? `<div style="font-size:0.74rem;color:#718096;margin-top:2px;font-style:italic">${p.notes}</div>` : '';
     if (p.seedDate    === dateStr) events.push({text:`🌰 室内播种/直播：<strong>${n}</strong>`,   member:lbl, note, color:'#fbd38d'});
     if (p.germDate    === dateStr) events.push({text:`🌱 预计发芽：<strong>${n}</strong>`,         member:lbl, note, color:'#68d391'});
@@ -1435,38 +2101,38 @@ function addDays(dateStr, n) {
   return d.toISOString().slice(0,10);
 }
 
-// ── Zone 5 Default Planting Schedule ─────────────────────────────────────────
-// Last spring frost ~May 10, first fall frost ~Oct 5 (Zone 5, 2026)
+// ── NJ Zone 6b–7a Default Planting Schedule ──────────────────────────────────
+// Last spring frost ~Apr 25, first fall frost ~Oct 20 (NJ Zone 6b–7a, 2026)
 const CLUB_ID = '__zone5_club__';
 
 const ZONE5_DEFAULTS = [
   // 名称, 品种, 图标, 播种日, 发芽日, 移植日, 收获日, 备注
-  ['番茄','布兰迪酒番茄','🍅',      '2026-03-22','2026-04-05','2026-05-15','2026-08-15', '最后霜冻前6-8周室内育苗。全日照，长到30cm时需立支架。'],
-  ['番茄','金太阳樱桃番茄','🍅',   '2026-03-22','2026-04-05','2026-05-15','2026-08-01', '产量极高。需套笼或立支架。'],
-  ['辣椒','加州甜椒','🫑',          '2026-03-08','2026-03-25','2026-05-20','2026-08-15', '最后霜冻前8-10周育苗。发芽需保持温暖（约24°C）。'],
-  ['辣椒','墨西哥辣椒','🌶️',        '2026-03-08','2026-03-25','2026-05-20','2026-08-15', '与甜椒种植时间相同。'],
-  ['茄子','黑美人','🍆',            '2026-03-08','2026-03-25','2026-05-20','2026-08-15', '室内育苗，需要温暖。果皮有光泽时即可收获。'],
-  ['西兰花','卡拉布雷斯','🥦',      '2026-03-22','2026-04-05','2026-04-19','2026-06-20', '耐轻霜。花蕾出现黄花前及时收获。'],
-  ['花椰菜','雪球','🤍',            '2026-03-22','2026-04-05','2026-04-19','2026-07-01', '花球直径5cm时用叶片覆盖遮光。'],
-  ['卷心菜','黄金英亩','🥬',        '2026-03-22','2026-04-05','2026-04-19','2026-07-15', '球形紧实，适合小菜园。'],
-  ['豌豆','甜脆豌豆','🫛',          '2026-04-01','2026-04-14','',           '2026-06-20', '最后霜冻前6周直播——豌豆喜欢冷凉土壤！'],
-  ['菠菜','布卢姆斯戴尔','🌿',      '2026-04-05','2026-04-18','',           '2026-05-20', '早春直播。高温抽薹，8月可再播一次收秋菜。'],
-  ['生菜','黄油生菜','🥗',          '2026-04-12','2026-04-22','',           '2026-05-25', '直播或移植皆可。割取外叶，中心留存，可持续采收。'],
-  ['羽衣甘蓝','恐龙甘蓝','🥬',      '2026-04-12','2026-04-22','',           '2026-06-05', '直播。极耐寒，秋霜后仍可采收。'],
-  ['萝卜','樱桃萝卜','🔴',          '2026-04-19','2026-04-24','',           '2026-05-08', '生长最快！25-30天即可收获，适合标记慢生蔬菜行间。'],
-  ['甜菜根','底特律深红','❤️',      '2026-04-26','2026-05-06','',           '2026-07-05', '间苗至株距7cm。嫩叶也可食用！'],
-  ['洋葱','黄甜洋葱','🧅',          '2026-03-01','2026-03-20','2026-04-19','2026-08-10', '最早室内育苗。叶子倒伏时即熟，需晾晒2周。'],
-  ['胡萝卜','南特胡萝卜','🥕',      '2026-05-03','2026-05-17','',           '2026-07-20', '疏松深土直播，间苗至株距5cm，发芽前保持湿润。'],
-  ['四季豆','蓝湖矮生豆','🫘',      '2026-05-20','2026-05-28','',           '2026-07-10', '最后霜冻后直播。无需支架，每2周分批播种。'],
-  ['黄瓜','市场高产黄瓜','🥒',      '2026-04-19','2026-04-29','2026-05-17','2026-07-15', '室内育苗或最后霜冻后直播。引导上架生长。'],
-  ['西葫芦','黑美人西葫芦','🫛',    '2026-05-17','2026-05-24','',           '2026-07-05', '最后霜冻后直播。15-20cm时口感最佳。'],
-  ['南瓜','灯笼南瓜','🎃',          '2026-05-17','2026-05-24','',           '2026-09-20', '需要大量空间。最后霜冻后直播。'],
-  ['甜玉米','银后玉米','🌽',        '2026-05-17','2026-05-24','',           '2026-08-01', '种4行以上方块形，有利于授粉，切勿种单行。'],
-  ['西瓜','小糖宝西瓜','🍉',        '2026-04-26','2026-05-06','2026-05-25','2026-08-20', '最后霜冻前3-4周室内育苗。需要高温和较长生长季。'],
-  ['罗勒','热那亚罗勒','🌿',        '2026-04-19','2026-04-29','2026-05-25','2026-07-15', '极不耐霜。及时摘除花蕾以持续产叶。与番茄搭配绝佳！'],
-  ['欧芹','意大利平叶欧芹','🌿',    '2026-03-01','2026-03-25','2026-05-15','2026-07-15', '发芽缓慢（3-4周）。二年生植物，可能自播繁殖。'],
-  ['向日葵','巨人向日葵','🌻',      '2026-05-15','2026-05-22','',           '2026-08-15', '最后霜冻后直播。简单易种，对传粉昆虫有益。'],
-  ['万寿菊','法国矮生万寿菊','🌼',  '2026-04-12','2026-04-22','2026-05-15','2026-06-15', '种在蔬菜旁可驱虫。摘除残花促进持续开花。'],
+  ['番茄','布兰迪酒番茄','🍅',      '2026-03-22','2026-04-05','2026-05-05','2026-08-15', '最后霜冻前6-8周室内育苗（NJ约4/25霜冻）。全日照，长到30cm时需立支架。'],
+  ['番茄','金太阳樱桃番茄','🍅',   '2026-03-15','2026-03-28','2026-05-05','2026-08-01', '产量极高。需套笼或立支架。'],
+  ['辣椒','加州甜椒','🫑',          '2026-03-01','2026-03-18','2026-05-10','2026-08-15', '最后霜冻前8-10周育苗（NJ约4/25）。发芽需保持温暖（约24°C）。'],
+  ['辣椒','墨西哥辣椒','🌶️',        '2026-03-01','2026-03-18','2026-05-10','2026-08-15', '与甜椒种植时间相同。'],
+  ['茄子','黑美人','🍆',            '2026-03-01','2026-03-18','2026-05-10','2026-08-15', '室内育苗，需要温暖。果皮有光泽时即可收获。'],
+  ['西兰花','卡拉布雷斯','🥦',      '2026-03-15','2026-03-28','2026-04-12','2026-06-15', '耐轻霜，NJ可提前移植。花蕾出现黄花前及时收获。'],
+  ['花椰菜','雪球','🤍',            '2026-03-15','2026-03-28','2026-04-12','2026-06-25', '花球直径5cm时用叶片覆盖遮光。'],
+  ['卷心菜','黄金英亩','🥬',        '2026-03-15','2026-03-28','2026-04-12','2026-07-10', '球形紧实，适合小菜园。'],
+  ['豌豆','甜脆豌豆','🫛',          '2026-03-20','2026-04-03','',           '2026-06-10', 'NJ最后霜冻前5-6周直播——豌豆喜欢冷凉土壤！'],
+  ['菠菜','布卢姆斯戴尔','🌿',      '2026-03-25','2026-04-07','',           '2026-05-15', '早春直播。高温抽薹，8月可再播一次收秋菜。'],
+  ['生菜','黄油生菜','🥗',          '2026-04-01','2026-04-12','',           '2026-05-20', '直播或移植皆可。割取外叶，中心留存，可持续采收。'],
+  ['羽衣甘蓝','恐龙甘蓝','🥬',      '2026-04-01','2026-04-12','',           '2026-05-28', '直播。极耐寒，秋霜后仍可采收。'],
+  ['萝卜','樱桃萝卜','🔴',          '2026-04-05','2026-04-10','',           '2026-04-30', '生长最快！25-30天即可收获，适合标记慢生蔬菜行间。'],
+  ['甜菜根','底特律深红','❤️',      '2026-04-12','2026-04-22','',           '2026-06-28', '间苗至株距7cm。嫩叶也可食用！'],
+  ['洋葱','黄甜洋葱','🧅',          '2026-03-01','2026-03-20','2026-04-12','2026-08-05', '最早室内育苗。叶子倒伏时即熟，需晾晒2周。'],
+  ['胡萝卜','南特胡萝卜','🥕',      '2026-04-25','2026-05-08','',           '2026-07-10', 'NJ霜冻后直播。疏松深土，间苗至株距5cm，发芽前保持湿润。'],
+  ['四季豆','蓝湖矮生豆','🫘',      '2026-05-05','2026-05-13','',           '2026-06-28', 'NJ霜冻后直播。无需支架，每2周分批播种。'],
+  ['黄瓜','市场高产黄瓜','🥒',      '2026-04-05','2026-04-15','2026-05-08','2026-07-10', '室内育苗或NJ霜冻后直播。引导上架生长。'],
+  ['西葫芦','黑美人西葫芦','🫛',    '2026-05-01','2026-05-08','',           '2026-06-28', 'NJ霜冻后直播。15-20cm时口感最佳。'],
+  ['南瓜','灯笼南瓜','🎃',          '2026-05-01','2026-05-08','',           '2026-09-15', '需要大量空间。NJ霜冻后直播。'],
+  ['甜玉米','银后玉米','🌽',        '2026-05-01','2026-05-08','',           '2026-07-25', '种4行以上方块形，有利于授粉，切勿种单行。'],
+  ['西瓜','小糖宝西瓜','🍉',        '2026-04-01','2026-04-12','2026-05-10','2026-08-15', '最后霜冻前3-4周室内育苗。需要高温和较长生长季。'],
+  ['罗勒','热那亚罗勒','🌿',        '2026-04-05','2026-04-15','2026-05-10','2026-07-10', '极不耐霜。及时摘除花蕾以持续产叶。与番茄搭配绝佳！'],
+  ['欧芹','意大利平叶欧芹','🌿',    '2026-03-01','2026-03-25','2026-05-05','2026-07-10', '发芽缓慢（3-4周）。二年生植物，可能自播繁殖。'],
+  ['向日葵','巨人向日葵','🌻',      '2026-05-01','2026-05-08','',           '2026-08-10', 'NJ霜冻后直播。简单易种，对传粉昆虫有益。'],
+  ['万寿菊','法国矮生万寿菊','🌼',  '2026-04-01','2026-04-12','2026-05-05','2026-06-10', '种在蔬菜旁可驱虫。摘除残花促进持续开花。'],
   // ── 秋播 / 第二批 ────────────────────────────────────────────────────────────
   ['菠菜','布卢姆斯戴尔','🌿',      '2026-08-15','2026-08-25','',           '2026-10-05', '秋播菠菜耐寒，霜冻前抓紧收获。', '秋播'],
   ['生菜','黄油生菜','🥗',          '2026-08-01','2026-08-12','',           '2026-09-20', '夏末播种，秋季收获，避开夏季高温抽薹。', '秋播'],
@@ -1477,28 +2143,28 @@ const ZONE5_DEFAULTS = [
   ['豌豆','甜脆豌豆','🫛',          '2026-08-01','2026-08-14','',           '2026-10-01', '秋播豌豆需在首次霜冻前约60天播种。', '秋播'],
   ['四季豆','蓝湖矮生豆','🫘',      '2026-06-15','2026-06-23','',           '2026-08-10', '第二批接续播种，延长收获期至夏末。', '第二批'],
   // ── 亚洲特色蔬菜 ─────────────────────────────────────────────────────────────
-  ['毛豆','枝豆','🫘',              '2026-05-17','2026-05-25','',          '2026-08-05', '最后霜冻后直播，株距15cm。豆荚饱满翠绿时采收，不等变黄。可煮盐水毛豆！'],
-  ['豇豆','长豆角','🫘',            '2026-05-20','2026-05-28','',          '2026-07-25', '直播于支架旁，茎蔓攀爬可达2米。豆荚约45cm时采收，持续采摘促进产量。'],
-  ['空心菜','蕹菜','🌿',            '2026-05-20','2026-05-28','',          '2026-07-15', '喜热喜湿，最后霜冻后直播。株高25cm掐顶促分枝，整个夏天持续采收。'],
-  ['苦瓜','绿苦瓜','💚',            '2026-04-05','2026-04-18','2026-05-20','2026-08-10', '室内育苗6周后移植。需牢固支架或篱笆攀爬。果皮亮绿饱满时采收，变黄则过熟。'],
-  ['丝瓜','普通丝瓜','🫛',          '2026-04-05','2026-04-15','2026-05-20','2026-08-25', '生长期长（120天），需早育苗。需高架攀爬。嫩瓜约20cm炒食最嫩，也可老熟做丝瓜络。'],
-  ['韭菜','宽叶韭菜','🌿',          '2026-03-15','2026-04-01','2026-05-10','2026-07-01', '多年生！首年少采让根系壮大，覆草越冬。次年起每季可多次剪收，越长越旺。'],
-  ['紫苏','日本紫苏','🌿',          '2026-04-05','2026-04-15','2026-05-20','2026-07-01', '及时摘除花穗延长收叶期。叶背紫色，香味独特，适合料理、凉菜、饮品和腌制。'],
-  ['茼蒿','菊花菜','🌿',            '2026-04-12','2026-04-20','',          '2026-05-25', '凉季直播。株高15cm剪顶持续采收。喜凉怕热，高温抽薹变苦需及时收完。'],
-  ['姜','生姜','🫚',                '2026-04-01','2026-04-20','2026-05-20','2026-10-10', '种姜块室内保温催芽，最后霜冻后移大盆户外。秋霜前挖出晾干，室温干燥储存。'],
-  ['芥菜','大叶芥菜','🥬',          '2026-04-05','2026-04-15','',          '2026-05-20', '凉季直播。叶嫩时持续采收外叶，辣味鲜爽。高温前收完防抽薹。'],
+  ['毛豆','枝豆','🫘',              '2026-05-05','2026-05-13','',          '2026-07-28', 'NJ霜冻后直播，株距15cm。豆荚饱满翠绿时采收，不等变黄。可煮盐水毛豆！'],
+  ['豇豆','长豆角','🫘',            '2026-05-08','2026-05-16','',          '2026-07-20', '直播于支架旁，茎蔓攀爬可达2米。豆荚约45cm时采收，持续采摘促进产量。'],
+  ['空心菜','蕹菜','🌿',            '2026-05-08','2026-05-16','',          '2026-07-10', '喜热喜湿，NJ霜冻后直播。株高25cm掐顶促分枝，整个夏天持续采收。'],
+  ['苦瓜','绿苦瓜','💚',            '2026-03-22','2026-04-05','2026-05-10','2026-08-05', '室内育苗6周后移植。需牢固支架或篱笆攀爬。果皮亮绿饱满时采收，变黄则过熟。'],
+  ['丝瓜','普通丝瓜','🫛',          '2026-03-22','2026-04-01','2026-05-10','2026-08-20', '生长期长（120天），需早育苗。需高架攀爬。嫩瓜约20cm炒食最嫩，也可老熟做丝瓜络。'],
+  ['韭菜','宽叶韭菜','🌿',          '2026-03-15','2026-04-01','2026-05-01','2026-06-25', '多年生！首年少采让根系壮大，覆草越冬。次年起每季可多次剪收，越长越旺。'],
+  ['紫苏','日本紫苏','🌿',          '2026-03-22','2026-04-05','2026-05-10','2026-06-28', '及时摘除花穗延长收叶期。叶背紫色，香味独特，适合料理、凉菜、饮品和腌制。'],
+  ['茼蒿','菊花菜','🌿',            '2026-04-01','2026-04-10','',          '2026-05-15', '凉季直播。株高15cm剪顶持续采收。喜凉怕热，高温抽薹变苦需及时收完。'],
+  ['姜','生姜','🫚',                '2026-03-25','2026-04-12','2026-05-10','2026-10-15', '种姜块室内保温催芽，NJ霜冻后移大盆户外。秋霜前挖出晾干，室温干燥储存。'],
+  ['芥菜','大叶芥菜','🥬',          '2026-04-01','2026-04-10','',          '2026-05-15', '凉季直播。叶嫩时持续采收外叶，辣味鲜爽。高温前收完防抽薹。'],
   ['茼蒿','菊花菜','🌿',            '2026-08-20','2026-08-28','',          '2026-09-28', '秋播茼蒿凉爽天气品质更佳，可耐轻霜持续采收至深秋。', '秋播'],
   ['芥菜','大叶芥菜','🥬',          '2026-08-10','2026-08-18','',          '2026-09-25', '秋播芥菜叶嫩味佳，辣中带甘，可耐轻霜延长采收期至10月。', '秋播'],
-  ['秋葵','黄秋葵','🌿',            '2026-04-19','2026-04-29','2026-05-20','2026-07-15', '室内育苗4-6周后移植，极喜热。果实长约10cm时采收，过老变硬纤维化。'],
-  ['香菜','芫荽','🌿',              '2026-04-05','2026-04-18','',          '2026-05-28', '凉季直播。直播勿移植（不耐移植）。叶茂盛时采收，高温抽薹转采嫩种子。'],
-  ['油麦菜','苦苣生菜','🥬',        '2026-04-12','2026-04-20','',          '2026-05-28', '凉季直播，外叶持续剪收。口感清爽微苦，比生菜更耐热，更易种植。'],
-  ['苋菜','红苋菜','🌿',            '2026-05-17','2026-05-25','',          '2026-07-10', '最后霜冻后直播，喜热。红绿两色叶片营养丰富，株高20cm开始采收嫩叶。'],
-  ['木耳菜','落葵','🌿',            '2026-04-19','2026-04-29','2026-05-20','2026-07-10', '热带藤菜，需室内育苗后移植。喜热喜湿，夏日旺盛，厚滑叶片可代替菠菜。'],
-  ['冬瓜','节瓜','🍈',              '2026-04-05','2026-04-18','2026-05-25','2026-09-05', '需早育苗（120天生长期）。瓜大需空间或高架。表皮出白霜为成熟，极耐储存。'],
-  ['红薯','紫薯','🍠',              '2026-05-25','2026-06-05','',          '2026-10-05', '购买薯苗（slips）5月下旬直接种植，无需播种。茎蔓蔓延需大空间。轻霜前挖取。'],
+  ['秋葵','黄秋葵','🌿',            '2026-04-05','2026-04-15','2026-05-10','2026-07-10', '室内育苗4-6周后移植，极喜热。果实长约10cm时采收，过老变硬纤维化。'],
+  ['香菜','芫荽','🌿',              '2026-03-25','2026-04-07','',          '2026-05-20', '凉季直播。直播勿移植（不耐移植）。叶茂盛时采收，高温抽薹转采嫩种子。'],
+  ['油麦菜','苦苣生菜','🥬',        '2026-04-01','2026-04-10','',          '2026-05-20', '凉季直播，外叶持续剪收。口感清爽微苦，比生菜更耐热，更易种植。'],
+  ['苋菜','红苋菜','🌿',            '2026-05-05','2026-05-13','',          '2026-07-05', 'NJ霜冻后直播，喜热。红绿两色叶片营养丰富，株高20cm开始采收嫩叶。'],
+  ['木耳菜','落葵','🌿',            '2026-04-05','2026-04-15','2026-05-10','2026-07-05', '热带藤菜，需室内育苗后移植。喜热喜湿，夏日旺盛，厚滑叶片可代替菠菜。'],
+  ['冬瓜','节瓜','🍈',              '2026-03-22','2026-04-05','2026-05-15','2026-09-01', '需早育苗（120天生长期）。瓜大需空间或高架。表皮出白霜为成熟，极耐储存。'],
+  ['红薯','紫薯','🍠',              '2026-05-10','2026-05-20','',          '2026-10-10', '购买薯苗（slips）5月上旬直接种植，无需播种。茎蔓蔓延需大空间。轻霜前挖取。'],
   ['香葱','细香葱','🌿',            '2026-04-01','2026-04-14','',          '2026-06-10', '直播或移植。蔥类极易种，株高20cm起持续剪收，根部留存可再生，多年宿根。'],
-  ['柠檬草','香茅','🌿',            '2026-03-22','2026-04-10','2026-05-20','2026-08-01', '室内育苗后移大盆，秋霜前移入室内越冬可多年使用。切茎基部可炖汤、泡茶。'],
-  ['黄花菜','金针花','🌼',          '2026-04-15','','2026-05-10',          '2026-07-15', '多年生！移植球茎种植，第二年起每年大量开花。花蕾未开放前采收晒干或鲜炒。'],
+  ['柠檬草','香茅','🌿',            '2026-03-22','2026-04-10','2026-05-10','2026-08-01', '室内育苗后移大盆，秋霜前移入室内越冬可多年使用。切茎基部可炖汤、泡茶。'],
+  ['黄花菜','金针花','🌼',          '2026-04-15','','2026-05-05',          '2026-07-10', '多年生！移植球茎种植，第二年起每年大量开花。花蕾未开放前采收晒干或鲜炒。'],
   ['香菜','芫荽','🌿',              '2026-08-25','2026-09-05','',          '2026-10-10', '秋播香菜凉爽天气品质最佳，叶片更香浓，可耐轻霜，秋天最好吃的时节。', '秋播'],
   ['油麦菜','苦苣生菜','🥬',        '2026-08-15','2026-08-22','',          '2026-09-25', '秋播油麦菜凉爽嫩脆，口感远胜夏播。可持续采收外叶至深秋。', '秋播'],
   ['秋葵','黄秋葵','🌿',            '2026-05-25','2026-06-03','',          '2026-08-10', '第二批秋葵，延长整个夏天采收期。每隔3-4天摘一次，保持持续产果。', '第二批'],
@@ -1517,13 +2183,13 @@ const ZONE5_DEFAULTS = [
   ['芹菜','中国香芹','🌿',          '2026-07-15','2026-08-05','',          '2026-09-25', '秋播香芹凉季香气更浓。可直播也可育苗移植，霜前可持续采收。', '秋播'],
   ['莴笋','茎生菜','🥬',            '2026-08-10','2026-08-18','',          '2026-09-28', '秋播莴笋凉爽生长更快，茎更嫩脆，不易抽薹变苦。', '秋播'],
   // ── 多年生香草 ───────────────────────────────────────────────────────────────
-  ['迷迭香','直立迷迭香','🌿',        '2026-03-22','2026-04-10','2026-05-15','2026-07-01', '多年生！5区冬天盆移室内越冬。全年可采嫩枝。烤肉、炖菜、草本茶必备香草。'],
-  ['百里香','普通百里香','🌿',        '2026-03-22','2026-04-08','2026-05-10','2026-06-20', '多年生！比迷迭香更耐寒，5区可覆草越冬。嫩叶随时剪取，香气持久不退。'],
-  ['薰衣草','英国薰衣草','💜',        '2026-03-01','2026-04-01','2026-05-10','2026-07-15', '多年生！花穗可驱虫、制香枕、泡茶，嫩叶入菜。覆草可在5区越冬。花期浓香迷人。'],
+  ['迷迭香','直立迷迭香','🌿',        '2026-03-22','2026-04-10','2026-05-15','2026-07-01', '多年生！NJ冬天盆移室内越冬。全年可采嫩枝。烤肉、炖菜、草本茶必备香草。'],
+  ['百里香','普通百里香','🌿',        '2026-03-22','2026-04-08','2026-05-10','2026-06-20', '多年生！比迷迭香更耐寒，NJ可覆草越冬。嫩叶随时剪取，香气持久不退。'],
+  ['薰衣草','英国薰衣草','💜',        '2026-03-01','2026-04-01','2026-05-10','2026-07-15', '多年生！花穗可驱虫、制香枕、泡茶，嫩叶入菜。NJ覆草可越冬。花期浓香迷人。'],
   ['鼠尾草','普通鼠尾草','🌿',        '2026-03-22','2026-04-10','2026-05-10','2026-07-01', '多年生香草。干叶香气极浓，是中西料理两用的百搭香草，也可泡茶清嗓。'],
   // ── 瓜果新品 ─────────────────────────────────────────────────────────────────
   ['香瓜','蜜宝甜瓜','🍈',            '2026-04-05','2026-04-18','2026-05-20','2026-08-10', '室内育苗后移植。引蔓上架节省空间。果皮金黄飘香时采收，是亚洲超市常见甜瓜。'],
-  ['朝鲜蓟','大球洋蓟','🌸',          '2026-02-15','2026-03-05','2026-04-20','2026-07-10', '5区当年生种植！需超早育苗。花苞未开放前切下，蒸煮沾黄油或做沙拉，欧亚均爱。'],
+  ['朝鲜蓟','大球洋蓟','🌸',          '2026-02-15','2026-03-05','2026-04-20','2026-07-10', 'NJ当年生种植！需超早育苗。花苞未开放前切下，蒸煮沾黄油或做沙拉，欧亚均爱。'],
   // ── 深根蔬菜 ─────────────────────────────────────────────────────────────────
   ['牛蒡','东洋参','🥕',              '2026-04-05','2026-04-18','',          '2026-10-10', '需深松土壤（60cm+）或深桶。根长可达1米！日式炒牛蒡、牛蒡排骨汤。秋天挖取。'],
   ['芦笋','玛丽华盛顿','🌿',          '2026-03-01','2026-03-20','2026-04-25','2026-06-01', '多年生！头2年忍耐不采，第3年起每年春天大量嫩芽，持续收获20年以上。值得等待！'],
@@ -1538,10 +2204,10 @@ const ZONE5_DEFAULTS = [
   ['旱金莲','矮生旱金莲','🌸',        '2026-04-15','2026-04-25','',          '2026-06-10', '全株可食！辛辣叶片做沙拉，鲜艳花朵装饰摆盘，未熟种子腌制代替刺山柑。驱蚜虫！'],
   ['食用玫瑰','大马士革玫瑰','🌹',    '2026-04-15','','2026-05-05',          '2026-07-01', '多年生灌木！花瓣制玫瑰酱、玫瑰茶、玫瑰饼。购买嫁接苗，覆草越冬。'],
   ['紫罗兰','三色堇','💜',            '2026-03-01','2026-03-15','2026-04-10','2026-05-20', '早春食用花卉！花朵装饰蛋糕、冻入冰块、做沙拉。耐霜冻，可最早种植。'],
-  ['洛神花','玫瑰茄','🌺',            '2026-04-05','2026-04-15','2026-05-20','2026-09-20', '5区当年生！肉质花萼酸甜，台湾洛神花茶和果酱原料。霜冻前大量采收花萼。'],
+  ['洛神花','玫瑰茄','🌺',            '2026-04-05','2026-04-15','2026-05-20','2026-09-20', 'NJ当年生！肉质花萼酸甜，台湾洛神花茶和果酱原料。霜冻前大量采收花萼。'],
   // ── 香草续集 ─────────────────────────────────────────────────────────────────
   ['牛至','奥勒冈','🌿',              '2026-03-22','2026-04-05','2026-05-10','2026-06-20', '多年生！香气比百里香更浓烈。晒干后香气加倍，是川菜、烤肉、意式料理万用香料。'],
-  ['柠檬马鞭草','香水木','🌿',        '2026-03-22','2026-04-10','2026-05-20','2026-07-01', '柠檬清香沁人！泡茶、做甜点香料。5区冬天移入室内越冬，多年生灌木。'],
+  ['柠檬马鞭草','香水木','🌿',        '2026-03-22','2026-04-10','2026-05-20','2026-07-01', '柠檬清香沁人！泡茶、做甜点香料。NJ冬天移入室内越冬，多年生灌木。'],
   ['薏仁','薏米','🌾',                '2026-05-17','2026-05-27','',          '2026-09-10', '亚洲传统食药两用谷物。直播喜热，秋天穗粒变硬时收割脱粒，煮粥健脾利湿。'],
   // ── 特色蔬菜 ─────────────────────────────────────────────────────────────────
   ['罗马花椰菜','宝塔花椰菜','🥦',    '2026-03-22','2026-04-05','2026-04-19','2026-07-05', '黄绿色螺旋锥形花球，外形极美！种法同普通花椰菜，口感更细腻甜嫩，摆盘超高颜值。'],
@@ -1611,7 +2277,7 @@ const ZONE5_DEFAULTS = [
   ['山药','日本长薯','🫚',          '2026-04-20','2026-05-10','',          '2026-10-15', '种山药段或零余子。地下深根需深松土壤或深桶种植。霜冻后地上茎枯萎时挖取。'],
   ['枸杞','宁夏枸杞','🍊',          '2026-04-15','','2026-05-01',          '2026-08-01', '多年生灌木！移植苗后每年春季嫩芽可做枸杞头炒食，夏秋红果可鲜食或晒干。'],
   ['荠菜','田园荠菜','🌿',          '2026-08-25','2026-09-03','',          '2026-10-10', '秋播荠菜可耐轻霜，延续到深秋。与春播荠菜合并可全年享用。', '秋播'],
-  ['蚕豆','上海蚕豆','🫘',          '2026-09-20','2026-10-01','',          '2027-06-01', '在温暖地区秋播越冬，5区需覆厚草或进行风险尝试。春末收获。', '越冬尝试'],
+  ['蚕豆','上海蚕豆','🫘',          '2026-09-20','2026-10-01','',          '2027-06-01', '在温暖地区秋播越冬，NJ需覆厚草或进行风险尝试。春末收获。', '越冬尝试'],
   // ── 秋冬 / 越冬 ──────────────────────────────────────────────────────────────
   ['白菜','大白菜','🥬',            '2026-08-01','2026-08-12','2026-08-25','2026-11-10', '秋冬播种，耐霜冻。叶球经霜后更甜，霜冻前收获或覆草保护。', '秋冬播'],
   ['小白菜','上海青','🥬',          '2026-08-15','2026-08-22','',           '2026-10-15', '生长迅速约45天。可在轻霜下正常生长，是秋冬理想蔬菜。', '秋冬播'],
@@ -1625,7 +2291,7 @@ const ZONE5_DEFAULTS = [
 function loadZone5Defaults() {
   // Create or reuse the Club member
   if (!state.members.find(m => m.id === CLUB_ID)) {
-    state.members.push({ id: CLUB_ID, name: '俱乐部（5区）', role: '5区种植日程', color: '#2d6a4f', notes: '5区默认种植日程', joined: '2026-01-01' });
+    state.members.push({ id: CLUB_ID, name: '俱乐部（NJ 6b–7区）', role: 'NJ 6b–7a种植日程', color: '#2d6a4f', notes: 'NJ 6b–7a默认种植日程', joined: '2026-01-01' });
     rebuildMemberSel();
   }
 
@@ -1647,7 +2313,7 @@ function loadZone5Defaults() {
     });
   });
   save();
-  toast(`5区日程已加载 — 共 ${ZONE5_DEFAULTS.length} 种蔬菜！🌱`);
+  toast(`NJ 6b–7a日程已加载 — 共 ${ZONE5_DEFAULTS.length} 种蔬菜！🌱`);
   renderPlantings(); renderDashboard(); renderCalendar();
 }
 
@@ -1661,10 +2327,10 @@ function deriveStatus(seed, germ, trans, harvest) {
 }
 
 function clearZone5Defaults() {
-  if (!confirm('确定要删除所有5区默认种植记录吗？')) return;
+  if (!confirm('确定要删除所有NJ默认种植记录吗？')) return;
   state.plantings = state.plantings.filter(p => !p.isDefault);
   save(); renderPlantings(); renderCalendar(); renderDashboard();
-  toast('5区默认记录已删除。');
+  toast('NJ默认记录已删除。');
 }
 
 // ── Seed demo data (only if empty) ────────────────────────────────────────────
@@ -1681,7 +2347,7 @@ initCal();
 buildYearOptions();
 rebuildMemberSel();
 
-// Reload Zone 5 defaults if: none exist, dates are from a different year,
+// Reload NJ Zone 6b-7a defaults if: none exist, dates are from a different year,
 // or stored defaults are still in English (e.g. after switching to Chinese UI)
 const _z5year = ZONE5_DEFAULTS[0][3].slice(0, 4);
 const _existingDefaults = state.plantings.filter(p => p.isDefault);
@@ -1689,7 +2355,7 @@ const _isChinese = name => name && /[\u4e00-\u9fff]/.test(name);
 const _needsReload = _existingDefaults.length === 0
   || !_existingDefaults[0].seedDate.startsWith(_z5year)
   || !_isChinese(_existingDefaults[0].name)
-  || _existingDefaults.length !== ZONE5_DEFAULTS.length;  // reload if count changed
+  || _existingDefaults.length !== ZONE5_DEFAULTS.length;
 if (_needsReload) {
   loadZone5Defaults();
 }
@@ -2003,42 +2669,230 @@ function nurFilter(tag) {
 }
 
 // ══════════════════════════════════════════════════════
-// 🍎 FRUIT TREE DATA — Zone 5 Guide
+// 🍎 FRUIT TREE DATA — NJ Zone 6b–7a Guide
 // fields: name, engName, emoji, zone, yearsToHarvest, height, chillHours, selfFertile, notes, tip, wikiTitle, category
 // ══════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════════════════
+// VEGETABLE GUIDE DATA
+// fields: name, eng, emoji, days, sow, season, sun, spacing, notes, tip, cat
+// ════════════════════════════════════════════════════════════════════════════
+const VEGETABLES = [
+  // ── 茄果类 Fruiting Vegetables ────────────────────────────────────────────
+  { name:'番茄', eng:'Tomato', emoji:'🍅', days:'70–85天', sow:'育苗', season:'暖季', sun:'全日照', spacing:'60–90cm', notes:'最后霜冻前6–8周室内育苗（NJ约4/25）。夜温稳定60°F后移植。需立支架或套笼。果皮有光泽、轻微软弹时采收。', tip:'推荐品种：布兰迪酒（大果）、金太阳（樱桃，超产）、Celebrity（病害少）。每周深浇一次优于频繁浅浇。', cat:'茄果类' },
+  { name:'辣椒', eng:'Pepper', emoji:'🫑', days:'70–90天', sow:'育苗', season:'暖季', sun:'全日照', spacing:'45cm', notes:'最后霜冻前8–10周育苗，发芽需保持24°C。比番茄更喜热，移植不宜太早。青色可采，成熟转红更甜。', tip:'推荐品种：加州甜椒、墨西哥辣椒、韩国辣椒（泡菜专用）。底部腐烂是缺钙，浇透水改善。', cat:'茄果类' },
+  { name:'茄子', eng:'Eggplant', emoji:'🍆', days:'70–85天', sow:'育苗', season:'暖季', sun:'全日照', spacing:'45–60cm', notes:'最喜热的蔬菜之一，NJ需室内育苗至少8周。移植后若遇冷天盖农膜保温。果皮光亮有弹性时摘取。', tip:'推荐品种：黑美人（经典）、日本细长茄（皮薄更嫩）。定期采摘促进持续结果。', cat:'茄果类' },
+  { name:'西瓜', eng:'Watermelon', emoji:'🍉', days:'75–90天', sow:'育苗', season:'暖季', sun:'全日照', spacing:'90–120cm', notes:'最后霜冻前3–4周室内育苗。需要高温和较长生长季，NJ需选早熟品种。卷须变干、底部变黄为成熟信号。', tip:'推荐品种：小糖宝（迷你，NJ首选）、黑美人、新疆特早。结果后减少浇水提高甜度。', cat:'茄果类' },
+  { name:'香瓜', eng:'Melon', emoji:'🍈', days:'75–90天', sow:'育苗', season:'暖季', sun:'全日照', spacing:'90cm', notes:'室内育苗后移植。引蔓上架节省空间。果皮金黄飘香、梗部产生裂纹时摘取。喜热喜光。', tip:'推荐品种：蜜宝甜瓜、哈密瓜迷你型。结果后每株留2–3个瓜，疏果集中糖分。', cat:'茄果类' },
+  // ── 叶菜类 Leafy Greens ───────────────────────────────────────────────────
+  { name:'生菜', eng:'Lettuce', emoji:'🥗', days:'45–60天', sow:'直播', season:'凉季', sun:'全日照/半日照', spacing:'20–25cm', notes:'最易种的凉季蔬菜！早春和秋季直播。高温超过26°C迅速抽薹变苦。割取外叶可持续采收多周。', tip:'散叶生菜比结球生菜更适合持续采收。混播多品种延长采收窗口。', cat:'叶菜类' },
+  { name:'菠菜', eng:'Spinach', emoji:'🌿', days:'40–50天', sow:'直播', season:'凉季', sun:'全日照/半日照', spacing:'10cm', notes:'喜冷凉，0°C以上即可直播。叶片最大但花茎未出现时采收。高温必定抽薹，秋播另有一批。', tip:'早春撒播比行播更高效。叶片嫩时全株拔，或持续剪外叶各取所好。', cat:'叶菜类' },
+  { name:'羽衣甘蓝', eng:'Kale', emoji:'🥬', days:'55–75天', sow:'直播', season:'凉季', sun:'全日照', spacing:'30–45cm', notes:'最耐寒的叶菜，经霜冻后更甜！从外叶持续采收，中心留存生长。春秋两季均可种。', tip:'推荐品种：恐龙甘蓝（最耐寒）、红色俄罗斯甘蓝（装饰性强）。越采越旺，一棵可供收半年。', cat:'叶菜类' },
+  { name:'空心菜', eng:'Water Spinach', emoji:'🌿', days:'30–45天', sow:'直播', season:'暖季', sun:'全日照', spacing:'20cm', notes:'夏日最旺盛的亚洲绿叶菜！喜热喜湿。株高25cm掐顶促分枝，整个夏天持续采收。比菠菜更耐热。', tip:'保持土壤湿润，旱季每天浇水。蒜蓉清炒是最经典做法。', cat:'叶菜类' },
+  { name:'苋菜', eng:'Amaranth', emoji:'🍃', days:'40–50天', sow:'直播', season:'暖季', sun:'全日照', spacing:'20cm', notes:'最耐热的叶菜，菠菜的暑季替代品！红绿两色叶片营养极丰富。株高20cm开始采收嫩叶。', tip:'红苋菜颜值高，入汤变红如玫瑰。可持续剪收至霜冻，一直长一直采。', cat:'叶菜类' },
+  { name:'茼蒿', eng:'Chrysanthemum Greens', emoji:'🌿', days:'40–50天', sow:'直播', season:'凉季', sun:'全日照/半日照', spacing:'15cm', notes:'凉季直播。株高15cm剪顶持续采收。火锅必备！喜凉怕热，高温抽薹变苦需及时收完。', tip:'秋播茼蒿品质最佳，香气更浓。春播需赶在气温升高前采完。', cat:'叶菜类' },
+  { name:'油菜', eng:'Shanghai Bok Choy', emoji:'🥬', days:'30–45天', sow:'直播', season:'凉季', sun:'全日照', spacing:'15–20cm', notes:'最快凉季蔬菜之一！30天即可嫩苗采收。株高20cm整株割取，炒食清甜爽脆，是亚洲餐桌最常见蔬菜。', tip:'可密播嫩苗采收，也可间苗后长成大株。秋播连续种三批可延续到11月。', cat:'叶菜类' },
+  { name:'菜心', eng:'Choy Sum', emoji:'🥦', days:'45–55天', sow:'直播', season:'凉季', sun:'全日照', spacing:'20cm', notes:'广东家常菜首选！花薹刚出现时整株剪下最嫩最甜。春秋两季均可种，高温前收完。', tip:'蒜蓉炒菜心是粤菜经典。花薹比叶片更甜，不要错过。', cat:'叶菜类' },
+  { name:'芥蓝', eng:'Chinese Broccoli', emoji:'🥦', days:'50–65天', sow:'直播', season:'凉季', sun:'全日照', spacing:'25cm', notes:'比西兰花更耐热，花薹未开花前剪取嫩茎叶。清炒蒜蓉芥蓝是经典粤菜，茎脆叶嫩。', tip:'比西兰花种植更简单，春秋均可。剪后留根部可再萌发侧芽，一棵多次采收。', cat:'叶菜类' },
+  { name:'西兰花', eng:'Broccoli', emoji:'🥦', days:'65–80天', sow:'育苗', season:'凉季', sun:'全日照', spacing:'45cm', notes:'耐轻霜，NJ可提前移植。主花球出现时迅速采收，出黄花前是最佳时机。剪后侧芽继续出小花球。', tip:'推荐品种：卡拉布雷斯（大球）、罗马花椰菜（宝塔形）。花球如鸡蛋大小时每天观察。', cat:'叶菜类' },
+  // ── 瓜类 Cucurbits ────────────────────────────────────────────────────────
+  { name:'黄瓜', eng:'Cucumber', emoji:'🥒', days:'50–65天', sow:'直播/育苗', season:'暖季', sun:'全日照', spacing:'30–45cm', notes:'室内育苗或霜后直播。引导上架可节省大量空间。颜色均匀鲜绿时采收，变黄过熟影响品质。', tip:'爬架品种（无限型）比蔓生品种更省地。定期采摘防止老瓜压枝，可一直收到霜冻。', cat:'瓜类' },
+  { name:'西葫芦', eng:'Zucchini', emoji:'🥒', days:'50–60天', sow:'直播', season:'暖季', sun:'全日照', spacing:'60–90cm', notes:'霜后直播，发芽快。15–20cm时口感最佳，不要让它长成棒球棒！产量惊人，2株足够全家。', tip:'早晨人工授粉防止落花落果。高温期白粉病多发，摘除病叶保持通风。', cat:'瓜类' },
+  { name:'南瓜', eng:'Pumpkin', emoji:'🎃', days:'90–110天', sow:'直播', season:'暖季', sun:'全日照', spacing:'90–120cm', notes:'霜后直播，需要大量空间。瓜皮变硬、脐部变干为成熟信号。成熟后整株拔起，晒蒂后储存。', tip:'日本栗子南瓜比普通南瓜更甜，NJ生长季够长。留3–4个瓜疏果可增大单果重量。', cat:'瓜类' },
+  { name:'苦瓜', eng:'Bitter Melon', emoji:'💚', days:'60–75天', sow:'育苗', season:'暖季', sun:'全日照', spacing:'45cm', notes:'室内育苗6周后移植。需牢固支架攀爬。果皮亮绿、疙瘩饱满时采收，变黄则过熟开裂。', tip:'提前一天用湿纸巾包种子催芽。苦瓜炒鸡蛋、苦瓜塞肉是经典做法，健胃解暑。', cat:'瓜类' },
+  { name:'丝瓜', eng:'Luffa', emoji:'🫛', days:'80–100天', sow:'育苗', season:'暖季', sun:'全日照', spacing:'45cm', notes:'生长期长，需早育苗（约5周）。需高架攀爬，嫩瓜约20cm炒食最嫩。也可老熟做丝瓜络沐浴使用。', tip:'棱角丝瓜（广东丝瓜）比普通丝瓜更嫩滑，粤式清炒最佳。定期采嫩瓜促持续结果。', cat:'瓜类' },
+  { name:'冬瓜', eng:'Winter Melon', emoji:'🍈', days:'90–120天', sow:'育苗', season:'暖季', sun:'全日照', spacing:'60–90cm', notes:'需早育苗（约4/5移植）。瓜大需空间或高架承重。表皮出现白粉霜为成熟，极耐储存可放整冬。', tip:'冬瓜排骨汤、冬瓜盅是传统做法。一棵冬瓜可结几个大瓜，够吃整个冬天。', cat:'瓜类' },
+  // ── 豆类 Legumes ──────────────────────────────────────────────────────────
+  { name:'豌豆', eng:'Garden Pea', emoji:'🫛', days:'60–70天', sow:'直播', season:'凉季', sun:'全日照', spacing:'5–8cm', notes:'喜冷凉土壤，NJ最后霜冻前5–6周直播。开花后10天采荚。高温来临前采完所有豆荚。', tip:'甜脆豌豆可连荚食用，荷兰豆豆荚扁平更好吃。立网格或树枝支撑。', cat:'豆类' },
+  { name:'四季豆', eng:'Green Bean', emoji:'🫘', days:'50–60天', sow:'直播', season:'暖季', sun:'全日照', spacing:'10–15cm', notes:'霜后直播，无需支架（矮生型）。每2周分批播种延长采收。豆荚饱满但种子未鼓起时采收最嫩。', tip:'矮生型比爬架型更方便。每隔10天播一批，可一直收到初霜。', cat:'豆类' },
+  { name:'毛豆', eng:'Edamame', emoji:'🫘', days:'70–85天', sow:'直播', season:'暖季', sun:'全日照', spacing:'15cm', notes:'霜后直播，株距15cm。豆荚饱满翠绿时采收，不等变黄！整株拔起煮盐水毛豆，是夏日必备零食。', tip:'推荐早熟品种减少种植风险。播种后网格防鸟。一批毛豆吃完后马上补种下一批。', cat:'豆类' },
+  { name:'豇豆', eng:'Yard Long Bean', emoji:'🫘', days:'60–70天', sow:'直播', season:'暖季', sun:'全日照', spacing:'15cm', notes:'直播于支架旁，茎蔓攀爬可达2米。豆荚约45cm时采收，持续采摘促进产量，结豆直到霜冻。', tip:'比四季豆更耐热，夏天高温依然高产。清炒豇豆或腌泡豇豆都是经典家常菜。', cat:'豆类' },
+  { name:'蚕豆', eng:'Fava Bean', emoji:'🫘', days:'75–90天', sow:'直播', season:'凉季', sun:'全日照', spacing:'15–20cm', notes:'早春最耐寒的豆类！豆荚鼓起变绿时剥取嫩豆。高温前结豆完毕，是上海春天的味道。', tip:'蒜蓉炒嫩蚕豆、上汤蚕豆是春日限定。豆荚向下弯曲为成熟信号。', cat:'豆类' },
+  { name:'荷兰豆', eng:'Snow Pea', emoji:'🫛', days:'60–70天', sow:'直播', season:'凉季', sun:'全日照', spacing:'5–8cm', notes:'扁平豆荚直接吃！凉季直播，花开后10天采收翠绿嫩荚。高温前抢收完毕，秋天可再播一批。', tip:'需要支架爬藤。鲜炒荷兰豆加肉片、海鲜，颜色翠绿口感脆嫩。', cat:'豆类' },
+  // ── 根茎类 Root Vegetables ────────────────────────────────────────────────
+  { name:'胡萝卜', eng:'Carrot', emoji:'🥕', days:'70–80天', sow:'直播', season:'凉季', sun:'全日照', spacing:'5cm', notes:'NJ最后霜冻后直播，需深松土壤，发芽前保持土壤湿润（约2周）。间苗至株距5cm是高产关键。', tip:'经轻霜后更甜。用纸板覆盖种行保湿加速发芽。南特品种圆柱形适合普通土壤。', cat:'根茎类' },
+  { name:'萝卜', eng:'Radish', emoji:'🔴', days:'25–30天', sow:'直播', season:'凉季', sun:'全日照', spacing:'5–8cm', notes:'生长最快的蔬菜！25–30天即可收获。可用于标记慢生蔬菜的行间。高温变辣变空心，快种快收。', tip:'樱桃萝卜春秋均可，白萝卜（大根）秋播最佳。同一块地每隔2周补播一批。', cat:'根茎类' },
+  { name:'洋葱', eng:'Onion', emoji:'🧅', days:'100–120天', sow:'育苗', season:'凉季', sun:'全日照', spacing:'10–15cm', notes:'最早室内育苗（2月底）。叶子倒伏后即熟，需继续在地里晾晒1周再挖。晾晒2周再储存。', tip:'也可购买葱苗（sets）直接种，省去育苗步骤。甜洋葱适合鲜食，储存洋葱更耐放。', cat:'根茎类' },
+  { name:'甜菜根', eng:'Beet', emoji:'❤️', days:'55–70天', sow:'直播', season:'凉季', sun:'全日照', spacing:'7–10cm', notes:'直播，一粒种子含多粒种，需间苗至株距7cm。嫩叶也可食用。经霜冻后甜度增加。', tip:'烤甜菜根切片加醋和橄榄油，是欧式沙拉经典。嫩叶炒食味道接近菠菜。', cat:'根茎类' },
+  { name:'土豆', eng:'Potato', emoji:'🥔', days:'70–90天', sow:'移植', season:'凉季', sun:'全日照', spacing:'30–35cm', notes:'种带芽眼的土豆块，叶子倒伏变黄时挖取。需培土防止块茎见光变绿（会产生毒素）。', tip:'黑色土工布容器种植，翻倒容器即可收获不伤根。紫薯产量稍低但营养更高。', cat:'根茎类' },
+  { name:'姜', eng:'Ginger', emoji:'🫚', days:'150–180天', sow:'移植', season:'暖季', sun:'半日照', spacing:'20–25cm', notes:'种姜块室内保温催芽，NJ霜冻后移大盆户外。秋霜前挖出晾干，室温干燥储存一整冬。', tip:'盆栽更方便移入室内越冬。嫩姜（母姜下方小球）可腌制，成熟姜辛辣用于炒菜。', cat:'根茎类' },
+  { name:'红薯', eng:'Sweet Potato', emoji:'🍠', days:'90–120天', sow:'直播', season:'暖季', sun:'全日照', spacing:'30cm', notes:'购买薯苗（slips）5月上旬直接种植，无需播种。茎蔓蔓延需大空间，轻霜前挖取晾晒。', tip:'紫薯和红心薯是亚洲最爱。挖出后放置2周让淀粉转化为糖分，甜度倍增。', cat:'根茎类' },
+  // ── 亚洲特色 Asian Specialty ──────────────────────────────────────────────
+  { name:'秋葵', eng:'Okra', emoji:'🌿', days:'50–65天', sow:'育苗', season:'暖季', sun:'全日照', spacing:'45–60cm', notes:'室内育苗4–6周后移植，极喜热。果实长约8–10cm时采收，过老变硬纤维化。每隔2天采一次。', tip:'开水烫后切片加醋酱油是最简单做法。植株高达1.5m，园子里的颜值担当。', cat:'亚洲特色' },
+  { name:'韭菜', eng:'Chinese Chive', emoji:'🌿', days:'60天（首年）', sow:'直播', season:'全年', sun:'全日照/半日照', spacing:'15cm', notes:'多年生！首年少采让根系壮大，覆草越冬。次年起每季可多次剪收（留5cm根部），越长越旺。', tip:'韭菜炒鸡蛋、韭菜饺子、韭菜盒子——中华料理必备。花薹（韭花）也可食用。', cat:'亚洲特色' },
+  { name:'紫苏', eng:'Shiso / Perilla', emoji:'🌿', days:'50–60天', sow:'育苗', season:'暖季', sun:'全日照', spacing:'30cm', notes:'及时摘除花穗延长收叶期。叶背紫色，香味独特，适合料理、凉菜、饮品和腌制。可自播繁殖。', tip:'日式料理、凉拌皮蛋、紫苏梅子酒原料。与番茄同种可驱虫。', cat:'亚洲特色' },
+  { name:'香菜', eng:'Cilantro', emoji:'🌿', days:'35–50天', sow:'直播', season:'凉季', sun:'全日照/半日照', spacing:'5–10cm', notes:'凉季直播，勿移植（不耐移植）。高温抽薹转采嫩种子（香菜籽）也可用。秋播品质最佳。', tip:'分批每2周播一次延长供应。种子用脚踩破外壳后发芽率更高。', cat:'亚洲特色' },
+  { name:'九层塔', eng:'Thai Basil', emoji:'🌿', days:'50–60天', sow:'育苗', season:'暖季', sun:'全日照', spacing:'30cm', notes:'八角丁香香气，是泰式料理、三杯鸡、打抛猪必备。与意大利罗勒不同，风味更浓烈。及时摘花延长采叶期。', tip:'三杯鸡最后放九层塔、快速翻炒即可。比意大利罗勒更耐热，夏季旺盛。', cat:'亚洲特色' },
+  { name:'芹菜', eng:'Chinese Celery', emoji:'🌿', days:'80–100天', sow:'育苗', season:'凉季', sun:'半日照', spacing:'15cm', notes:'比西芹细小浓香。室内育苗8–10周后移植。茎叶均可用，香气比西芹浓10倍，是炒菜提鲜的秘密武器。', tip:'中国香芹撒在面条和汤上提鲜。保持土壤湿润是成功关键。', cat:'亚洲特色' },
+  { name:'黄花菜', eng:'Daylily', emoji:'🌼', days:'多年生', sow:'移植', season:'全年', sun:'全日照', spacing:'45cm', notes:'多年生！移植球茎，第二年起每年大量开花。花蕾未开放前采收晒干或鲜炒。一棵可年产数百朵。', tip:'金针木耳炒瘦肉、黄花菜煲汤是经典家常菜。蒸熟再晒干防止秋水仙碱中毒。', cat:'亚洲特色' },
+  { name:'糯玉米', eng:'Glutinous Corn', emoji:'🌽', days:'80–90天', sow:'直播', season:'暖季', sun:'全日照', spacing:'25cm', notes:'需种4行以上方块形保证授粉，丝发变棕即熟，煮后Q弹软糯。黑糯玉米是亚洲超市常见品种。', tip:'采摘后立即煮食甜度最高，放置后糖分迅速转化为淀粉。', cat:'亚洲特色' },
+  { name:'芋头', eng:'Taro', emoji:'🫚', days:'150–180天', sow:'移植', season:'暖季', sun:'半日照', spacing:'30–45cm', notes:'室内催芽球茎后移大盆（至少30L）种植。喜热喜湿。秋霜前挖出，室内储存越冬。', tip:'香芋炖鸡、芋泥甜品是经典做法。嫩叶也可食用。盆栽比地栽更方便越冬。', cat:'亚洲特色' },
+  { name:'柠檬草', eng:'Lemongrass', emoji:'🌿', days:'多年生', sow:'育苗', season:'暖季', sun:'全日照', spacing:'60cm', notes:'室内育苗后移大盆，秋霜前移入室内越冬可多年使用。切茎基部可炖汤、泡茶、做咖喱。', tip:'超市购买新鲜柠檬草插水生根后种植是最省钱的方式。', cat:'亚洲特色' },
+  // ── 香草 Herbs ────────────────────────────────────────────────────────────
+  { name:'罗勒', eng:'Basil', emoji:'🌿', days:'50–60天', sow:'育苗', season:'暖季', sun:'全日照', spacing:'25–30cm', notes:'极不耐霜，NJ5月初移植。及时摘除花蕾以持续产叶。与番茄搭配种植有驱虫效果，香气绝妙。', tip:'热那亚罗勒做意式青酱。每次用水培瓶或盆植放在厨房窗台随摘随用。', cat:'香草' },
+  { name:'欧芹', eng:'Parsley', emoji:'🌿', days:'70–90天', sow:'育苗', season:'凉季', sun:'全日照/半日照', spacing:'20cm', notes:'发芽缓慢（3–4周），二年生植物，可能自播繁殖。叶片随时可采，冬天盆移室内可全年供应。', tip:'用温水浸泡种子24小时可加速发芽。平叶欧芹比卷叶香气更浓，是汤品和料理的百搭香草。', cat:'香草' },
+  { name:'迷迭香', eng:'Rosemary', emoji:'🌿', days:'多年生', sow:'育苗', season:'全年', sun:'全日照', spacing:'60cm', notes:'多年生灌木香草！NJ冬天盆移室内越冬。全年可采嫩枝。烤肉、炖菜、草本茶必备香草，香气持久。', tip:'怕根部积水，种在排水良好的基质中。扦插繁殖比播种简单，一根枝条插水生根即可。', cat:'香草' },
+  { name:'百里香', eng:'Thyme', emoji:'🌿', days:'多年生', sow:'育苗', season:'全年', sun:'全日照', spacing:'30cm', notes:'多年生香草，比迷迭香更耐寒，NJ可覆草越冬。嫩叶随时剪取，香气持久不退，烹饪和泡茶均适合。', tip:'柠檬百里香是最好闻的品种。枝条越剪越旺，木质化后从根部剪短促新枝。', cat:'香草' },
+  { name:'薄荷', eng:'Mint', emoji:'🌿', days:'多年生', sow:'移植', season:'全年', sun:'全日照/半日照', spacing:'盆栽', notes:'⚠️ 必须种在盆里防扩散！多年生宿根，每年萌发旺盛。夏日剪收可做凉茶、越南春卷、薄荷茶。', tip:'留兰香薄荷用于凉茶，巧克力薄荷香气特别。冬天地上部分枯死，根系越冬，春天重生。', cat:'香草' },
+  { name:'薰衣草', eng:'Lavender', emoji:'💜', days:'多年生', sow:'育苗', season:'全年', sun:'全日照', spacing:'45–60cm', notes:'多年生灌木！花穗可驱虫、制香枕、泡茶，嫩叶入菜。NJ覆草可越冬。花期浓香迷人，是园中颜值担当。', tip:'英国薰衣草最耐寒（Zone 5）。怕积水，沙质土排水良好地点最理想。', cat:'香草' },
+  { name:'牛至', eng:'Oregano', emoji:'🌿', days:'多年生', sow:'育苗', season:'全年', sun:'全日照', spacing:'30cm', notes:'多年生香草，香气比百里香更浓烈。晒干后香气加倍，是川菜、烤肉、意式料理万用香料。', tip:'希腊牛至香气最强烈。秋天剪下枝条倒挂晾干储存，用一整年。', cat:'香草' },
+  // ── 花卉 Edible Flowers & Companion ──────────────────────────────────────
+  { name:'向日葵', eng:'Sunflower', emoji:'🌻', days:'70–80天', sow:'直播', season:'暖季', sun:'全日照', spacing:'30–60cm', notes:'霜后直播，简单易种。对蜜蜂和传粉昆虫极有益。花盘背面变黄、种子饱满为成熟信号，晒干后敲取种子。', tip:'小矮型向日葵适合花盆。花盘对着太阳长，规划好位置避免挡住其他蔬菜的光线。', cat:'花卉' },
+  { name:'万寿菊', eng:'Marigold', emoji:'🌼', days:'50–60天', sow:'育苗', season:'暖季', sun:'全日照', spacing:'25cm', notes:'种在蔬菜旁可驱虫（特别是线虫和蚜虫）！摘除残花促持续开花。花瓣可食用，橙黄色素是天然着色剂。', tip:'每隔2–3行蔬菜种一行万寿菊，全园都受益。法国矮生万寿菊比墨西哥大万寿菊驱虫效果更好。', cat:'花卉' },
+  { name:'旱金莲', eng:'Nasturtium', emoji:'🌸', days:'50–60天', sow:'直播', season:'暖季', sun:'全日照/半日照', spacing:'30cm', notes:'全株可食！辛辣叶片做沙拉，鲜艳花朵装饰摆盘，未熟种子腌制代替刺山柑。是驱蚜虫的好帮手。', tip:'直播比育苗效果好，不耐移植。贫瘠土壤反而花更多，肥土只长叶不开花。', cat:'花卉' },
+  { name:'洛神花', eng:'Hibiscus Roselle', emoji:'🌺', days:'130–150天', sow:'育苗', season:'暖季', sun:'全日照', spacing:'60cm', notes:'NJ当年生！肉质花萼酸甜，是台湾洛神花茶和果酱原料。霜冻前大量采收花萼，一年只种一次。', tip:'需要长生长季，NJ必须早育苗（4月初）。花萼冷冻或晒干均可保存，煮水加糖是最简单做法。', cat:'花卉' },
+];
+
+const VG_CATS = ['全部', '茄果类', '叶菜类', '瓜类', '豆类', '根茎类', '亚洲特色', '香草', '花卉'];
+let vgActiveCat = '全部';
+
+function renderVegGuide() {
+  const btnDiv = document.getElementById('vgCatBtns');
+  btnDiv.innerHTML = VG_CATS.map(c =>
+    `<button class="ft-cat-btn${c===vgActiveCat?' active':''}" onclick="vgFilter('${c}')">${c}</button>`
+  ).join('');
+
+  const grid = document.getElementById('vgGrid');
+  const cats = vgActiveCat==='全部' ? [...new Set(VEGETABLES.map(v=>v.cat))] : [vgActiveCat];
+
+  grid.innerHTML = cats.map(cat => {
+    const vegs = VEGETABLES.filter(v => v.cat===cat);
+    return `
+      <div class="ft-section-title">${vgCatEmoji(cat)} ${cat}</div>
+      <div class="ft-grid">
+        ${vegs.map(v => `
+          <div class="ft-card">
+            <div class="ft-card-top">
+              <div class="ft-emoji">${v.emoji}</div>
+              <div class="ft-names">
+                <div class="ft-name">${v.name}</div>
+                <div class="ft-eng">${v.eng}</div>
+              </div>
+              <img class="ft-photo" data-wiki="${v.eng}" data-plant="${v.name}" alt="${v.name}"
+                   onerror="this.style.display='none'"
+                   onload="this.style.display='block';this.previousElementSibling.previousElementSibling.style.display='none'">
+            </div>
+            <div class="ft-badges">
+              <span class="ft-badge years">⏱ ${v.days}</span>
+              <span class="ft-badge zone">${v.season==='凉季'?'❄️ 凉季':v.season==='暖季'?'☀️ 暖季':'🌱 全年'}</span>
+              <span class="ft-badge chill">🌱 ${v.sow}</span>
+              <span class="ft-badge height">☀️ ${v.sun}</span>
+              <span class="ft-badge self">📐 ${v.spacing}</span>
+            </div>
+            <div class="ft-note">${v.notes}</div>
+            <div class="ft-tip">💡 ${v.tip}</div>
+          </div>`).join('')}
+      </div>`;
+  }).join('');
+
+  // Load vegetable photos with override map + robust fallback chain
+  grid.querySelectorAll('img[data-wiki]').forEach(img => {
+    const raw  = img.dataset.wiki;
+    const term = VG_WIKI_OVERRIDE[raw] || raw.split(' / ')[0].replace(/[()]/g,'').trim();
+    loadVegPhoto(img, term);
+  });
+}
+
+// Wikipedia article titles for vegetables whose eng name doesn't match exactly
+const VG_WIKI_OVERRIDE = {
+  'Chrysanthemum Greens': 'Garland chrysanthemum',
+  'Shanghai Bok Choy':    'Bok choy',
+  'Choy Sum':             'Choy sum',
+  'Chinese Broccoli':     'Kai-lan',
+  'Garden Pea':           'Pea',
+  'Yard Long Bean':       'Yard-long bean',
+  'Glutinous Corn':       'Waxy corn',
+  'Chinese Chive':        'Allium tuberosum',
+  'Shiso / Perilla':      'Perilla',
+  'Chinese Celery':       'Chinese celery',
+  'Daylily':              'Daylily',
+  'Lemongrass':           'Cymbopogon citratus',
+  'Hibiscus Roselle':     'Hibiscus sabdariffa',
+  'Fava Bean':            'Fava bean',
+  'Snow Pea':             'Snow pea',
+  'Sweet Potato':         'Sweet potato',
+  'Water Spinach':        'Ipomoea aquatica',
+  'Bitter Melon':         'Momordica charantia',
+  'Winter Melon':         'Benincasa hispida',
+  'Thai Basil':           'Thai basil',
+};
+
+function loadVegPhoto(img, term) {
+  const t = encodeURIComponent(term);
+  // Step 1: w/api.php pageimages — handles redirects, best coverage
+  fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${t}&prop=pageimages&pithumbsize=200&format=json&origin=*`)
+    .then(r => r.json())
+    .then(d => {
+      const page = Object.values(d.query?.pages || {})[0];
+      if (page?.thumbnail?.source) { img.src = page.thumbnail.source; return; }
+      // Step 2: article not found — OpenSearch to correct the title, then retry once
+      if (page?.pageid === -1) {
+        fetch(`https://en.wikipedia.org/w/api.php?action=opensearch&search=${t}&limit=1&format=json&origin=*`)
+          .then(r => r.json())
+          .then(([, titles]) => {
+            if (titles?.[0] && titles[0].toLowerCase() !== term.toLowerCase())
+              loadVegPhoto(img, titles[0]);
+          }).catch(() => {});
+        return;
+      }
+      // Step 3: article found but no thumbnail — pull from page media-list
+      fetch('https://en.wikipedia.org/api/rest_v1/page/media-list/' + t)
+        .then(r => r.json())
+        .then(d => {
+          const items = (d.items || []).filter(i => i.type === 'image' && i.srcset?.length
+            && !/svg|map|distribution|logo|icon/i.test(i.title || ''));
+          const pick = items.find(i => i.showInGallery) || items[0];
+          if (pick?.srcset) {
+            const src = pick.srcset[pick.srcset.length - 1].src;
+            img.src = src.startsWith('//') ? 'https:' + src : src;
+          }
+        }).catch(() => {});
+    }).catch(() => {});
+}
+
+function vgFilter(cat) {
+  vgActiveCat = cat;
+  renderVegGuide();
+}
+
+function vgCatEmoji(cat) {
+  return {'茄果类':'🍅','叶菜类':'🥬','瓜类':'🥒','豆类':'🫘','根茎类':'🥕','亚洲特色':'🥢','香草':'🌿','花卉':'🌸'}[cat] || '🌱';
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+
 const FRUIT_TREES = [
   // ── 亚洲水果 Asian Fruits ──────────────────────────────────────────────────
-  { name:'中国枣/冬枣', eng:'Chinese Jujube', emoji:'🟤', zone:'5–9', yrs:'3–5年', ht:'3–6m', chill:'低需求', self:'自花授粉', notes:'极耐寒耐旱，Zone 5最容易种的亚洲果树！果实甜脆，鲜食、晒干两用。喜全日照和排水良好的土壤。', tip:'推荐品种：Li（大果甜）、Lang（高产）。两棵搭配产量更高。', wiki:'Ziziphus jujuba', cat:'亚洲水果' },
+  { name:'中国枣/冬枣', eng:'Chinese Jujube', emoji:'🟤', zone:'5–9', yrs:'3–5年', ht:'3–6m', chill:'低需求', self:'自花授粉', notes:'极耐寒耐旱，NJ最容易种的亚洲果树！果实甜脆，鲜食、晒干两用。喜全日照和排水良好的土壤。', tip:'推荐品种：Li（大果甜）、Lang（高产）。两棵搭配产量更高。', wiki:'Ziziphus jujuba', cat:'亚洲水果' },
   { name:'柿子', eng:'Asian Persimmon', emoji:'🟠', zone:'5–9', yrs:'3–5年', ht:'4–9m', chill:'低需求', self:'自花授粉', notes:'极其耐寒美丽的果树！秋天橙红果实挂满枝头，叶落后采收。日本柿（Kaki）和美国柿均可种。', tip:'美国柿（Diospyros virginiana）更耐寒达Zone 4，小果多汁。', wiki:'Persimmon', cat:'亚洲水果' },
   { name:'桑葚', eng:'Mulberry', emoji:'🫐', zone:'4–9', yrs:'2–3年', ht:'6–15m', chill:'低需求', self:'自花授粉', notes:'生长速度极快，产量惊人。黑桑甜酸多汁，白桑甜淡。鲜食、果酱、酿酒皆宜。需空间较大。', tip:'修剪成灌木形可控高度，也方便采摘。', wiki:'Morus', cat:'亚洲水果' },
-  { name:'猕猴桃', eng:'Hardy Kiwi', emoji:'🥝', zone:'3–8', yrs:'3–5年', ht:'藤本9m+', chill:'中等', self:'需要雄株', notes:'耐寒猕猴桃（Actinidia arguta/kolomikta）果小无毛，直接吃！比普通猕猴桃甜，适合家庭院子。', tip:'1棵雄株配3–5棵雌株。需坚固支架或篱笆。5区每棵可年产数公斤。', wiki:'Actinidia arguta', cat:'亚洲水果' },
-  { name:'无花果', eng:'Fig', emoji:'🟣', zone:'5–9', yrs:'2–3年', ht:'2–4m', chill:'极低', self:'自花授粉', notes:'5区需盆栽或冬季保护（包草/移入车库）。地中海品种在保护下5区可露地存活。果熟时甜蜜柔软。', tip:'推荐品种：Chicago Hardy（5区最耐寒）。秋天割短枝条包裹越冬。', wiki:'Ficus carica', cat:'亚洲水果' },
+  { name:'猕猴桃', eng:'Hardy Kiwi', emoji:'🥝', zone:'3–8', yrs:'3–5年', ht:'藤本9m+', chill:'中等', self:'需要雄株', notes:'耐寒猕猴桃（Actinidia arguta/kolomikta）果小无毛，直接吃！比普通猕猴桃甜，适合家庭院子。', tip:'1棵雄株配3–5棵雌株。需坚固支架或篱笆。NJ每棵可年产数公斤。', wiki:'Actinidia arguta', cat:'亚洲水果' },
+  { name:'无花果', eng:'Fig', emoji:'🟣', zone:'5–9', yrs:'2–3年', ht:'2–4m', chill:'极低', self:'自花授粉', notes:'NJ可露地越冬或加保护（包草/移入车库）。Chicago Hardy品种在NJ加保护可露地越冬。果熟时甜蜜柔软。', tip:'推荐品种：Chicago Hardy（NJ最耐寒无花果）。秋天割短枝条包裹越冬。', wiki:'Ficus carica', cat:'亚洲水果' },
   { name:'山楂', eng:'Chinese Hawthorn', emoji:'🔴', zone:'4–7', yrs:'3–4年', ht:'3–6m', chill:'中等', self:'自花授粉', notes:'糖葫芦原料！春季白花美丽，秋天红果累累。果实酸甜，做山楂糕、果丹皮、山楂酱。极耐寒。', tip:'中国山楂（Crataegus pinnatifida）果实更大更甜，专用食用品种。', wiki:'Crataegus pinnatifida', cat:'亚洲水果' },
-  { name:'梅子/乌梅', eng:'Japanese Ume Plum', emoji:'🟡', zone:'6–9', yrs:'3–4年', ht:'4–6m', chill:'中等', self:'部分自花', notes:'5区略偏暖，选最耐寒品种并种在避风处。果实酸香用于腌梅子、乌梅汤、梅酒。早春花美。', tip:'选"Contender"等耐寒品种。盆栽可移入车库越冬。', wiki:'Prunus mume', cat:'亚洲水果' },
-  { name:'枇杷', eng:'Loquat', emoji:'🟡', zone:'6–10', yrs:'3–4年', ht:'4–6m', chill:'低需求', self:'自花授粉', notes:'5区需盆栽，冬天移入室内。暖冬可尝试地栽并搭冬季保护棚。果实甜酸，南方水果代表。', tip:'大盆（60L+）盆栽，夏天户外，11月前移入有阳光的室内窗台。', wiki:'Loquat', cat:'亚洲水果' },
-  { name:'杨梅', eng:'Chinese Bayberry', emoji:'🔴', zone:'6–10', yrs:'4–5年', ht:'6–9m', chill:'低需求', self:'需要雄株', notes:'5区盆栽或强保护尝试。深红色汁多果，吃一颗染红嘴唇。极难在美国买到鲜果，自种别无他法！', tip:'需1棵雄株搭配。盆栽越冬保护，夏天放到最晒的地方。', wiki:'Myrica rubra', cat:'亚洲水果' },
+  { name:'梅子/乌梅', eng:'Japanese Ume Plum', emoji:'🟡', zone:'6–9', yrs:'3–4年', ht:'4–6m', chill:'中等', self:'部分自花', notes:'NJ Zone 6b–7a适合种植，选避风处。果实酸香用于腌梅子、乌梅汤、梅酒。早春花美。', tip:'选"Contender"等耐寒品种。盆栽可移入车库越冬。', wiki:'Prunus mume', cat:'亚洲水果' },
+  { name:'枇杷', eng:'Loquat', emoji:'🟡', zone:'6–10', yrs:'3–4年', ht:'4–6m', chill:'低需求', self:'自花授粉', notes:'NJ需盆栽越冬，冬天移入室内。暖冬可尝试地栽并搭冬季保护棚。果实甜酸，南方水果代表。', tip:'大盆（60L+）盆栽，夏天户外，11月前移入有阳光的室内窗台。', wiki:'Loquat', cat:'亚洲水果' },
+  { name:'杨梅', eng:'Chinese Bayberry', emoji:'🔴', zone:'6–10', yrs:'4–5年', ht:'6–9m', chill:'低需求', self:'需要雄株', notes:'NJ盆栽越冬或强保护尝试。深红色汁多果，吃一颗染红嘴唇。极难在美国买到鲜果，自种别无他法！', tip:'需1棵雄株搭配。盆栽越冬保护，夏天放到最晒的地方。', wiki:'Myrica rubra', cat:'亚洲水果' },
   { name:'银杏', eng:'Ginkgo (Female)', emoji:'🟡', zone:'3–8', yrs:'20+年', ht:'15–30m', chill:'低需求', self:'需要雄株', notes:'雌树结银杏果，去臭肉后取白果炒食、煲汤。生长缓慢但极其长寿耐寒。嫁接苗结果更早。', tip:'购买嫁接雌株可缩短至7–10年结果。白果有毒勿生吃，少量熟食。', wiki:'Ginkgo biloba', cat:'亚洲水果' },
-  { name:'板栗', eng:'Chinese Chestnut', emoji:'🟤', zone:'4–8', yrs:'3–5年', ht:'9–15m', chill:'中等', self:'需要授粉树', notes:'比美国板栗更抗栗疫病，5区主流选择。秋天栗壳裂开自然落地，直接煮食或炒栗子。', tip:'需2棵不同品种互相授粉。Abundant、AU Homestead为推荐品种。', wiki:'Castanea mollissima', cat:'亚洲水果' },
+  { name:'板栗', eng:'Chinese Chestnut', emoji:'🟤', zone:'4–8', yrs:'3–5年', ht:'9–15m', chill:'中等', self:'需要授粉树', notes:'比美国板栗更抗栗疫病，NJ主流选择。秋天栗壳裂开自然落地，直接煮食或炒栗子。', tip:'需2棵不同品种互相授粉。Abundant、AU Homestead为推荐品种。', wiki:'Castanea mollissima', cat:'亚洲水果' },
   // ── 温带水果 Temperate Fruits ──────────────────────────────────────────────
-  { name:'苹果', eng:'Apple', emoji:'🍎', zone:'3–8', yrs:'2–5年', ht:'1.5–6m（矮砧）', chill:'高需求', self:'需要授粉树', notes:'5区最主流果树！需2个不同品种互授粉。矮化砧木（M9/M26）方便管理采摘。', tip:'推荐品种：Honeycrisp、Fuji、Gala、SweeTango。矮砧苹果3年可结果。', wiki:'Apple', cat:'温带水果' },
-  { name:'梨', eng:'Pear', emoji:'🍐', zone:'4–8', yrs:'3–5年', ht:'4–8m', chill:'高需求', self:'需要授粉树', notes:'亚洲梨（砂梨系）脆甜多汁，西洋梨（巴特利特）软熟香甜。5区两种都可种。', tip:'推荐亚洲梨：Hosui、Shinko、Korean Giant（超大果）。需2棵授粉。', wiki:'Pear', cat:'温带水果' },
-  { name:'桃子', eng:'Peach', emoji:'🍑', zone:'5–8', yrs:'2–4年', ht:'3–5m', chill:'高需求', self:'自花授粉', notes:'5区可种！选低需冷量或耐寒品种。需全日照、排水良好土壤。晚霜是最大风险。', tip:'推荐品种：Reliance（极耐寒）、Contender、Redhaven。自花结果无需配对。', wiki:'Peach', cat:'温带水果' },
+  { name:'苹果', eng:'Apple', emoji:'🍎', zone:'3–8', yrs:'2–5年', ht:'1.5–6m（矮砧）', chill:'高需求', self:'需要授粉树', notes:'NJ最主流果树！需2个不同品种互授粉。矮化砧木（M9/M26）方便管理采摘。', tip:'推荐品种：Honeycrisp、Fuji、Gala、SweeTango。矮砧苹果3年可结果。', wiki:'Apple', cat:'温带水果' },
+  { name:'梨', eng:'Pear', emoji:'🍐', zone:'4–8', yrs:'3–5年', ht:'4–8m', chill:'高需求', self:'需要授粉树', notes:'亚洲梨（砂梨系）脆甜多汁，西洋梨（巴特利特）软熟香甜。NJ两种都可种。', tip:'推荐亚洲梨：Hosui、Shinko、Korean Giant（超大果）。需2棵授粉。', wiki:'Pear', cat:'温带水果' },
+  { name:'桃子', eng:'Peach', emoji:'🍑', zone:'5–8', yrs:'2–4年', ht:'3–5m', chill:'高需求', self:'自花授粉', notes:'NJ可种！选低需冷量或耐寒品种。需全日照、排水良好土壤。晚霜是最大风险。', tip:'推荐品种：Reliance（极耐寒）、Contender、Redhaven。自花结果无需配对。', wiki:'Peach', cat:'温带水果' },
   { name:'樱桃', eng:'Cherry', emoji:'🍒', zone:'4–7', yrs:'4–7年', ht:'5–10m', chill:'高需求', self:'甜樱需授粉', notes:'甜樱桃（大樱桃）需2棵授粉，酸樱桃自花授粉更易种。酸樱桃做果酱、派更合适。', tip:'酸樱桃推荐：Montmorency（最经典）。甜樱桃推荐：Stella（罕见的甜樱自花品种）。', wiki:'Cherry', cat:'温带水果' },
   { name:'李子', eng:'Plum', emoji:'🟣', zone:'4–9', yrs:'3–5年', ht:'3–6m', chill:'中等', self:'品种不同', notes:'欧洲李（Stanley等）自花授粉，亚洲李需配对。亚洲李更大更甜，欧洲李做西梅干。', tip:'亚洲李推荐：Shiro（黄李，超产）、Methley（自花红李）。', wiki:'Plum', cat:'温带水果' },
-  { name:'杏', eng:'Apricot', emoji:'🟠', zone:'4–8', yrs:'3–5年', ht:'4–8m', chill:'高需求', self:'多数自花', notes:'花期早是5区最大挑战——晚霜常冻花。选晚花品种或种在避风处。果实香甜无比。', tip:'推荐品种：Goldcot、Harcot（晚花耐霜）、Moorpark。早春覆布保护花蕾。', wiki:'Apricot', cat:'温带水果' },
+  { name:'杏', eng:'Apricot', emoji:'🟠', zone:'4–8', yrs:'3–5年', ht:'4–8m', chill:'高需求', self:'多数自花', notes:'花期早是NJ的最大挑战——晚霜常冻花。选晚花品种或种在避风处。果实香甜无比。', tip:'推荐品种：Goldcot、Harcot（晚花耐霜）、Moorpark。早春覆布保护花蕾。', wiki:'Apricot', cat:'温带水果' },
   { name:'欧洲甜樱桃', eng:'Sweet Cherry', emoji:'🍒', zone:'5–7', yrs:'4–6年', ht:'5–9m（矮砧）', chill:'高需求', self:'大多需授粉', notes:'大个甜樱桃，新鲜鲜食最佳。矮砧品种适合家庭院子。成熟季需防鸟，快速采摘。', tip:'矮砧推荐：Lapins + Sweetheart搭配互授粉。鸟网不可少！', wiki:'Cherry', cat:'温带水果' },
   // ── 浆果灌木 Berries & Shrubs ──────────────────────────────────────────────
-  { name:'蓝莓', eng:'Blueberry', emoji:'🫐', zone:'4–7', yrs:'2–3年', ht:'1–2m', chill:'高需求', self:'需要2品种', notes:'5区最佳浆果！需酸性土壤（pH 4.5–5.5）。添加硫磺降pH。2–3棵搭配产量大增。', tip:'高丛蓝莓推荐：Bluecrop + Blueray搭配。覆松针保湿保酸。', wiki:'Blueberry', cat:'浆果灌木' },
+  { name:'蓝莓', eng:'Blueberry', emoji:'🫐', zone:'4–7', yrs:'2–3年', ht:'1–2m', chill:'高需求', self:'需要2品种', notes:'NJ最佳浆果！需酸性土壤（pH 4.5–5.5）。添加硫磺降pH。2–3棵搭配产量大增。', tip:'高丛蓝莓推荐：Bluecrop + Blueray搭配。覆松针保湿保酸。', wiki:'Blueberry', cat:'浆果灌木' },
   { name:'树莓', eng:'Raspberry', emoji:'🔴', zone:'3–9', yrs:'1–2年', ht:'1–2m', chill:'中等', self:'自花授粉', notes:'极易种植，一次种终身享用！蔓根蔓延需用边界控制。夏果型+秋果型搭配可从6月采到霜冻。', tip:'推荐：Heritage（秋果）+ Caroline（高产夏果）。剪去老枝留新枝。', wiki:'Raspberry', cat:'浆果灌木' },
   { name:'黑莓', eng:'Blackberry', emoji:'⚫', zone:'5–9', yrs:'2年', ht:'1–3m', chill:'低需求', self:'自花授粉', notes:'产量惊人，几乎不需要打理。无刺品种方便采摘。果实比树莓更大，酸甜浓郁。', tip:'推荐无刺品种：Triple Crown、Chester、Arapaho。立支架引导生长。', wiki:'Blackberry', cat:'浆果灌木' },
-  { name:'醋栗/茶藨子', eng:'Currant', emoji:'🔴', zone:'3–7', yrs:'2–3年', ht:'1–1.5m', chill:'高需求', self:'自花授粉', notes:'5区极耐寒灌木！红醋栗酸甜，黑醋栗香气浓郁（卡西斯汁原料），白醋栗最甜。', tip:'黑醋栗推荐：Ben Sarek（矮生高产）。红醋栗推荐：Red Lake。', wiki:'Currant', cat:'浆果灌木' },
+  { name:'醋栗/茶藨子', eng:'Currant', emoji:'🔴', zone:'3–7', yrs:'2–3年', ht:'1–1.5m', chill:'高需求', self:'自花授粉', notes:'NJ极耐寒灌木！红醋栗酸甜，黑醋栗香气浓郁（卡西斯汁原料），白醋栗最甜。', tip:'黑醋栗推荐：Ben Sarek（矮生高产）。红醋栗推荐：Red Lake。', wiki:'Currant', cat:'浆果灌木' },
   { name:'鹅莓/醋栗', eng:'Gooseberry', emoji:'🟢', zone:'3–8', yrs:'2–3年', ht:'1–1.5m', chill:'高需求', self:'自花授粉', notes:'绿色或红色浆果，欧美常见自制馅饼原料，中国不常见但极易种植。耐半阴，适合树下。', tip:'推荐品种：Invicta（绿色高产）、Hinnonmaki Red（红色甜）。', wiki:'Gooseberry', cat:'浆果灌木' },
   { name:'接骨木', eng:'Elderberry', emoji:'🫐', zone:'3–9', yrs:'2–3年', ht:'2–4m', chill:'中等', self:'需要2棵', notes:'超级食物！紫黑色小浆果富含花青素。花朵做接骨木花茶、饮料，果实做糖浆防感冒。极耐粗放。', tip:'推荐品种：Bob Gordon + Nova搭配。美洲接骨木（Sambucus canadensis）本地原生。', wiki:'Sambucus', cat:'浆果灌木' },
   { name:'榛子', eng:'Hazelnut', emoji:'🟤', zone:'4–9', yrs:'3–5年', ht:'3–5m', chill:'中等', self:'需要2棵', notes:'坚果类，秋天采收外壳变棕的榛子。花榛子酱原料！生长强健，可修剪成篱笆状。', tip:'推荐：Winkler + Theta搭配授粉。多棵丛植更美观也更高产。', wiki:'Hazel', cat:'浆果灌木' },
-  { name:'核桃', eng:'Black Walnut', emoji:'🟤', zone:'4–9', yrs:'4–7年', ht:'15–30m', chill:'中等', self:'自花授粉', notes:'美国黑核桃风味浓郁。⚠️ 根系分泌毒素（胡桃醌），附近3–5米内很多植物无法生长。需大空间。', tip:'英国核桃（Juglans regia）更易剥壳，推荐Carpathian品种适合5区。', wiki:'Walnut', cat:'浆果灌木' },
+  { name:'核桃', eng:'Black Walnut', emoji:'🟤', zone:'4–9', yrs:'4–7年', ht:'15–30m', chill:'中等', self:'自花授粉', notes:'美国黑核桃风味浓郁。⚠️ 根系分泌毒素（胡桃醌），附近3–5米内很多植物无法生长。需大空间。', tip:'英国核桃（Juglans regia）更易剥壳，推荐Carpathian品种适合NJ。', wiki:'Walnut', cat:'浆果灌木' },
   { name:'草莓（多年生）', eng:'Perennial Strawberry', emoji:'🍓', zone:'3–10', yrs:'第一年', ht:'0.2m', chill:'中等', self:'自花授粉', notes:'最快结果的"果树"！高床种植或挂篮效果最佳。走茎繁殖自动扩张。覆草越冬保护根系。', tip:'推荐品种：Honeoye（早熟）、Jewel（高产）、Seascape（四季莓持续结果）。', wiki:'Strawberry', cat:'浆果灌木' },
   // ── 藤本水果 Vines ──────────────────────────────────────────────────────────
-  { name:'葡萄', eng:'Grape', emoji:'🍇', zone:'4–9', yrs:'3年', ht:'藤本6m+', chill:'中等', self:'自花授粉', notes:'5区有专属品种。需强健支架或拱架。每年冬剪是关键。鲜食、果汁、酿酒均可。', tip:'推荐美国品种：Concord（经典紫色果汁葡萄）、Niagara（白）、Marquette（酿酒）。', wiki:'Grape', cat:'藤本水果' },
+  { name:'葡萄', eng:'Grape', emoji:'🍇', zone:'4–9', yrs:'3年', ht:'藤本6m+', chill:'中等', self:'自花授粉', notes:'NJ有适合品种。需强健支架或拱架。每年冬剪是关键。鲜食、果汁、酿酒均可。', tip:'推荐美国品种：Concord（经典紫色果汁葡萄）、Niagara（白）、Marquette（酿酒）。', wiki:'Grape', cat:'藤本水果' },
   { name:'五味子', eng:'Magnolia Vine', emoji:'🔴', zone:'3–8', yrs:'3–5年', ht:'藤本9m', chill:'中等', self:'自花授粉', notes:'中药五味子原植物！红色浆果串串，酸甜苦辣咸五味俱全。药食两用，泡酒泡茶均可。耐半阴。', tip:'需坚固支架。果实秋天熟后用于泡酒或制干品。花也有淡雅香气。', wiki:'Schisandra chinensis', cat:'藤本水果' },
   { name:'软枣猕猴桃', eng:'Baby Kiwi', emoji:'🥝', zone:'3–8', yrs:'3–4年', ht:'藤本12m', chill:'中等', self:'需要雄株', notes:'葡萄大小的无毛猕猴桃，甜度极高！比猕猴桃更耐寒，1棵雄株配5–6棵雌株。', tip:'推荐品种：Ananasaja（高产）、Meader（极耐寒）。需非常坚固的支架。', wiki:'Actinidia arguta', cat:'藤本水果' },
   { name:'木通/八月瓜', eng:'Akebia Five-leaf', emoji:'🟣', zone:'4–8', yrs:'3–5年', ht:'藤本9m', chill:'中等', self:'需要2棵', notes:'紫色香肠形果实，果肉甜白如芭蕉，种子间有果冻状果肉。花朵紫色芳香。需2株交叉授粉。', tip:'春天紫花美丽，9月果裂开食用。嫩叶可炒食，叶形优美可作绿廊。', wiki:'Akebia quinata', cat:'藤本水果' },
@@ -2048,7 +2902,7 @@ const FRUIT_TREES = [
   { name:'文冠果', eng:'Xanthoceras', emoji:'⚪', zone:'3–7', yrs:'4–6年', ht:'4–8m', chill:'中等', self:'自花授粉', notes:'极耐寒的亚洲特色树种！白花紫心春季极美。种子富含油脂可榨油，坚果可炒食，是北方珍贵果树。', tip:'中国本土树种，生命力顽强，耐干旱。盆栽或地栽均可，观花赏果两相宜。', wiki:'Xanthoceras sorbifolium', cat:'亚洲水果' },
   // ── 更多温带水果 More Temperate ────────────────────────────────────────────
   { name:'榅桲', eng:'Quince', emoji:'🟡', zone:'5–9', yrs:'4–6年', ht:'4–6m', chill:'中等', self:'自花授粉', notes:'金黄芳香的神奇果实！生食太涩，但加热后变粉红甜蜜，做果酱、糕点和炖肉绝佳。花也很美。', tip:'推荐品种：Champion、Smyrna、Pineapple。单棵自花，耐修剪易管理。', wiki:'Quince', cat:'温带水果' },
-  { name:'油桃', eng:'Nectarine', emoji:'🍑', zone:'5–8', yrs:'2–4年', ht:'3–5m', chill:'高需求', self:'自花授粉', notes:'无毛光滑皮的桃子！种植方法与普通桃完全相同，但皮薄多汁更甜。5区选耐寒品种。', tip:'推荐品种：Hardired、Mericrest（极耐寒Zone 4）。果实比桃更容易开裂，注意控水。', wiki:'Nectarine', cat:'温带水果' },
+  { name:'油桃', eng:'Nectarine', emoji:'🍑', zone:'5–8', yrs:'2–4年', ht:'3–5m', chill:'高需求', self:'自花授粉', notes:'无毛光滑皮的桃子！种植方法与普通桃完全相同，但皮薄多汁更甜。NJ选耐寒品种。', tip:'推荐品种：Hardired、Mericrest（极耐寒Zone 4）。果实比桃更容易开裂，注意控水。', wiki:'Nectarine', cat:'温带水果' },
   { name:'海棠果', eng:'Flowering Crabapple', emoji:'🔴', zone:'4–8', yrs:'3–5年', ht:'3–8m', chill:'高需求', self:'自花授粉', notes:'最美庭院果树！春天花比苹果更密更艳，秋冬红果不落，鸟类最爱。小果酸甜做果冻、果酒。', tip:'食用品种推荐：Centennial（甜果）、Chestnut（大果）。观赏食用两全其美。', wiki:'Malus', cat:'温带水果' },
   { name:'欧楂', eng:'Medlar', emoji:'🟤', zone:'5–9', yrs:'4–6年', ht:'3–6m', chill:'中等', self:'自花授粉', notes:'古老神奇果树！果实需"霜熟"（bletted）后才可食——经霜变软发酵后甜如蜜枣。小众珍稀。', tip:'极少病虫害，几乎零维护。推荐品种：Nottingham、Royal。历史上欧洲贵族最爱果树。', wiki:'Medlar', cat:'温带水果' },
   // ── 超级食物浆果 Superfoods ────────────────────────────────────────────────
@@ -2059,11 +2913,11 @@ const FRUIT_TREES = [
   { name:'蔓越莓', eng:'Cranberry', emoji:'🔴', zone:'2–6', yrs:'3–4年', ht:'匍匐0.3m', chill:'高需求', self:'自花授粉', notes:'感恩节必备浆果！需酸性土壤（pH 4–5）和潮湿条件，盆栽更容易控制。红色果实11月成熟。', tip:'在大盆中加泥炭苔混合基质种植。浇水用雨水或酸化水，和蓝莓要求类似。', wiki:'Cranberry', cat:'超级食物浆果' },
   { name:'花楸/欧楸', eng:'Mountain Ash / Rowan', emoji:'🔴', zone:'3–7', yrs:'4–6年', ht:'5–10m', chill:'高需求', self:'自花授粉', notes:'秋冬红色浆果穗，是鸟类的最爱。果实含花楸酸，生食苦，烹调或霜冻后做果冻、果酒。北欧传统食材。', tip:'中国花楸（Sorbus discolor）观赏价值更高。秋叶变红变橙极美，是极好的庭院树。', wiki:'Sorbus', cat:'超级食物浆果' },
   // ── 盆栽热带水果 Container Tropicals ─────────────────────────────────────
-  { name:'石榴', eng:'Pomegranate', emoji:'🔴', zone:'7–12（盆栽5区）', yrs:'3–5年', ht:'盆栽1–2m', chill:'极低', self:'自花授粉', notes:'盆栽入室越冬！夏天户外放最晒处，11月前移入明亮室内。橙红花朵极美，果实红宝石般。', tip:'推荐矮生品种：Wonderful（食用大果）或 Nana（观赏矮生）。', wiki:'Pomegranate', cat:'盆栽热带水果' },
-  { name:'金橘', eng:'Kumquat', emoji:'🟠', zone:'8–11（盆栽5区）', yrs:'2–4年', ht:'盆栽1–1.5m', chill:'无需求', self:'自花授粉', notes:'最容易盆栽的柑橘！小橙色果连皮一起吃，甜皮酸肉。室内越冬，夏天户外阳台，挂果期特别漂亮。', tip:'推荐品种：Nagami（圆形）、Meiwa（最甜）。入室前洗叶防介壳虫。', wiki:'Kumquat', cat:'盆栽热带水果' },
-  { name:'柠檬', eng:'Lemon', emoji:'🍋', zone:'9–11（盆栽5区）', yrs:'2–3年', ht:'盆栽1–2m', chill:'无需求', self:'自花授粉', notes:'盆栽柠檬全年开花挂果，香气迷人！室内过冬需明亮朝南窗台。Meyer柠檬最适合家庭种植。', tip:'推荐品种：Improved Meyer Lemon（皮薄汁多）。夏天移出室外阳光充足处，生长最旺。', wiki:'Lemon', cat:'盆栽热带水果' },
-  { name:'蜜橘/温州蜜柑', eng:'Mandarin Orange', emoji:'🍊', zone:'8–11（盆栽5区）', yrs:'3–4年', ht:'盆栽1–2m', chill:'无需求', self:'自花授粉', notes:'最甜的盆栽柑橘！温州蜜柑无核好剥皮。冬天室内窗台，春暖移出。开花时香气满屋。', tip:'推荐品种：Satsuma（温州蜜柑，最耐寒Zone 8）、Clementine。每年春天换大一号的盆。', wiki:'Mandarin orange', cat:'盆栽热带水果' },
-  { name:'血橙', eng:'Blood Orange', emoji:'🔴', zone:'9–11（盆栽5区）', yrs:'3–4年', ht:'盆栽1.5–2m', chill:'无需求', self:'自花授粉', notes:'果肉鲜红如血，花青素含量极高！果汁颜色震撼，甜中带莓果味。盆栽管理同普通柑橘。', tip:'推荐品种：Moro（深红）、Tarocco（意大利经典）。需温差大才能显色，秋冬移回室内前红色更深。', wiki:'Blood orange', cat:'盆栽热带水果' },
+  { name:'石榴', eng:'Pomegranate', emoji:'🔴', zone:'7–12（盆栽NJ）', yrs:'3–5年', ht:'盆栽1–2m', chill:'极低', self:'自花授粉', notes:'盆栽入室越冬！夏天户外放最晒处，11月前移入明亮室内。橙红花朵极美，果实红宝石般。', tip:'推荐矮生品种：Wonderful（食用大果）或 Nana（观赏矮生）。', wiki:'Pomegranate', cat:'盆栽热带水果' },
+  { name:'金橘', eng:'Kumquat', emoji:'🟠', zone:'8–11（盆栽NJ）', yrs:'2–4年', ht:'盆栽1–1.5m', chill:'无需求', self:'自花授粉', notes:'最容易盆栽的柑橘！小橙色果连皮一起吃，甜皮酸肉。室内越冬，夏天户外阳台，挂果期特别漂亮。', tip:'推荐品种：Nagami（圆形）、Meiwa（最甜）。入室前洗叶防介壳虫。', wiki:'Kumquat', cat:'盆栽热带水果' },
+  { name:'柠檬', eng:'Lemon', emoji:'🍋', zone:'9–11（盆栽NJ）', yrs:'2–3年', ht:'盆栽1–2m', chill:'无需求', self:'自花授粉', notes:'盆栽柠檬全年开花挂果，香气迷人！室内过冬需明亮朝南窗台。Meyer柠檬最适合家庭种植。', tip:'推荐品种：Improved Meyer Lemon（皮薄汁多）。夏天移出室外阳光充足处，生长最旺。', wiki:'Lemon', cat:'盆栽热带水果' },
+  { name:'蜜橘/温州蜜柑', eng:'Mandarin Orange', emoji:'🍊', zone:'8–11（盆栽NJ）', yrs:'3–4年', ht:'盆栽1–2m', chill:'无需求', self:'自花授粉', notes:'最甜的盆栽柑橘！温州蜜柑无核好剥皮。冬天室内窗台，春暖移出。开花时香气满屋。', tip:'推荐品种：Satsuma（温州蜜柑，最耐寒Zone 8）、Clementine。每年春天换大一号的盆。', wiki:'Mandarin orange', cat:'盆栽热带水果' },
+  { name:'血橙', eng:'Blood Orange', emoji:'🔴', zone:'9–11（盆栽NJ）', yrs:'3–4年', ht:'盆栽1.5–2m', chill:'无需求', self:'自花授粉', notes:'果肉鲜红如血，花青素含量极高！果汁颜色震撼，甜中带莓果味。盆栽管理同普通柑橘。', tip:'推荐品种：Moro（深红）、Tarocco（意大利经典）。需温差大才能显色，秋冬移回室内前红色更深。', wiki:'Blood orange', cat:'盆栽热带水果' },
 ];
 
 const FT_CATS = ['全部', '亚洲水果', '温带水果', '浆果灌木', '藤本水果', '超级食物浆果', '盆栽热带水果'];
@@ -2092,7 +2946,7 @@ function renderFruitTrees() {
                 <div class="ft-name">${t.name}</div>
                 <div class="ft-eng">${t.eng}</div>
               </div>
-              <img class="ft-photo" data-wiki="${t.wiki}" alt="${t.name}"
+              <img class="ft-photo" data-wiki="${t.wiki}" data-plant="${t.name}" alt="${t.name}"
                    onerror="this.style.display='none'"
                    onload="this.style.display='block';this.previousElementSibling.previousElementSibling.style.display='none'">
             </div>
@@ -2109,13 +2963,39 @@ function renderFruitTrees() {
       </div>`;
   }).join('');
 
-  // Load Wikipedia photos for fruit trees
+  // Load fruit photos from Wikipedia page media list (images actually on the plant's article)
+  const BAD = /svg|map|distribution|range|bee|insect|butterfly|moth|wasp|bird|flower|blossom|leaf|bark|branch|trunk|logo|icon|flag|seal|diagram|chart|coat/i;
+  const GOOD = /fruit|berry|harvest|ripe|fresh|crop|食|果|plum|cherry|apple|pear|peach|grape|fig|jujube|persimmon|mulberry|kiwi|lemon|orange|kumquat|pomegranate|strawberry|blueberry|raspberry|blackberry|currant|gooseberry|chestnut|walnut|hazelnut|elderberry|aronia|buckthorn|rosehip|cranberry|quince|apricot|nectarine|medlar|haskap/i;
+
   grid.querySelectorAll('img[data-wiki]').forEach(img => {
-    const title = encodeURIComponent(img.dataset.wiki.replace(/[()]/g,'').trim());
-    fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + title)
-      .then(r=>r.json())
-      .then(d=>{ if(d.thumbnail?.source){ img.src=d.thumbnail.source; } })
-      .catch(()=>{});
+    const base  = img.dataset.wiki.replace(/[()]/g,'').trim();
+    const title = encodeURIComponent(base);
+
+    fetch('https://en.wikipedia.org/api/rest_v1/page/media-list/' + title)
+      .then(r => r.json())
+      .then(d => {
+        const items = (d.items || [])
+          .filter(i => i.type === 'image' && i.srcset?.length && !BAD.test(i.title || ''));
+
+        // 1st choice: gallery image whose filename hints at fruit
+        let pick = items.find(i => i.showInGallery && GOOD.test(i.title || ''));
+        // 2nd choice: any gallery image
+        if (!pick) pick = items.find(i => i.showInGallery);
+        // 3rd choice: any non-bad image
+        if (!pick) pick = items[0];
+
+        if (pick?.srcset) {
+          const best = pick.srcset[pick.srcset.length - 1];
+          img.src = best.src.startsWith('//') ? 'https:' + best.src : best.src;
+        } else {
+          // fallback: Wikipedia summary thumbnail
+          fetch('https://en.wikipedia.org/api/rest_v1/page/summary/' + title)
+            .then(r => r.json())
+            .then(d => { if (d.thumbnail?.source) img.src = d.thumbnail.source; })
+            .catch(() => {});
+        }
+      })
+      .catch(() => {});
   });
 }
 
